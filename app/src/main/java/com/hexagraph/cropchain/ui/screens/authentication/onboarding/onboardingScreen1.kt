@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -97,7 +99,7 @@ fun OnBoardingScreen(navController: NavController) {
 private fun Logo(modifier: Modifier) {
 
     Image(
-        painter = painterResource(id = R.drawable.onboarding_1),
+        imageVector = Icons.Default.Face,
         contentDescription = null,
         modifier = modifier
             .padding(1.dp)
@@ -107,37 +109,29 @@ private fun Logo(modifier: Modifier) {
 
 
 @Composable
-private fun ImageGroupS1(modifier: Modifier) {
-    Image(
-        painter = painterResource(id = R.drawable.onboarding_1),
-        contentDescription = null,
-        modifier = modifier
-            .padding(1.dp)
-            .width(245.dp)
-            .height(206.dp)
-    )
-}
-
-@Composable
 private fun GroupCenterS1(modifier: Modifier) {
     Box(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth().padding(top = 16.dp)
     ) {
-        ImageGroupS1(modifier = modifier)
+        Image(
+            painter = painterResource(id = R.drawable.onboarding_1),
+            contentDescription = null,
+            modifier = modifier
+                .align(Alignment.Center)
+                .fillMaxWidth()
+        )
     }
 }
 
 @Composable
 private fun GroupCenterS2(modifier: Modifier) {
     Box(modifier = modifier.fillMaxWidth()) {
-//        Image(
-//            painter = painterResource(id = R.drawable.backs2), contentDescription = null,
-//            modifier = Modifier.fillMaxWidth()
-//        )
         Image(
-            painter = painterResource(id = R.drawable.onboarding_1),
+            painter = painterResource(id = R.drawable.onboarding_2),
             contentDescription = null,
-            modifier = Modifier.align(Alignment.Center)
+            modifier = Modifier
+                .align(Alignment.Center)
+                .fillMaxWidth(0.9f)
         )
     }
 }
@@ -145,9 +139,8 @@ private fun GroupCenterS2(modifier: Modifier) {
 @Composable
 private fun GroupCenterS3(modifier: Modifier) {
     Box(modifier = modifier) {
-//        Image(painter = painterResource(id = R.drawable.backs3), contentDescription = null)
         Image(
-            painter = painterResource(id = R.drawable.onboarding_1),
+            painter = painterResource(id = R.drawable.onboarding_2),
             contentDescription = null,
             modifier = Modifier
                 .align(Alignment.Center)
@@ -168,21 +161,22 @@ private fun NonAnimatedCenterS1(modifier: Modifier) {
         )
         Image(
             painter = painterResource(id = R.drawable.dots1),
-            contentDescription = null
+            contentDescription = null,
+            modifier = Modifier.size(40.dp)
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Welcome to CropChain Android!",
+            text = "Welcome to CropChain!",
             style = TextStyle(
-                fontSize = 24.sp,
-                lineHeight = 48.sp,
+                fontSize = 20.sp,
+                lineHeight = 20.sp,
                 fontFamily = displayFontFamily,
                 fontWeight = FontWeight(600)
             )
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "AgriChain opens the door to a revolutionary approach to agricultural management. Our platform leverages blockchain technology to create a decentralized ecosystem for plant disease detection and solution verification. Explore our comprehensive suite of tools tailored to farmers, scientists, and administrators, empowering you to make informed decisions and drive sustainable agriculture forward.",
+            text = "AgriChain opens the door to a revolutionary approach to agricultural management. Our platform leverages blockchain technology to create a decentralized ecosystem for plant disease detection and solution verification.",
             style = TextStyle(
                 fontSize = 16.sp,
                 lineHeight = 21.sp,
@@ -210,9 +204,9 @@ private fun NonAnimatedCenterS2(modifier: Modifier) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Empower Yourself with Truth",
+            text = "Lorem Ipsum",
             style = TextStyle(
-                fontSize = 24.sp,
+                fontSize = 20.sp,
                 lineHeight = 48.sp,
                 fontFamily = displayFontFamily,
                 fontWeight = FontWeight(600),
@@ -220,7 +214,7 @@ private fun NonAnimatedCenterS2(modifier: Modifier) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "AgriChain is at the forefront of innovation in agricultural technology, revolutionizing the way plant diseases are detected and solutions are verified. Our mission is to empower farmers, scientists, and administrators with cutting-edge blockchain solutions, ensuring transparency, efficiency, and sustainability in agriculture.",
+            text = "Explore our comprehensive suite of tools tailored to farmers, scientists, and administrators, empowering you to make informed decisions and drive sustainable agriculture forward.",
             style = TextStyle(
                 fontSize = 16.sp,
                 lineHeight = 21.sp,
