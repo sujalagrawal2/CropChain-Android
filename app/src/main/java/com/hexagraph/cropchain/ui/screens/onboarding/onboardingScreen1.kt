@@ -1,5 +1,43 @@
 package com.hexagraph.cropchain.ui.screens.onboarding
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.EaseIn
+import androidx.compose.animation.core.EaseOut
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.hexagraph.cropchain.R
+import com.hexagraph.cropchain.ui.component.AppButton
+import com.hexagraph.cropchain.ui.theme.bodyFontFamily
+import com.hexagraph.cropchain.ui.theme.displayFontFamily
+
 @Composable
 fun OnBoardingScreen(navController: NavController) {
     var screen by remember {
@@ -42,9 +80,9 @@ fun OnBoardingScreen(navController: NavController) {
                         }
 
                         2 -> screen++
-                        3 -> {
-                            navController.navigate(AuthenticationNavigation.LoginScreen)
-                        }
+//                        3 -> {
+//                            navController.navigate(AuthenticationNavigation.LoginScreen)
+//                        }
                     }
                 }
                 Spacer(modifier = Modifier.height(60.dp))
@@ -58,7 +96,7 @@ fun OnBoardingScreen(navController: NavController) {
 private fun Logo(modifier: Modifier) {
 
     Image(
-        painter = painterResource(id = R.drawable.bird_icon_bg_remove),
+        painter = painterResource(id = R.drawable.onboarding_1),
         contentDescription = null,
         modifier = modifier
             .padding(1.dp)
@@ -70,7 +108,7 @@ private fun Logo(modifier: Modifier) {
 @Composable
 private fun ImageGroupS1(modifier: Modifier) {
     Image(
-        painter = painterResource(id = R.drawable.news1_removebg_preview),
+        painter = painterResource(id = R.drawable.onboarding_1),
         contentDescription = null,
         modifier = modifier
             .padding(1.dp)
@@ -96,7 +134,7 @@ private fun GroupCenterS2(modifier: Modifier) {
 //            modifier = Modifier.fillMaxWidth()
 //        )
         Image(
-            painter = painterResource(id = R.drawable.news2_removebg_preview),
+            painter = painterResource(id = R.drawable.onboarding_1),
             contentDescription = null,
             modifier = Modifier.align(Alignment.Center)
         )
@@ -108,7 +146,7 @@ private fun GroupCenterS3(modifier: Modifier) {
     Box(modifier = modifier) {
 //        Image(painter = painterResource(id = R.drawable.backs3), contentDescription = null)
         Image(
-            painter = painterResource(id = R.drawable.news3_removebg_preview),
+            painter = painterResource(id = R.drawable.onboarding_1),
             contentDescription = null,
             modifier = Modifier
                 .align(Alignment.Center)
@@ -128,12 +166,12 @@ private fun NonAnimatedCenterS1(modifier: Modifier) {
             modifier = modifier
         )
         Image(
-            painter = painterResource(id = R.drawable.dots11),
+            painter = painterResource(id = R.drawable.onboarding_1),
             contentDescription = null
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Welcome to Khabri!",
+            text = "Welcome to CropChain Android!",
             style = TextStyle(
                 fontSize = 24.sp,
                 lineHeight = 48.sp,
@@ -166,7 +204,7 @@ private fun NonAnimatedCenterS2(modifier: Modifier) {
             modifier = modifier
         )
         Image(
-            painter = painterResource(id = R.drawable.dots1),
+            painter = painterResource(id = R.drawable.onboarding_1),
             contentDescription = null
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -205,7 +243,7 @@ private fun NonAnimatedCenterS3(modifier: Modifier) {
             modifier = modifier
         )
         Image(
-            painter = painterResource(id = R.drawable.dots3),
+            painter = painterResource(id = R.drawable.onboarding_1),
             contentDescription = null
         )
         Spacer(modifier = Modifier.height(16.dp))
