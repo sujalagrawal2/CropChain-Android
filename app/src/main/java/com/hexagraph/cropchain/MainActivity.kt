@@ -11,6 +11,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.hexagraph.cropchain.ui.screens.authentication.AuthenticationNavigation
+import com.hexagraph.cropchain.ui.screens.authentication.login.LoginScreen
+import com.hexagraph.cropchain.ui.screens.authentication.onboarding.OnBoardingScreen
 import com.hexagraph.cropchain.ui.theme.CropChainTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,29 +25,24 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CropChainTheme {
+                val navController = rememberNavController()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+
+                    NavHost(navController = navController, startDestination =AuthenticationNavigation.OnBoarding ){
+
+                        composable<AuthenticationNavigation.OnBoarding> {
+                            OnBoardingScreen(navController)
+                        }
+
+                        composable<AuthenticationNavigation.LoginScreen> {
+                            LoginScreen(innerPadding)
+                        }
+
+                    }
+
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CropChainTheme {
-        Greeting("Android")
-    }
-}

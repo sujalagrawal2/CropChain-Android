@@ -7,4 +7,8 @@ sealed interface AuthenticationNavigation {
     @Serializable
     data object LoginScreen : AuthenticationNavigation
 
+    @Serializable
+    data object OnBoarding : AuthenticationNavigation
+
 }
+

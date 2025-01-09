@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.hexagraph.cropchain.R
 import com.hexagraph.cropchain.ui.component.AppButton
+import com.hexagraph.cropchain.ui.screens.authentication.AuthenticationNavigation
 import com.hexagraph.cropchain.ui.theme.bodyFontFamily
 import com.hexagraph.cropchain.ui.theme.displayFontFamily
 
@@ -80,9 +81,9 @@ fun OnBoardingScreen(navController: NavController) {
                         }
 
                         2 -> screen++
-//                        3 -> {
-//                            navController.navigate(AuthenticationNavigation.LoginScreen)
-//                        }
+                        3 -> {
+                            navController.navigate(AuthenticationNavigation.LoginScreen)
+                        }
                     }
                 }
                 Spacer(modifier = Modifier.height(60.dp))
