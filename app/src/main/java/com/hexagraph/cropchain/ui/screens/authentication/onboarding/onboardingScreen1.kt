@@ -1,4 +1,4 @@
-package com.hexagraph.cropchain.ui.screens.onboarding
+package com.hexagraph.cropchain.ui.screens.authentication.onboarding
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentTransitionScope
