@@ -166,7 +166,7 @@ private fun NonAnimatedCenterS1(modifier: Modifier) {
             modifier = modifier
         )
         Image(
-            painter = painterResource(id = R.drawable.onboarding_1),
+            painter = painterResource(id = R.drawable.dots1),
             contentDescription = null
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -181,7 +181,7 @@ private fun NonAnimatedCenterS1(modifier: Modifier) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Get the latest headlines and breaking news delivered straight to your device to can quickly catch up on what matters most. Never miss a beat!",
+            text = "AgriChain opens the door to a revolutionary approach to agricultural management. Our platform leverages blockchain technology to create a decentralized ecosystem for plant disease detection and solution verification. Explore our comprehensive suite of tools tailored to farmers, scientists, and administrators, empowering you to make informed decisions and drive sustainable agriculture forward.",
             style = TextStyle(
                 fontSize = 16.sp,
                 lineHeight = 21.sp,
@@ -204,7 +204,7 @@ private fun NonAnimatedCenterS2(modifier: Modifier) {
             modifier = modifier
         )
         Image(
-            painter = painterResource(id = R.drawable.onboarding_1),
+            painter = painterResource(id = R.drawable.dots2),
             contentDescription = null
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -219,7 +219,7 @@ private fun NonAnimatedCenterS2(modifier: Modifier) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Identify potentially misleading content and fake news, ensuring you always stay informed with accurate information.",
+            text = "AgriChain is at the forefront of innovation in agricultural technology, revolutionizing the way plant diseases are detected and solutions are verified. Our mission is to empower farmers, scientists, and administrators with cutting-edge blockchain solutions, ensuring transparency, efficiency, and sustainability in agriculture.",
             style = TextStyle(
                 fontSize = 16.sp,
                 lineHeight = 21.sp,
@@ -243,7 +243,7 @@ private fun NonAnimatedCenterS3(modifier: Modifier) {
             modifier = modifier
         )
         Image(
-            painter = painterResource(id = R.drawable.onboarding_1),
+            painter = painterResource(id = R.drawable.dots3),
             contentDescription = null
         )
         Spacer(modifier = Modifier.height(16.dp))
