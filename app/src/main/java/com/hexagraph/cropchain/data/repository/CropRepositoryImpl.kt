@@ -10,6 +10,6 @@ class CropRepositoryImpl @Inject constructor(
     private val cropDao: CropDao
 ): CropRepository {
     override fun getAllCrops(): Flow<List<Crop>> {
-        TODO("Not yet implemented")
+        return cropDao.getAllCrops()
     }
 }
