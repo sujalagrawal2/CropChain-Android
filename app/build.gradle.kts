@@ -78,4 +78,15 @@ dependencies {
 
     // serializable
     implementation(libs.kotlinx.serialization.json)
+
+    //Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation ("com.squareup.okhttp3:okhttp:4.12.0")
+
+//    implementation ("com.github.bumptech.glide:glide:4.16.0")
+//    implementation ("com.google.accompanist:accompanist-glide:0.30.1")
+    implementation ("io.coil-kt:coil-compose:2.7.0")
+
+
 }
