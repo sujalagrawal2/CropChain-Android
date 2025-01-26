@@ -4,10 +4,4 @@ import androidx.lifecycle.ViewModel
 
 class UploadImageViewModel: ViewModel() {
 
-
-
-
-
-
-
 }

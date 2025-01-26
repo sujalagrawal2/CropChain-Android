@@ -10,5 +10,7 @@ sealed interface AuthenticationNavigation {
     @Serializable
     data object OnBoarding : AuthenticationNavigation
 
+    @Serializable
+    data object MainApp: AuthenticationNavigation
 }
 

@@ -42,7 +42,7 @@ import com.hexagraph.cropchain.ui.theme.bodyFontFamily
 import com.hexagraph.cropchain.ui.theme.displayFontFamily
 
 @Composable
-fun OnBoardingScreen(navController: NavController) {
+fun OnBoardingScreen(navController: NavController, modifier: Modifier = Modifier) {
     var screen by remember {
         mutableIntStateOf(1)
     }
@@ -82,8 +82,8 @@ fun OnBoardingScreen(navController: NavController) {
                             screen++
                         }
 
-                        2 -> screen++
-                        3 -> {
+//                        2 -> screen++
+                        2 -> {
                             navController.navigate(AuthenticationNavigation.LoginScreen)
                         }
                     }

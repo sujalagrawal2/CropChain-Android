@@ -76,6 +76,11 @@ dependencies {
     ksp(libs.androidx.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
+    // Room
+    implementation("androidx.room:room-runtime:2.6.1")
+    ksp("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+
     // serializable
     implementation(libs.kotlinx.serialization.json)
 
@@ -86,6 +91,8 @@ dependencies {
 
 //    implementation ("com.github.bumptech.glide:glide:4.16.0")
 //    implementation ("com.google.accompanist:accompanist-glide:0.30.1")
+
+    // Coil
     implementation ("io.coil-kt:coil-compose:2.7.0")
 
 

@@ -7,13 +7,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.hexagraph.cropchain.ui.navigation.AppNavHost
 import com.hexagraph.cropchain.ui.screens.authentication.AuthenticationNavigation
 import com.hexagraph.cropchain.ui.screens.authentication.login.LoginScreen
 import com.hexagraph.cropchain.ui.screens.authentication.onboarding.OnBoardingScreen
@@ -28,18 +26,30 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
 
-                    NavHost(navController = navController, startDestination =AuthenticationNavigation.OnBoarding ){
+                    NavHost(
+                        navController = navController,
+                        startDestination = AuthenticationNavigation.OnBoarding
+                    ) {
 
                         composable<AuthenticationNavigation.OnBoarding> {
-                            OnBoardingScreen(navController)
+                            OnBoardingScreen(
+                                navController,
+                                Modifier.padding(innerPadding)
+                            )
                         }
 
                         composable<AuthenticationNavigation.LoginScreen> {
-                            LoginScreen(innerPadding)
+                            LoginScreen(
+                                navController,
+                                Modifier.padding(innerPadding)
+                            )
+                        }
+                        
+                        composable<AuthenticationNavigation.MainApp> {
+                            AppNavHost()
                         }
 
                     }
-
                 }
             }
         }
