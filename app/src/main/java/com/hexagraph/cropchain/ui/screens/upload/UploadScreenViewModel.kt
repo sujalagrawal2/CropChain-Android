@@ -28,6 +28,10 @@ class UploadScreenViewModel @Inject constructor(
     var uploadImageStatus = mutableStateOf(UploadImageStatus.IDLE)
         private set
 
+    init{
+        web3j.connectWithLocalHost()
+        uploadImageToBlockChain()
+    }
     private suspend fun insertCrop(crop: Crop) {
         cropRepository.insertCrop(crop)
     }
@@ -69,7 +73,7 @@ class UploadScreenViewModel @Inject constructor(
     }
 
     fun uploadImageToBlockChain() {
-        web3j.uploadImages(url!!)
+        web3j.uploadImages("ravennnnnn")
     }
 }
 

@@ -43,7 +43,7 @@ fun UploadedImages(modifier: Modifier = Modifier) {
 fun RecentActivity(modifier: Modifier = Modifier) {
     Text(
         "Recent Activity",
-        modifier = Modifier.padding(horizontal = 16.dp),
+        modifier = modifier.padding(horizontal = 16.dp),
         fontSize = 24.sp
     )
 }
