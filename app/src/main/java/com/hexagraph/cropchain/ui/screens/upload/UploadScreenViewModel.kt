@@ -24,13 +24,12 @@ class UploadScreenViewModel @Inject constructor(
 ) :
     ViewModel() {
     val uploadImageToBlockChainStatue = web3j.uploadImageState
-    private var url: String? = null
+    private var url: String = ""
     var uploadImageStatus = mutableStateOf(UploadImageStatus.IDLE)
         private set
 
     init{
         web3j.connectWithLocalHost()
-        uploadImageToBlockChain()
     }
     private suspend fun insertCrop(crop: Crop) {
         cropRepository.insertCrop(crop)
@@ -56,6 +55,7 @@ class UploadScreenViewModel @Inject constructor(
                     response.body()?.let { pinataResponse ->
                         Log.d("PR", pinataResponse.IpfsHash)
                         url = pinataResponse.IpfsHash
+                        Log.e("Image url",url)
                         insertCrop(Crop(url = pinataResponse.IpfsHash, status = "Pending"))
                         uploadImageStatus.value = UploadImageStatus.COMPLETED
                     }
@@ -73,7 +73,7 @@ class UploadScreenViewModel @Inject constructor(
     }
 
     fun uploadImageToBlockChain() {
-        web3j.uploadImages("ravennnnnn")
+        web3j.uploadImages(url)
     }
 }
 

@@ -120,7 +120,7 @@ class Web3J @Inject constructor() {
         }
     }
 
-    fun getImages() {
+    fun getImages(): List<String> {
         val getImagesFunction = Function(
             "debug_images",
             emptyList(), // No input parameters
@@ -153,8 +153,12 @@ class Web3J @Inject constructor() {
                 Log.d("Web3j", "Decoded Image URL[$index]: ${utf8String.value}")
             }
 
+            return finalImages.value.drop(1).map{it.value}
+
         } catch (e: Exception) {
             Log.e("Web3j", "Error in get_final_images: ${e.message}", e)
+
+            return listOf("")
         }
     }
 
