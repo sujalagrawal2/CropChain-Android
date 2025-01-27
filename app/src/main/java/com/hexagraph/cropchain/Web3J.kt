@@ -27,6 +27,7 @@ import java.math.BigInteger
 import javax.inject.Inject
 import kotlin.concurrent.thread
 
+
 class Web3J @Inject constructor() {
     val connectionState = mutableStateOf(ConnectionState.IDLE)
     val uploadImageState = mutableStateOf(UploadImageStatus.IDLE)
@@ -37,6 +38,8 @@ class Web3J @Inject constructor() {
         "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80" // Replace with your private key
 
     private val accountAddress = "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
+
+    private var imagess: List<String> = listOf()
 
     // Setup credentials and transaction manager
     private val credentials: Credentials = Credentials.create(privateKey)
@@ -85,8 +88,10 @@ class Web3J @Inject constructor() {
                 Log.e("Web3j", "Error in upload_image: ${e.message}", e)
                 uploadImageState.value = UploadImageStatus.ERROR
             }
-            getImages()
+            imagess = getImages()
+            println(imagess)
         }
+
 
     }
 
@@ -153,13 +158,14 @@ class Web3J @Inject constructor() {
                 Log.d("Web3j", "Decoded Image URL[$index]: ${utf8String.value}")
             }
 
-            return finalImages.value.drop(1).map{it.value}
+            return finalImages.value.drop(1).map { it.value }
 
         } catch (e: Exception) {
             Log.e("Web3j", "Error in get_final_images: ${e.message}", e)
 
             return listOf("")
         }
+
     }
 
     fun sendEther(
@@ -207,6 +213,11 @@ class Web3J @Inject constructor() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    fun provideImages(): List<String> {
+        println(imagess)
+        return imagess
     }
 
 }
