@@ -95,5 +95,10 @@ dependencies {
     // Coil
     implementation ("io.coil-kt:coil-compose:2.7.0")
 
+    //Web3j
+    implementation(libs.web3j.core)
+    implementation(libs.web3j.crypto)
+    implementation(libs.web3j.utils)
+
 
 }

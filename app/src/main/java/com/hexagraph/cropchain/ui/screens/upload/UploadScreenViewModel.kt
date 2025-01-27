@@ -5,11 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hexagraph.cropchain.RetrofitInstance
+import com.hexagraph.cropchain.Web3J
 import com.hexagraph.cropchain.domain.model.Crop
 import com.hexagraph.cropchain.domain.repository.CropRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -19,9 +18,14 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class UploadScreenViewModel @Inject constructor(private val cropRepository: CropRepository) :
+class UploadScreenViewModel @Inject constructor(
+    private val cropRepository: CropRepository,
+    private val web3j: Web3J
+) :
     ViewModel() {
-    var uploadImageStatus = mutableStateOf(UploadImageStatus.NOTSTARTED)
+    val uploadImageToBlockChainStatue = web3j.uploadImageState
+    private var url: String? = null
+    var uploadImageStatus = mutableStateOf(UploadImageStatus.IDLE)
         private set
 
     private suspend fun insertCrop(crop: Crop) {
@@ -29,7 +33,7 @@ class UploadScreenViewModel @Inject constructor(private val cropRepository: Crop
     }
 
     fun updateState() {
-        uploadImageStatus.value = UploadImageStatus.NOTSTARTED
+        uploadImageStatus.value = UploadImageStatus.IDLE
     }
 
     fun uploadImageToPinata(file: File) {
@@ -47,6 +51,7 @@ class UploadScreenViewModel @Inject constructor(private val cropRepository: Crop
                 if (response.isSuccessful) {
                     response.body()?.let { pinataResponse ->
                         Log.d("PR", pinataResponse.IpfsHash)
+                        url = pinataResponse.IpfsHash
                         insertCrop(Crop(url = pinataResponse.IpfsHash, status = "Pending"))
                         uploadImageStatus.value = UploadImageStatus.COMPLETED
                     }
@@ -62,10 +67,14 @@ class UploadScreenViewModel @Inject constructor(private val cropRepository: Crop
             }
         }
     }
+
+    fun uploadImageToBlockChain() {
+        web3j.uploadImages(url!!)
+    }
 }
 
 enum class UploadImageStatus {
-    NOTSTARTED,
+    IDLE,
     LOADING,
     COMPLETED,
     ERROR,

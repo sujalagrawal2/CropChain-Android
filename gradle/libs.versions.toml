@@ -14,6 +14,7 @@ navigationRuntimeKtx = "2.8.5"
 hiltAndroid = "2.51.1"
 hiltCompiler = "1.2.0"
 serialization = "1.7.3"
+web3j = "5.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -38,6 +39,9 @@ androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-com
 google-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization"}
+web3j-core = { group = "org.web3j", name = "core", version.ref = "web3j" }
+web3j-crypto = { group = "org.web3j", name = "crypto", version.ref = "web3j" }
+web3j-utils = { group = "org.web3j", name = "utils", version.ref = "web3j" }
 
 
 [plugins]

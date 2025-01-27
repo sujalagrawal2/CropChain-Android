@@ -2,7 +2,6 @@ package com.hexagraph.cropchain.ui.screens.upload
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -35,19 +34,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
-import com.hexagraph.cropchain.DisplayImageFromIPFS
-import com.hexagraph.cropchain.RetrofitInstance
-import com.hexagraph.cropchain.domain.model.Crop
-import com.hexagraph.cropchain.uploadImageToPinata
-import com.hexagraph.cropchain.uriToFile
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
 @Composable
@@ -90,22 +80,23 @@ fun UploadScreen(
                     Button(onClick = {
                         viewModel.uploadImageToPinata(file)
                     }) {
-
                         Text(text = "Upload Image")
-
                     }
                     if (uploadImageStatus == UploadImageStatus.COMPLETED) {
-                        Icon(
-                            imageVector = Icons.Filled.Check, // Built-in Material icon
-                            contentDescription = "Favorite Icon", // Accessibility description
-                            tint = Color.Green, // Icon color
-                            modifier = Modifier.size(40.dp) // Size of the icon
-                        )
+                        var iconVisible by remember { mutableStateOf(true) }
+                        if (iconVisible)
+                            Icon(
+                                imageVector = Icons.Filled.Check, // Built-in Material icon
+                                contentDescription = "Favorite Icon", // Accessibility description
+                                tint = Color.Green, // Icon color
+                                modifier = Modifier.size(40.dp)
+
+                            )
                         Toast.makeText(context, "Uploaded!", Toast.LENGTH_SHORT)
                             .show()
                         CoroutineScope(Dispatchers.IO).launch {
                             delay(3000)
-                            viewModel.updateState()
+                            iconVisible = false
                         }
                     }
                     if (uploadImageStatus == UploadImageStatus.LOADING) {
@@ -127,6 +118,43 @@ fun UploadScreen(
                         ).show()
                     }
 
+
+                }
+                val uploadImageToBlockChainStatue by viewModel.uploadImageToBlockChainStatue
+                if (uploadImageStatus == UploadImageStatus.COMPLETED) {
+                    Row {
+                        Button(onClick = { viewModel.uploadImageToBlockChain() }) {
+                            Text("Upload to BlockChain")
+                        }
+                        if (uploadImageToBlockChainStatue == UploadImageStatus.COMPLETED) {
+                            var iconVisible by remember { mutableStateOf(true) }
+                            if (iconVisible)
+                                Icon(
+                                    imageVector = Icons.Filled.Check, // Built-in Material icon
+                                    contentDescription = "Favorite Icon", // Accessibility description
+                                    tint = Color.Green, // Icon color
+                                    modifier = Modifier.size(40.dp)
+
+                                )
+                            Toast.makeText(context, "Uploaded!", Toast.LENGTH_SHORT)
+                                .show()
+                            CoroutineScope(Dispatchers.IO).launch {
+                                delay(3000)
+                                iconVisible = false
+                            }
+                        }
+                        if (uploadImageToBlockChainStatue == UploadImageStatus.LOADING) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(50.dp),
+                                color = MaterialTheme.colorScheme.primary,
+                                strokeWidth = 4.dp
+                            )
+                        }
+                        if (uploadImageToBlockChainStatue == UploadImageStatus.ERROR) {
+                            Toast.makeText(context, "Error in Uploading Image!", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
                 }
             }
 //            DisplayImageFromIPFS("QmSR2CUHtG5wffxHaxinjs1gE3V4Yf6fgKJ9guqbCzRNuJ")
