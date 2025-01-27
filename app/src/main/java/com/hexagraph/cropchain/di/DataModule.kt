@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.room.Room
 import com.hexagraph.cropchain.data.local.AppDatabase
 import com.hexagraph.cropchain.data.local.CropDao
+import com.hexagraph.cropchain.data.repository.CropRepositoryImpl
+import com.hexagraph.cropchain.domain.repository.CropRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,6 +21,11 @@ object DataModule {
     fun provideDatabase(app: Application): AppDatabase {
         return Room.databaseBuilder(app, AppDatabase::class.java, "crop.db")
             .build()
+    }
+
+    @Provides
+    fun provideCropRepoImpl(cropRepositoryImpl: CropRepositoryImpl): CropRepository {
+        return cropRepositoryImpl
     }
 
     @Provides

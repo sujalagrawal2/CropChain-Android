@@ -8,8 +8,12 @@ import javax.inject.Inject
 
 class CropRepositoryImpl @Inject constructor(
     private val cropDao: CropDao
-): CropRepository {
+) : CropRepository {
     override fun getAllCrops(): Flow<List<Crop>> {
         return cropDao.getAllCrops()
+    }
+
+    override suspend fun insertCrop(crop: Crop) {
+        return cropDao.insertCrop(crop)
     }
 }

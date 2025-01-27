@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +35,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
 @Composable
-fun UploadImage(onImageUploaded: (String) -> Unit) {
+fun UploadImage(viewModel: UploadImageViewModel = hiltViewModel()) {
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
@@ -59,7 +60,7 @@ fun UploadImage(onImageUploaded: (String) -> Unit) {
             val context = LocalContext.current
             val file = uriToFile(context, uri)
             Button(onClick = {
-                uploadImageToPinata(file, onImageUploaded)
+                uploadImageToPinata(file,viewModel)
             }) {
                 Text(text = "Upload to Pinata")
             }
@@ -77,25 +78,23 @@ fun uriToFile(context: Context, uri: Uri): File {
     return file
 }
 
-fun uploadImageToPinata(file: File, onImageUploaded: (String) -> Unit) {
+fun uploadImageToPinata(file: File,viewModel: UploadImageViewModel) {
     val requestBody = file.asRequestBody("image/*".toMediaTypeOrNull())
     val filePart = MultipartBody.Part.createFormData("file", file.name, requestBody)
 
     CoroutineScope(Dispatchers.IO).launch {
-//        val apiKey = "21b51b5d8øae5f9354d1"
         val apiSecret =
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiI0YWE1MWYzOS03MmQ4LTQ5NTAtOGY2ZS1mMjcwNGY3YzA3YjAiLCJlbWFpbCI6InN1amFncmF3YWwxNzgzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6IkZSQTEifSx7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6Ik5ZQzEifV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiIzMzRmNzU3NWUxZmRkNjkxZGNlZSIsInNjb3BlZEtleVNlY3JldCI6IjdkNjI4NTU3NWJiMDhlMTEzYTgwOTFhZDkwNjBlNjA3NTE0ODA2YjY0YTI1YTFjYzYxMjVhZmU5YmQxNTI0ZjAiLCJleHAiOjE3Njk0MTAxMzZ9.1METZTl56XW3HGGs2QN243wa_k7UgmB_CXK8U-hP6no"
         try {
             val response = RetrofitInstance.api.uploadImage(
 
-//                authorization = "Basic " + Base64.encodeToString("$apiKey:$apiSecret".toByteArray(), Base64.NO_WRAP),
                 authorization = "Bearer $apiSecret",
                 file = filePart
             )
             if (response.isSuccessful) {
                 response.body()?.let { pinataResponse ->
-//                    onImageUploaded(pinataResponse.IpfsHash)
                     Log.d("PR", pinataResponse.IpfsHash)
+                    viewModel
                 }
             } else {
                 Log.e("PinataUpload", "Failed: ${response.errorBody()?.string()}")

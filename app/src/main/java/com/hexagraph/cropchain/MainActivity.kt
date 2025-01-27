@@ -16,7 +16,10 @@ import com.hexagraph.cropchain.ui.screens.authentication.AuthenticationNavigatio
 import com.hexagraph.cropchain.ui.screens.authentication.login.LoginScreen
 import com.hexagraph.cropchain.ui.screens.authentication.onboarding.OnBoardingScreen
 import com.hexagraph.cropchain.ui.theme.CropChainTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

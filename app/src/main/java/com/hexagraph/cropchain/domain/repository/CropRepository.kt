@@ -5,4 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface CropRepository {
     fun getAllCrops(): Flow<List<Crop>>
+
+    suspend fun insertCrop(crop: Crop)
 }
