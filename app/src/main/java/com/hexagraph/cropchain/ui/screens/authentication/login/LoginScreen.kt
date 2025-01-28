@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -34,6 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.hexagraph.cropchain.services.SharedPreferencesHelper
 import com.hexagraph.cropchain.ui.component.AppTextField
 import com.hexagraph.cropchain.ui.screens.authentication.AuthenticationNavigation
 
@@ -52,6 +54,7 @@ fun LoginScreen(navController: NavController, modifier: Modifier = Modifier) {
     var password by remember {
         mutableStateOf("")
     }
+    val context = LocalContext.current
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -112,11 +115,14 @@ fun LoginScreen(navController: NavController, modifier: Modifier = Modifier) {
                 item{
                     Button(
                         onClick = {
+                            SharedPreferencesHelper.setLoggedIn(context, true)
                             navController.navigate(AuthenticationNavigation.MainApp)
                         },
                         modifier = Modifier.fillMaxWidth(0.7f)
                     ) {
-
+                        Text(
+                            text="Login"
+                        )
                     }
                 }
             }
