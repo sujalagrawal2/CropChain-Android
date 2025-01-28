@@ -1,5 +1,6 @@
 package com.hexagraph.cropchain.ui.screens.upload
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.widget.Toast
@@ -33,6 +34,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,6 +42,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun UploadScreen(
     modifier: Modifier = Modifier,
@@ -169,16 +172,4 @@ fun uriToFile(context: Context, uri: Uri): File {
         inputStream?.copyTo(output)
     }
     return file
-}
-
-
-@Composable
-fun DisplayImageFromIPFS(cid: String) {
-    val imageUrl = "https://gateway.pinata.cloud/ipfs/$cid"
-
-    Image(
-        painter = rememberAsyncImagePainter(imageUrl),
-        contentDescription = null,
-        modifier = Modifier.size(200.dp)
-    )
 }
