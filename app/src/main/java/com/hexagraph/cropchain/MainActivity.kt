@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.hexagraph.cropchain.services.SharedPreferencesHelper
 import com.hexagraph.cropchain.ui.navigation.AppNavHost
 import com.hexagraph.cropchain.ui.screens.authentication.AuthenticationNavigation
 import com.hexagraph.cropchain.ui.screens.authentication.login.LoginScreen
@@ -21,7 +22,10 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    var isUserLoggedIn = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        isUserLoggedIn = SharedPreferencesHelper.isLoggedIn(this)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
@@ -31,7 +35,9 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(
                         navController = navController,
-                        startDestination = AuthenticationNavigation.OnBoarding
+                        startDestination =
+                        if(!isUserLoggedIn)AuthenticationNavigation.OnBoarding
+                        else AuthenticationNavigation.MainApp
                     ) {
 
                         composable<AuthenticationNavigation.OnBoarding> {

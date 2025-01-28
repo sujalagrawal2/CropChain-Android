@@ -195,7 +195,7 @@ fun UploadScreenTitle(
         Image(
             painter = painterResource(R.drawable.upload_image2),
             contentDescription = "Upload Image Icon",
-            modifier = Modifier.size(32.dp)
+            modifier = Modifier.size(36.dp)
                 .padding(top = 8.dp)
 
         )
