@@ -100,5 +100,6 @@ dependencies {
     implementation(libs.web3j.crypto)
     implementation(libs.web3j.utils)
 
+    implementation("androidx.compose.material:material-icons-extended:1.7.6")
 
 }
