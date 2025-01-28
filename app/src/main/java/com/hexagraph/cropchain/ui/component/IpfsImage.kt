@@ -8,7 +8,9 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 
 @Composable
-fun DisplayImageFromIPFS(cid: String) {
+fun DisplayImageFromIPFS(
+    modifier: Modifier = Modifier,
+    cid: String) {
     val imageUrl = "https://gateway.pinata.cloud/ipfs/$cid"
 
     Log.e("ipfs",imageUrl)
@@ -16,6 +18,6 @@ fun DisplayImageFromIPFS(cid: String) {
         model = imageUrl,
         fallback = null,
         contentDescription = null,
-        modifier = Modifier.size(200.dp)
+        modifier = modifier.size(200.dp)
     )
 }

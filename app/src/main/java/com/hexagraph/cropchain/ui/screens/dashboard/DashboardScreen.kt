@@ -11,6 +11,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -36,7 +37,7 @@ fun DashboardScreen(
 
 @Composable
 fun UploadedImages(modifier: Modifier = Modifier, dashboardViewModel: DashboardViewModel) {
-    val pics = dashboardViewModel.imagesss.collectAsState().value
+    val pics by dashboardViewModel.imagesss.collectAsState()
     Text(
         "Uploaded Images",
         modifier = Modifier.padding(horizontal = 16.dp),
