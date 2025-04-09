@@ -16,4 +16,20 @@ class CropRepositoryImpl @Inject constructor(
     override suspend fun insertCrop(crop: Crop) {
         return cropDao.insertCrop(crop)
     }
+
+    override suspend fun getAllCrop(): List<Crop> {
+        return cropDao.getAllCrop()
+    }
+
+    override suspend fun getPinataUploadCrops(): List<Crop> {
+        return cropDao.getPinataUploadCrops()
+    }
+
+    override suspend fun getBlockChainUploadCrops(): List<Crop> {
+        return cropDao.getBlockChainUploadCrops()
+    }
+
+    override suspend fun updateCrop(crop: Crop) {
+        return cropDao.updateCrop(crop)
+    }
 }

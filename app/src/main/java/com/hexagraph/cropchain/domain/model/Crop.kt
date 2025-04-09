@@ -6,7 +6,12 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "crop")
 data class Crop(
     @PrimaryKey(autoGenerate = true)
-    val id: Long=0,
-    val url: String,
-    val status: String
+    val id: Long = 0,
+    var url: String? = null,
+    val reviewed: Boolean = false,
+    var uploadedToPinata: Boolean = false,
+    var uploadedToBlockChain: Boolean = false,
+    val date: String,
+    val uid: String,
+    val review: String? = null
 )

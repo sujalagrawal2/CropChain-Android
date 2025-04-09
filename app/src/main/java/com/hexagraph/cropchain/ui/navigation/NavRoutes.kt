@@ -12,4 +12,13 @@ sealed class NavRoutes {
 
     @Serializable
     data object UploadScreen : NavRoutes()
+
+    @Serializable
+    data object ScientistScreen: NavRoutes()
+
+    @Serializable
+    data class FarmerScreen(val address : String): NavRoutes()
+
+    @Serializable
+    data object VerifierScreen : NavRoutes()
 }
