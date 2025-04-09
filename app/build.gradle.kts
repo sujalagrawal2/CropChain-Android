@@ -111,4 +111,7 @@ dependencies {
 
     implementation("androidx.hilt:hilt-work:1.2.0")
 
+    //DataStore dependency
+    implementation("androidx.datastore:datastore-preferences:1.1.4")
+
 }
