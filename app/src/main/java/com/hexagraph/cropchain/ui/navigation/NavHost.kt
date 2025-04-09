@@ -6,6 +6,8 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Science
+import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -20,7 +22,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.hexagraph.cropchain.ui.screens.dashboard.DashboardScreen
 import com.hexagraph.cropchain.ui.screens.profile.ProfileScreen
+import com.hexagraph.cropchain.ui.screens.scientist.FarmerScreen
+import com.hexagraph.cropchain.ui.screens.scientist.HomeScreen
 import com.hexagraph.cropchain.ui.screens.upload.UploadScreen
+import com.hexagraph.cropchain.ui.screens.verifier.VerifierScreen
 
 @Composable
 fun AppNavHost() {
@@ -62,6 +67,25 @@ fun AppNavHost() {
                     }
                 )
 
+                NavigationBarItem(
+                    icon = { Icon(Icons.Default.Science, contentDescription = null) },
+                    label = { Text("Scientist") },
+                    selected = selectedItem.intValue == 3,
+                    onClick = {
+                        selectedItem.intValue = 3
+                        navController.navigate(NavRoutes.ScientistScreen)
+                    }
+                )
+                NavigationBarItem(
+                    icon = { Icon(Icons.Default.VerifiedUser, contentDescription = null) },
+                    label = { Text("Verifiers") },
+                    selected = selectedItem.intValue == 4,
+                    onClick = {
+                        selectedItem.intValue = 4
+                        navController.navigate(NavRoutes.VerifierScreen)
+                    }
+                )
+
             }
         },
     ) { innerPadding ->
@@ -75,6 +99,20 @@ fun AppNavHost() {
 
             composable<NavRoutes.UploadScreen> {
                 UploadScreen(Modifier.padding(innerPadding))
+            }
+            composable<NavRoutes.ScientistScreen> {
+                HomeScreen(
+                    Modifier.padding(innerPadding),
+                    onFarmerSelect = {
+                        navController.navigate(NavRoutes.FarmerScreen(it))
+                    })
+            }
+            composable<NavRoutes.FarmerScreen> { backStackEntry ->
+                val address = backStackEntry.arguments?.getString("address")
+                FarmerScreen(address!!, modifier = Modifier.padding(innerPadding))
+            }
+            composable<NavRoutes.VerifierScreen> {
+                VerifierScreen(modifier = Modifier.padding(innerPadding))
             }
         }
     }

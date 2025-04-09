@@ -11,11 +11,10 @@ import coil.compose.AsyncImage
 fun DisplayImageFromIPFS(
     modifier: Modifier = Modifier,
     cid: String) {
-    val imageUrl = "https://gateway.pinata.cloud/ipfs/$cid"
 
-    Log.e("ipfs",imageUrl)
+    Log.e("ipfs", cid)
     AsyncImage(
-        model = imageUrl,
+        model = cid,
         fallback = null,
         contentDescription = null,
         modifier = modifier.size(200.dp)

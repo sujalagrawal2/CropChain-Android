@@ -63,25 +63,35 @@ fun DashboardScreen(
 @Composable
 fun UploadedImages(modifier: Modifier = Modifier, dashboardViewModel: DashboardViewModel) {
     val pics by dashboardViewModel.imagesss.collectAsState()
-    Row(
-        modifier = modifier.padding(horizontal = 16.dp),
-    ) {
-        Button(
-            onClick = {
-                dashboardViewModel.getUploadedImages()
-                      println("Hello ${pics.size}")
-                      },
-            modifier = Modifier.padding(end = 8.dp)
+    Column {
+        Row(
+            modifier = modifier.padding(horizontal = 16.dp),
         ) {
-            Text("Pending")
+            Button(
+                onClick = {
+                    dashboardViewModel.getUploadedImages()
+//                    println("Hello ${pics.size}")
+                },
+                modifier = Modifier.padding(end = 8.dp)
+            ) {
+                Text("Pending")
+            }
+            Button(onClick = {}, modifier = Modifier.padding(end = 8.dp)) { Text("Verified") }
         }
-        Button(onClick = {}, modifier = Modifier.padding(end = 8.dp)) { Text("Verified") }
-    }
 
-    LazyColumn(modifier = Modifier.padding(16.dp)) {
-        items(pics) { pic ->
-            Log.e("smth", pic)
-            DisplayImageFromIPFS(cid = pic)
+        LazyColumn(modifier = Modifier.padding(16.dp)) {
+            items(pics) { pic ->
+                Log.e("smth", pic)
+                DisplayImageFromIPFS(
+                    cid = pic,
+                    modifier = Modifier.padding(4.dp)
+                )
+            }
+        }
+        Button(onClick = {
+            dashboardViewModel.writeReview()
+        }) {
+            Text("Review Image")
         }
     }
 }
@@ -95,7 +105,8 @@ fun RecentActivity(modifier: Modifier = Modifier) {
             Image(
                 painter = painterResource(R.drawable.recent_activity_icon),
                 contentDescription = "Upload Image Icon",
-                modifier = Modifier.size(36.dp)
+                modifier = Modifier
+                    .size(36.dp)
                     .padding(top = 8.dp)
             )
             Text(
@@ -106,7 +117,7 @@ fun RecentActivity(modifier: Modifier = Modifier) {
         }
         Spacer(modifier = Modifier.height(8.dp))
         LazyColumn {
-            items(RecentActivityType.entries.size){
+            items(RecentActivityType.entries.size) {
                 val type = RecentActivityType.entries[it]
                 RecentActivityCard(
                     timeStamp = "5th January 2025 12:00 PM",
@@ -131,7 +142,8 @@ fun UploadedImagesContentWrapper(
             Image(
                 painter = painterResource(R.drawable.imagesnew),
                 contentDescription = "Upload Image Icon",
-                modifier = Modifier.size(36.dp)
+                modifier = Modifier
+                    .size(36.dp)
                     .padding(top = 8.dp)
             )
             Text(
@@ -145,12 +157,12 @@ fun UploadedImagesContentWrapper(
 }
 
 
-
-
 @Composable
-fun DashboardScreenTitle(modifier: Modifier = Modifier,
-                         farmerName: String = "Dilip Gogoi",
-                         onClickSettings: ()->Unit){
+fun DashboardScreenTitle(
+    modifier: Modifier = Modifier,
+    farmerName: String = "Dilip Gogoi",
+    onClickSettings: () -> Unit
+) {
     Box(
         modifier = modifier.fillMaxWidth()
     ) {
@@ -164,13 +176,16 @@ fun DashboardScreenTitle(modifier: Modifier = Modifier,
             Image(
                 painter = painterResource(R.drawable.farmer_icon_with_crop),
                 contentDescription = "Dashboard Icon",
-                modifier = Modifier.size(60.dp)
+                modifier = Modifier
+                    .size(60.dp)
                     .padding(top = 8.dp)
             )
             Column(modifier = Modifier.padding(8.dp)) {
-                Text("Hello",
+                Text(
+                    "Hello",
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-                    fontSize = 16.sp)
+                    fontSize = 16.sp
+                )
                 Text(farmerName, fontSize = 20.sp)
             }
         }

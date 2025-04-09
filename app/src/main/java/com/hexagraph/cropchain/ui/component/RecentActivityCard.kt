@@ -29,48 +29,48 @@ fun RecentActivityCard(modifier: Modifier = Modifier,
                        imageUrl : String? = "QmX2nycET53VquRaCTCwsAVvrWpdRd7xLG6yVwewXB2qFQ",
                        timeStamp: String = "5th January 2025 12:00 PM",
                        type: RecentActivityType = RecentActivityType.UPLOADED){
-    Box(modifier = modifier
-        .fillMaxWidth()
-        .height(80.dp)){
-        Row(
-            modifier = Modifier.fillMaxWidth()
-                .padding(start = 16.dp, top = 8.dp, bottom = 8.dp)
-        ) {
-            if (imageUrl != null) {
-                DisplayImageFromIPFS(
-                    cid = imageUrl,
-                    modifier = Modifier.width(100.dp)
-                        .clip(shape = RoundedCornerShape(8.dp))
-                )
-            }
-            Spacer(modifier = Modifier.width(8.dp))
-            Column {
-                Text(
-                    text = type.title,
-                    fontSize = 18.sp,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = timeStamp,
-                    fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                )
-            }
-
-        }
-        Image(
-            painter = painterResource(id = type.statusImage),
-            contentDescription = null,
-            modifier = Modifier.align(Alignment.CenterEnd)
-                .size(40.dp)
-                .padding(end = 16.dp)
-        )
-        HorizontalDivider(
-            modifier = Modifier.fillMaxWidth()
-                .align(Alignment.BottomCenter)
-        )
-    }
+//    Box(modifier = modifier
+//        .fillMaxWidth()
+//        .height(80.dp)){
+//        Row(
+//            modifier = Modifier.fillMaxWidth()
+//                .padding(start = 16.dp, top = 8.dp, bottom = 8.dp)
+//        ) {
+//            if (imageUrl != null) {
+//                DisplayImageFromIPFS(
+//                    cid = imageUrl,
+//                    modifier = Modifier.width(100.dp)
+//                        .clip(shape = RoundedCornerShape(8.dp))
+//                )
+//            }
+//            Spacer(modifier = Modifier.width(8.dp))
+//            Column {
+//                Text(
+//                    text = type.title,
+//                    fontSize = 18.sp,
+//                    color = MaterialTheme.colorScheme.onSurface
+//                )
+//                Spacer(modifier = Modifier.height(4.dp))
+//                Text(
+//                    text = timeStamp,
+//                    fontSize = 12.sp,
+//                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+//                )
+//            }
+//
+//        }
+//        Image(
+//            painter = painterResource(id = type.statusImage),
+//            contentDescription = null,
+//            modifier = Modifier.align(Alignment.CenterEnd)
+//                .size(40.dp)
+//                .padding(end = 16.dp)
+//        )
+//        HorizontalDivider(
+//            modifier = Modifier.fillMaxWidth()
+//                .align(Alignment.BottomCenter)
+//        )
+//    }
 }
 
 @Preview(showBackground = true)

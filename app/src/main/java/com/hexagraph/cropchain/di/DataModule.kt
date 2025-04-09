@@ -1,14 +1,17 @@
 package com.hexagraph.cropchain.di
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Room
 import com.hexagraph.cropchain.data.local.AppDatabase
 import com.hexagraph.cropchain.data.local.CropDao
 import com.hexagraph.cropchain.data.repository.CropRepositoryImpl
 import com.hexagraph.cropchain.domain.repository.CropRepository
+import com.hexagraph.cropchain.workManager.WorkManagerRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -31,5 +34,15 @@ object DataModule {
     @Provides
     fun provideCropDao(database: AppDatabase): CropDao {
         return database.cropDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideWorkManagerRepo(
+        @ApplicationContext context: Context,
+        ): WorkManagerRepository {
+        return WorkManagerRepository(
+            context
+        )
     }
 }
