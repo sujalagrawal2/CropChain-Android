@@ -14,4 +14,7 @@ interface CropRepository {
     suspend fun getBlockChainUploadCrops(): List<Crop>
 
     suspend fun updateCrop(crop: Crop)
+
+    fun getAllUploadedCrops(): Flow<List<Crop>>
+
 }

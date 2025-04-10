@@ -32,4 +32,8 @@ class CropRepositoryImpl @Inject constructor(
     override suspend fun updateCrop(crop: Crop) {
         return cropDao.updateCrop(crop)
     }
+
+    override fun getAllUploadedCrops(): Flow<List<Crop>> {
+        return cropDao.getAllUploadedCrops()
+    }
 }

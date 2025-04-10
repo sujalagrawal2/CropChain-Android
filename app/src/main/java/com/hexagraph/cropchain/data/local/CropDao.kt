@@ -27,4 +27,7 @@ interface CropDao {
     @Update
     suspend fun updateCrop(crop: Crop)
 
+    @Query("SELECT * FROM crop WHERE uploadedToBlockChain=1 AND uploadedToPinata=1")
+    fun getAllUploadedCrops(): Flow<List<Crop>>
+
 }

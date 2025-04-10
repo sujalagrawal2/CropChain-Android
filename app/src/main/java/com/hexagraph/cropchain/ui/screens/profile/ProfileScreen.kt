@@ -58,7 +58,9 @@ fun ProfileScreen(
         "0xa85487b0F672958ceC5553e419ec7a108899c092",
         "0xc78de65857d7eC05F15De58E80AaebB0A68749bc",
         "0x11971094a6227EC40F566495acf1440D851f6C81",
-        "0xE37FF49853326588272f6eaE6108D1285e7ff32E"
+        "0xE37FF49853326588272f6eaE6108D1285e7ff32E",
+        "0xd233bf16491bA582274E10a152C5094bf4794ff1",
+        "0xdAeafbe1095B5dB8AE793402F6199B87b417DaC7"
     ) // Replace with actual saved accounts
     var selectedAccount by remember { mutableStateOf(accounts.first()) }
 
