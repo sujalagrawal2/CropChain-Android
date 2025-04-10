@@ -293,11 +293,48 @@ class Web3J @Inject constructor() {
         }
     }
 
+
+    suspend fun getVerifiedImage(): List<String> {
+        val credentials: Credentials = Credentials.create(privateKey)
+        val transactionManager = RawTransactionManager(web3, credentials)
+        val getImagesFunction = Function(
+            "display_final_android", // Smart contract function name
+            listOf(Address(accountAddress)),
+            listOf(object : TypeReference<Utf8String>() {}) // Expecting a single string result
+        )
+        return withContext(Dispatchers.IO) {
+            try {
+                val encodedReadFunction = FunctionEncoder.encode(getImagesFunction)
+                val response: EthCall = web3.ethCall(
+                    Transaction.createEthCallTransaction(
+                        credentials.address, // Caller address
+                        contractAddress,
+                        encodedReadFunction
+                    ),
+                    org.web3j.protocol.core.DefaultBlockParameterName.LATEST
+                ).send()
+
+                Log.d("Web3j", "Raw response data: ${response.result}")
+
+                val decodedResponse = FunctionReturnDecoder.decode(
+                    response.result,
+                    getImagesFunction.outputParameters
+                )
+
+                val urlsString = decodedResponse[0].value as String
+                urlsString.split("$").filter { it.isNotBlank() } // Split and remove empty strings
+
+            } catch (e: Exception) {
+                Log.e("Web3j", "Error in getOpenImages: ${e.message}", e)
+                emptyList() // Return an empty list on failure
+            }
+        }
+    }
     suspend fun verifyImage(url: String, like: Boolean): Result<String> {
         val credentials: Credentials = Credentials.create(privateKey)
         val transactionManager = RawTransactionManager(web3, credentials)
         val function = Function(
-            "review_image",
+            "verify_image",
             listOf(
                 Utf8String(url),
                 Bool(like)

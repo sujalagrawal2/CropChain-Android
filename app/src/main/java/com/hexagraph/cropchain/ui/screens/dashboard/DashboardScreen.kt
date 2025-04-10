@@ -62,7 +62,8 @@ fun DashboardScreen(
 
 @Composable
 fun UploadedImages(modifier: Modifier = Modifier, dashboardViewModel: DashboardViewModel) {
-    val pics by dashboardViewModel.imagesss.collectAsState()
+    val pics by dashboardViewModel.uiState
+    val verifiedImages = pics.verifiedImage
     Column {
         Row(
             modifier = modifier.padding(horizontal = 16.dp),
@@ -70,17 +71,21 @@ fun UploadedImages(modifier: Modifier = Modifier, dashboardViewModel: DashboardV
             Button(
                 onClick = {
                     dashboardViewModel.getUploadedImages()
-//                    println("Hello ${pics.size}")
                 },
                 modifier = Modifier.padding(end = 8.dp)
             ) {
                 Text("Pending")
             }
-            Button(onClick = {}, modifier = Modifier.padding(end = 8.dp)) { Text("Verified") }
+            Button(
+                onClick = {
+
+            }, modifier = Modifier.padding(end = 8.dp)) {
+                Text("Verified")
+            }
         }
 
         LazyColumn(modifier = Modifier.padding(16.dp)) {
-            items(pics) { pic ->
+            items(pics.verifiedImage) { pic ->
                 Log.e("smth", pic)
                 DisplayImageFromIPFS(
                     cid = pic,

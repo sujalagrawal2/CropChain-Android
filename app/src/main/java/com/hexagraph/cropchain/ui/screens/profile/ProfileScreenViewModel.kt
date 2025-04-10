@@ -8,10 +8,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileScreenViewModel @Inject constructor(private val web3j: Web3J) : ViewModel() {
-//    val connectionState = web3j.connectionState
-//    fun connectToBlockChain() {
-//        web3j.connectWithLocalHost()
-//    }
 
     fun changeWallet(accountAddress: String){
         var privateKey =""
@@ -23,9 +19,12 @@ class ProfileScreenViewModel @Inject constructor(private val web3j: Web3J) : Vie
             privateKey = "58c78e2592816d5902d604768b8bf0a91ab3b5f995963f959807e23991076560"
         if(accountAddress=="0xE37FF49853326588272f6eaE6108D1285e7ff32E")
             privateKey = "04ebc72377c845dfffed4b3720f1d8f9e119c3cabb8671bfe160edd3f29eeec9"
+        if(accountAddress=="0xd233bf16491bA582274E10a152C5094bf4794ff1")
+            privateKey="1f3ba49634a704bdb4f69cb7db8df11cb0697818def86e5539fce7f412aa9177"
+        if(accountAddress=="0xdAeafbe1095B5dB8AE793402F6199B87b417DaC7")
+            privateKey="a878298a84089aa972d87e31583cf72bec86b6151454ee06ad8c97767b9b2320"
         web3j.accountAddress  = accountAddress
         web3j.privateKey = privateKey
     }
-
 
 }

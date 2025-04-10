@@ -23,37 +23,32 @@ fun VerifierScreen(modifier: Modifier, viewModel: VerifierScreenViewModel = hilt
     LazyColumn(modifier = modifier) {
         item {
             uiState.images.forEachIndexed { index, image ->
-                Log.d("Verifier Screen", image)
-                val result = uiState.imageResult
-                if (image[0] == 'h')
+                if (image.images[0] == 'h')
                     LazyRow {
                         item {
-                            DisplayImageFromIPFS(cid = image)
+                            DisplayImageFromIPFS(cid = image.images)
                             Column {
-                                if (index < result.size)
-                                    Text("AI Solution : ${result[index].aiSolution}")
+                                Text("AI Solution : ${image.aiSolution}")
                                 Spacer(modifier = Modifier.height(4.dp))
-                                if (index < result.size)
-                                    Text("Scientist Solution : ${result[index].scientistSolution}")
+
+                                Text("Scientist Solution : ${image.scientistSolution}")
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Button(onClick = {
-                                    viewModel.verifyImage(image, true)
+                                    viewModel.verifyImage(image.images, true)
                                 }) {
                                     Text("Like")
                                 }
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Button(onClick = {
-                                    viewModel.verifyImage(image, false)
+                                    viewModel.verifyImage(image.images, false)
                                 }) {
                                     Text("DisLike")
                                 }
                             }
-                            if (index < result.size)
-                                Text("Scientist Solution : ${result[index].verificationCount}")
+                            Text("Verification Count : ${image.verificationCount}")
                         }
                     }
             }
         }
     }
-
 }

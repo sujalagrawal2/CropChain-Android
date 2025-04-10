@@ -13,14 +13,14 @@ import java.math.BigInteger
 import javax.inject.Inject
 
 data class VerifierScreenUIState(
-    val images: List<String> = emptyList(),
-    val imageResult: List<ImageResult> = emptyList()
+    val images: List<ImageResult> = emptyList(),
 )
 
 data class ImageResult(
     val aiSolution: String = "",
     val verificationCount: String = "0",
-    val scientistSolution: String = ""
+    val scientistSolution: String = "",
+    val images: String = " "
 )
 
 @HiltViewModel
@@ -35,7 +35,6 @@ class VerifierScreenViewModel @Inject constructor(private val web3j: Web3J) : Vi
     private fun getAllImages() {
         viewModelScope.launch {
             val images = web3j.getFinalImages()
-            _uiState.value = _uiState.value.copy(images = images)
             val imageResultList: MutableList<ImageResult> = emptyList<ImageResult>().toMutableList()
             images.forEach { url ->
                 val result = web3j.getCloseListDetails(url)
@@ -47,7 +46,8 @@ class VerifierScreenViewModel @Inject constructor(private val web3j: Web3J) : Vi
                     ans = ImageResult(
                         scientistSolution = scientistSolution,
                         aiSolution = aiSol,
-                        verificationCount = verificationCount.toString()
+                        verificationCount = verificationCount.toString(),
+                        images = url
                     )
                 }.onFailure {
                     Log.e("Web3j", "Failed: ${it.message}")
@@ -55,6 +55,7 @@ class VerifierScreenViewModel @Inject constructor(private val web3j: Web3J) : Vi
                 println(ans)
                 imageResultList.add(ans)
             }
+            _uiState.value = _uiState.value.copy(images = imageResultList)
         }
     }
 
