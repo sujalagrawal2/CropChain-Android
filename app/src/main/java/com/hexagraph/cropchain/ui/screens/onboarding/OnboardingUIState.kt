@@ -7,6 +7,7 @@ data class OnboardingUIState(
     val currentScreenIndex: Int = 0,
     val selectedLanguageQuery: SupportedLanguages = SupportedLanguages.ENGLISH,
     val aadhaarQuery: String = "",
+    val nameQuery: String = "",
     val isUserFarmerQuery: Boolean = true,
     val password: String = "",
 
@@ -21,7 +22,7 @@ data class OnboardingUIState(
         get() {
             if(password.isEmpty()) return true
             if(password.length < 6){
-                return true
+                return false
             }
             return false
         }
