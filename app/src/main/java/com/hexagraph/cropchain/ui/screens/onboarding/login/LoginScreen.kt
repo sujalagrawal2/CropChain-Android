@@ -55,7 +55,7 @@ fun LoginScreen(
             outerText = "Name",
             placeholderText = "Enter your name",
             icon = Icons.Default.Person,
-            isError = !uiState.isAadhaarValid,
+            isError = false,
             errorText = "Invalid name",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next),
             keyboardActions = KeyboardActions(onNext = {
