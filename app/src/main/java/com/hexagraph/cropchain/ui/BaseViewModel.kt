@@ -8,21 +8,21 @@ import kotlinx.coroutines.launch
 
 abstract class BaseViewModel<UiState>: ViewModel() {
 
-    val errorFlow = MutableStateFlow<String?>(null)
-    val successMsgFlow = MutableStateFlow<String?>(null)
+    val errorFlow = MutableStateFlow<Int?>(null)
+    val successMsgFlow = MutableStateFlow<Int?>(null)
     /** Visible Ui-State for UI to consume.*/
     abstract val uiState: StateFlow<UiState>
 
     /** Create Ui state's flow in this function using combine and assign to [uiState].*/
     protected abstract fun createUiStateFlow(): StateFlow<UiState>
 
-    protected fun emitError(error: String?) {
+    protected fun emitError(error: Int?) {
         viewModelScope.launch {
             errorFlow.emit(error)
         }
     }
 
-    protected fun emitMsg(messageId : String?){
+    protected fun emitMsg(messageId : Int?){
         viewModelScope.launch {
             successMsgFlow.emit(messageId)
         }

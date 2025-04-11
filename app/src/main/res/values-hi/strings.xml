@@ -29,6 +29,11 @@
     <string name="button_text_onboarding">अगला</string>
     <string name="verification_request_sent">Verification Request Sent</string>
     <string name="verification_subtitile">Please check your email for verification link.</string>
+    <string name="aadhaar_id_cannot_be_empty">Aadhaar ID cannot be empty</string>
+    <string name="password_cannot_be_empty">Password cannot be empty</string>
+    <string name="name_cannot_be_empty">Name cannot be empty</string>
+    <string name="aadhaar_id_must_be_12_digits">Aadhaar ID must be 12 digits</string>
+    <string name="aadhaar_id_must_be_numeric">Aadhaar ID must be numeric</string>
 
 
     <!-- Certificate arrays left unchanged -->

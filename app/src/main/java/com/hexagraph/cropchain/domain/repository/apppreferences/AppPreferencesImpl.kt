@@ -21,7 +21,8 @@ import kotlin.getValue
 class AppPreferencesImpl(private val context: Context): AppPreferences {
     private val datastore = DataStoreProvider.getInstance(context)
     private object PreferenceKeys {
-        val AADHAR_ID = stringPreferencesKey("username")
+        val AADHAR_ID = stringPreferencesKey("aadhar_id")
+        val USERNAME = stringPreferencesKey("username")
         val APP_LANGUAGE = intPreferencesKey("language")
         val IS_USER_LOGGED_IN = booleanPreferencesKey("is_user_logged_in")
         val IS_CURRENT_USER_FARMER = booleanPreferencesKey("is_current_user_farmer")
@@ -102,6 +103,21 @@ class AppPreferencesImpl(private val context: Context): AppPreferences {
             override suspend fun set(value: Boolean) {
                 datastore.edit { prefs ->
                     prefs[PreferenceKeys.ARE_ALL_PERMISSIONS_GRANTED] = value
+                }
+            }
+        }
+
+    override val username: DataStorePreference<String>
+        get() = object : DataStorePreference<String> {
+            override fun getFlow(): Flow<String> {
+                return datastore.data.map { prefs ->
+                    prefs[PreferenceKeys.USERNAME] ?: ""
+                }
+            }
+
+            override suspend fun set(value: String) {
+                datastore.edit { prefs ->
+                    prefs[PreferenceKeys.USERNAME] = value
                 }
             }
         }

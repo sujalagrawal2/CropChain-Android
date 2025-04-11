@@ -6,6 +6,7 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewModelScope
 import com.hexagraph.cropchain.MainActivity
+import com.hexagraph.cropchain.R
 import com.hexagraph.cropchain.domain.model.SupportedLanguages
 import com.hexagraph.cropchain.domain.repository.apppreferences.AppPreferences
 import com.hexagraph.cropchain.ui.BaseViewModel
@@ -96,21 +97,25 @@ class OnboardingViewModel @Inject constructor(
         }
     }
 
-    suspend fun checkAndSaveAadhaarAndPassword(aadhaar: String, password: String): Boolean{
+    suspend fun checkAndSaveAadhaarAndPassword(aadhaar: String, password: String, name: String): Boolean{
         if(aadhaar.isEmpty()){
-            emitError("Aadhaar ID cannot be empty")
+            emitError(R.string.aadhaar_id_cannot_be_empty)
             return false
         }
         if(password.isEmpty()){
-            emitError("Password cannot be empty")
+            emitError(R.string.password_cannot_be_empty)
+            return false
+        }
+        if(name.isEmpty()){
+            emitError(R.string.name_cannot_be_empty)
             return false
         }
         if(aadhaar.length != 12){
-            emitError("Aadhaar ID must be 12 digits")
+            emitError(R.string.aadhaar_id_must_be_12_digits)
             return false
         }
         if(!aadhaar.all { it.isDigit() }){
-            emitError("Aadhaar ID must be numeric")
+            emitError(R.string.aadhaar_id_must_be_numeric)
             return false
         }
         appPreferences.aadharID.set(aadhaar)
@@ -149,7 +154,7 @@ class OnboardingViewModel @Inject constructor(
                 OnboardingScreens.AADHAR_INPUT -> {
                     val aadhaar = uiState.value.aadhaarQuery
                     val password = uiState.value.password
-                    if (checkAndSaveAadhaarAndPassword(aadhaar, password)) {
+                    if (checkAndSaveAadhaarAndPassword(aadhaar, password, uiState.value.nameQuery)) {
                         moveForwardWithinOnboarding()
                     }
                 }
@@ -208,13 +213,15 @@ class OnboardingViewModel @Inject constructor(
 
     fun onLoginQueryChange(
         aadhaar: String? = null,
-        password: String? = null
+        password: String? = null,
+        name: String? = null
     ) {
         viewModelScope.launch {
             onboardingUiStateFlow.emit(
                 uiState.value.copy(
                     aadhaarQuery = aadhaar ?: uiState.value.aadhaarQuery,
-                    password = password ?: uiState.value.password
+                    password = password ?: uiState.value.password,
+                    nameQuery = name?: uiState.value.nameQuery
                 )
             )
         }
