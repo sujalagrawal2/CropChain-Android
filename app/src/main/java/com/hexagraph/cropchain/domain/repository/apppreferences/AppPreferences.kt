@@ -7,4 +7,5 @@ interface AppPreferences {
     val isUserLoggedIn: DataStorePreference<Boolean>
     val isCurrentUserFarmer: DataStorePreference<Boolean>
     val appLanguage: DataStorePreference<SupportedLanguages>
+    val areAllPermissionsGranted: DataStorePreference<Boolean>
 }

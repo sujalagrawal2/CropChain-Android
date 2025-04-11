@@ -1,6 +1,8 @@
 package com.hexagraph.cropchain.ui.theme
 
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Brush
 
 val primaryLight = Color(0xFF006874)
 val onPrimaryLight = Color(0xFFFFFFFF)
@@ -217,4 +219,11 @@ val surfaceContainerLowDarkHighContrast = Color(0xFF171D1E)
 val surfaceContainerDarkHighContrast = Color(0xFF1B2122)
 val surfaceContainerHighDarkHighContrast = Color(0xFF252B2C)
 val surfaceContainerHighestDarkHighContrast = Color(0xFF303637)
+
+
+val OceanGradient = Brush.linearGradient(
+    colors = listOf(Color(0xFF2C3E50), Color(0xFF67CFE0)),
+    start = Offset(0f, 0f),
+    end = Offset(1000f, 1000f) // You can adjust this for direction
+)
 
