@@ -1,34 +1,37 @@
 <resources>
-    <string name="app_name">CropChain</string>
-    <string name="intro_screen_1_heading">Welcome to CropChain!</string>
-    <string name="intro_screen_1_body">AgriChain opens the door to a revolutionary approach to agricultural management. Our platform leverages blockchain technology to create a decentralized ecosystem for plant disease detection and solution verification.</string>
-    <string name="intro_screen_2_title">AgriTech for Everyone</string>
-    <string name="intro_screen_2_body">Explore our comprehensive suite of tools tailored to farmers, scientists, and administrators, empowering you to make informed decisions and drive sustainable agriculture forward.</string>
-    <string name="intro_screen_3_title">Elevate Your Writing with AI</string>
-    <string name="intro_screen_3_body">Our AI-assisted writing feature helps you craft compelling stories with ease. From generating ideas to refining your drafts, you can produce high-quality content faster than ever!</string>
-    <string name="choose_your_language_screen_title">Choose your language</string>
-    <string name="choose_your_language_screen_subtitle">Make communication easier for you</string>
-    <string name="role_selection_title">Who are you?</string>
-    <string name="role_selection_subtitle">Choose one to continue</string>
-    <string name="button_text_continue">Continue</string>
-    <string name="login_screen_title">Let\'s get started</string>
-    <string name="login_screen_subtitle">Login to get your crop disease diagnosed</string>
-    <string name="aahaar_textfield_outer_text">Login with Aadhaar</string>
-    <string name="aadhar_textfield_placeholder">Enter your Aadhaar Number</string>
-    <string name="aadhar_text_field_error">Invalid Aadhar Number</string>
-    <string name="password_text_field_outer_text">Password</string>
-    <string name="password_text_field_placeholder">Enter your password</string>
-    <string name="password_text_field_error">Invalid Password</string>
-    <string name="farmer">Farmer</string>
-    <string name="scientist">Scientist</string>
-    <string name="button_text_go_to_settings">Go to Settings</string>
-    <string name="button_text_grant">Grant</string>
-    <string name="permission_title_notification">Notification Permission Required</string>
-    <string name="permanently_declined_rationale">" Seems you have permanently declined this permission. Give access to this permission in settings"</string>
-    <string name="notification_permission_rationale_text">Give access to this permission for Notifications.</string>
-    <string name="button_text_onboarding">Next</string>
+    <string name="app_name">क्रॉपचेन</string>
+    <string name="intro_screen_1_heading">क्रॉपचेन में आपका स्वागत है!</string>
+    <string name="intro_screen_1_body">क्रॉपचेन खेती संभालने का एक नया तरीका है। इसमें ब्लॉकचेन तकनीक से बीमारियों की पहचान और समाधान की जांच की जाती है।</string>
+    <string name="intro_screen_2_title">हर किसान के लिए तकनीक</string>
+    <string name="intro_screen_2_body">हमारे पास किसानों, वैज्ञानिकों और अधिकारियों के लिए आसान टूल्स हैं, जिससे आप सही फैसला ले सकें और खेती को बेहतर बना सकें।</string>
+    <string name="intro_screen_3_title">लिखाई में एआई की मदद</string>
+    <string name="intro_screen_3_body">हमारा एआई टूल आपकी कहानियाँ और जानकारी आसान तरीके से लिखने में मदद करता है।</string>
+    <string name="choose_your_language_screen_title">भाषा चुनें</string>
+    <string name="choose_your_language_screen_subtitle">बात करना आसान बनाएं</string>
+    <string name="role_selection_title">आप कौन हैं?</string>
+    <string name="role_selection_subtitle">जारी रखने के लिए एक चुनें</string>
+    <string name="button_text_continue">आगे बढ़ें</string>
+    <string name="login_screen_title">शुरुआत करें</string>
+    <string name="login_screen_subtitle">फसल की बीमारी जानने के लिए लॉगिन करें</string>
+    <string name="aahaar_textfield_outer_text">आधार से लॉगिन करें</string>
+    <string name="aadhar_textfield_placeholder">अपना आधार नंबर डालें</string>
+    <string name="aadhar_text_field_error">गलत आधार नंबर</string>
+    <string name="password_text_field_outer_text">पासवर्ड</string>
+    <string name="password_text_field_placeholder">अपना पासवर्ड डालें</string>
+    <string name="password_text_field_error">गलत पासवर्ड</string>
+    <string name="farmer">किसान</string>
+    <string name="scientist">वैज्ञानिक</string>
+    <string name="button_text_go_to_settings">सेटिंग्स पर जाएं</string>
+    <string name="button_text_grant">अनुमति दें</string>
+    <string name="permission_title_notification">नोटिफिकेशन की अनुमति चाहिए</string>
+    <string name="permanently_declined_rationale">लगता है आपने ये अनुमति हमेशा के लिए बंद कर दी है। कृपया सेटिंग्स में जाकर अनुमति दें।</string>
+    <string name="notification_permission_rationale_text">नोटिफिकेशन पाने के लिए यह अनुमति दें।</string>
+    <string name="button_text_onboarding">अगला</string>
     <string name="verification_request_sent">Verification Request Sent</string>
     <string name="verification_subtitile">Please check your email for verification link.</string>
+
+
+    <!-- Certificate arrays left unchanged -->
     <array name="com_google_android_gms_fonts_certs">
         <item>@array/com_google_android_gms_fonts_certs_dev</item>
         <item>@array/com_google_android_gms_fonts_certs_prod</item>

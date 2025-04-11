@@ -78,7 +78,6 @@ fun UploadedImages(modifier: Modifier = Modifier, dashboardViewModel: DashboardV
             }
             Button(onClick = {}, modifier = Modifier.padding(end = 8.dp)) { Text("Verified") }
         }
-
         LazyColumn(modifier = Modifier.padding(16.dp)) {
             items(pics) { pic ->
                 Log.e("smth", pic)

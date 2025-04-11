@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
@@ -41,7 +42,9 @@ fun AppTextField(
     isError: Boolean = false,
     errorText: String = "Invalid Email Format",
     isPassword: Boolean = false,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    maxLines: Int = 1
 ) {
 
     Box(
@@ -63,17 +66,20 @@ fun AppTextField(
             Spacer(modifier = Modifier.height(8.dp))
             LoginTextField(
                 modifier =
-                Modifier.fillMaxWidth(),
+                    Modifier.fillMaxWidth(),
                 placeholderText = placeholderText,
                 value = value,
                 icon = icon,
                 isError = isError,
                 errorText = errorText,
                 keyboardOptions = keyboardOptions,
-                isPassword = isPassword
-            ) {
-                onValueChange(it)
-            }
+                isPassword = isPassword,
+                maxLines = maxLines,
+                keyboardActions = keyboardActions,
+                onValueChange = {
+                    onValueChange(it)
+                }
+            )
         }
     }
 }
@@ -83,32 +89,38 @@ fun LoginTextField(
     modifier: Modifier, placeholderText: String,
     icon: ImageVector? = Icons.Default.Email,
     value: String, isError: Boolean,
-    isPassword: Boolean, keyboardOptions: KeyboardOptions,
+    isPassword: Boolean,
+    keyboardOptions: KeyboardOptions,
+    keyboardActions: KeyboardActions,
     errorText: String, onValueChange: (String) -> Unit,
+    maxLines: Int,
 ) {
     var showPassword by remember {
         mutableStateOf(false)
     }
-    OutlinedTextField(value = value, onValueChange = {
-        onValueChange(it)
-    }, placeholder = {
-        Text(
-            text = placeholderText,
-            // content 16
-            style = TextStyle(
-                fontSize = 16.sp,
-                lineHeight = 21.sp,
-                fontWeight = FontWeight(400),
+    OutlinedTextField(
+        value = value, onValueChange = {
+            onValueChange(it)
+        },
+        maxLines = maxLines,
+        placeholder = {
+            Text(
+                text = placeholderText,
+                // content 16
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    lineHeight = 21.sp,
+                    fontWeight = FontWeight(400),
 //                color = Color(0xFFADADAD),
+                )
             )
-        )
-    },
+        },
         keyboardOptions = keyboardOptions,
         visualTransformation = if (isPassword && !showPassword) PasswordVisualTransformation() else VisualTransformation.None,
         isError = isError,
         supportingText = { if (isError) Text(text = errorText) },
         leadingIcon = {
-            if(icon != null)
+            if (icon != null)
                 Icon(
                     imageVector = icon, contentDescription = null,
 //                tint = Color(0xfffb8a7a),
@@ -123,23 +135,14 @@ fun LoginTextField(
                 IconButton(onClick = { showPassword = !showPassword }) {
                     Icon(
                         imageVector =
-                        if (showPassword) Icons.Default.VisibilityOff
-                        else
-                            Icons.Default.Visibility,
+                            if (showPassword) Icons.Default.VisibilityOff
+                            else
+                                Icons.Default.Visibility,
                         contentDescription = null
                     )
                 }
         },
-//        colors = TextFieldDefaults.colors(
-//            focusedContainerColor = Color(0x99AED5FF),
-//            unfocusedContainerColor = Color(0x99AED5FF),
-//            errorContainerColor = Color(0x99AED5FF),
-//            disabledContainerColor = Color(0x99AED5FF),
-//            unfocusedIndicatorColor = Color(0x99939FAC),
-//            focusedIndicatorColor = colorResource(id = R.color.colorPrimary),
-//            errorIndicatorColor = Color(194, 27, 33, 128)
-//        ),
-//        shape = RoundedCornerShape(10.dp),
-        modifier = modifier
+        modifier = modifier,
+        keyboardActions = keyboardActions
     )
 }
