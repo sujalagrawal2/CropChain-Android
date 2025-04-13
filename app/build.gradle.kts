@@ -71,6 +71,9 @@ dependencies {
     // Compose navigation:
     implementation(libs.androidx.navigation.compose)
     implementation(kotlin("script-runtime"))
+    implementation("androidx.navigation:navigation-compose:2.8.9")
+
+
 
     // Hilt
     implementation(libs.hilt.android)

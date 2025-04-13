@@ -3,6 +3,7 @@ package com.hexagraph.cropchain.di
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
+import com.hexagraph.cropchain.MetaMask
 import com.hexagraph.cropchain.data.local.AppDatabase
 import com.hexagraph.cropchain.data.local.CropDao
 import com.hexagraph.cropchain.data.repository.CropRepositoryImpl
@@ -40,9 +41,15 @@ object DataModule {
     @Singleton
     fun provideWorkManagerRepo(
         @ApplicationContext context: Context,
-        ): WorkManagerRepository {
+    ): WorkManagerRepository {
         return WorkManagerRepository(
             context
         )
+    }
+
+    @Provides
+    @Singleton
+    fun provideMetaMask(@ApplicationContext context: Context): MetaMask {
+        return MetaMask(context)
     }
 }

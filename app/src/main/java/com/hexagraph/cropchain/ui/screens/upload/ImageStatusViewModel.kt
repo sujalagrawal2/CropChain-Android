@@ -30,9 +30,9 @@ class ImageStatusViewModel @Inject constructor(
 
      fun getAllCrops() {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(
-                cropList = cropRepository.getAllCrop(),
-            )
+//            _uiState.value = _uiState.value.copy(
+//                cropList = cropRepository.getAllCrop(),
+//            )
             status.value = ScreenStatus.COMPLETED
         }
     }

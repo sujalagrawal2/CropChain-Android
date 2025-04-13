@@ -16,11 +16,14 @@ class WorkManagerRepository @Inject constructor(@ApplicationContext context: Con
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
-        val workManager1 = OneTimeWorkRequestBuilder<WorkManagerUploadPhotoToPinata>()
-        val workManager2 = OneTimeWorkRequestBuilder<WorkManagerUploadPhotoToBlockChain>()
-        val continuation =
-            workManager.beginWith(workManager1.setConstraints(constraints).build())
-                .then(workManager2.setConstraints(constraints).build())
-        continuation.enqueue()
+        val workManager1 = OneTimeWorkRequestBuilder<WorkManagerUploadPhotoToPinata>() .setConstraints(constraints)
+            .build()
+
+        workManager.enqueue(workManager1)
+//        val workManager2 = OneTimeWorkRequestBuilder<WorkManagerUploadPhotoToBlockChain>()
+//        val continuation =
+//            workManager.beginWith(workManager1.setConstraints(constraints).build())
+//
+//        continuation.enqueue()
     }
 }

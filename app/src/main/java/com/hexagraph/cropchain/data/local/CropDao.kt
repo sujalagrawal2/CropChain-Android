@@ -16,12 +16,12 @@ interface CropDao {
     suspend fun insertCrop(crop: Crop)
 
     @Query("SELECT * FROM crop ORDER BY date DESC")
-    suspend fun getAllCrop(): List<Crop>
+    fun getAllCrop(): Flow<List<Crop>>
 
-    @Query("SELECT * FROM crop WHERE uploadedToPinata =  0")
+    @Query("SELECT * FROM crop WHERE uploadedToPinata =  0 OR uploadedToPinata = -1")
     suspend fun getPinataUploadCrops(): List<Crop>
 
-    @Query("SELECT * FROM crop WHERE uploadedToBlockChain =  0")
+    @Query("SELECT * FROM crop WHERE uploadedToBlockChain =  0 AND uploadedToPinata = 1")
     suspend fun getBlockChainUploadCrops(): List<Crop>
 
     @Update

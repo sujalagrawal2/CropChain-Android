@@ -18,40 +18,102 @@ class WorkManagerUploadPhotoToPinata @AssistedInject constructor(
     @Assisted param: WorkerParameters,
     private val cropRepositoryImpl: CropRepository
 ) : CoroutineWorker(ctx, param) {
+    //    override suspend fun doWork(): Result {
+//        return try {
+//            setForeground(getForegroundInfo())
+//            val cropList = cropRepositoryImpl.getPinataUploadCrops()
+//            val total = cropList.size
+//            var cnt = 0
+//            var failure: Boolean = false
+//            makeStatusNotification("0 / $total", applicationContext, cnt, total)
+//            cropList.forEach { crop ->
+//                val result = uploadImageToPinata(uriToFile(applicationContext, crop.uid))
+//                result.onSuccess { url ->
+//                    crop.uploadedToPinata = true
+//                    crop.url ="https://gateway.pinata.cloud/ipfs/"+url
+//                    cropRepositoryImpl.updateCrop(crop)
+//                    cnt++
+//                    makeStatusNotification("$cnt / $total", applicationContext, cnt, total)
+//                }
+//                result.onFailure {
+//                    failure = true
+//                }
+//            }
+//            if (!failure)
+//                Result.success()
+//            else Result.retry()
+//        } catch (e: Exception) {
+//            Log.e("Worker", "Error uploading", e)
+//            Result.retry()
+//        }
+//    }
+//
+//    override suspend fun getForegroundInfo(): ForegroundInfo {
+//        return ForegroundInfo(
+//            2,
+//            createForegroundNotification(applicationContext, "Uploading..", 0, 0)
+//        )
+//    }
     override suspend fun doWork(): Result {
         return try {
-            setForeground(getForegroundInfo())
-            val cropList = cropRepositoryImpl.getPinataUploadCrops()
-            val total = cropList.size
-            var cnt = 0
-            var failure: Boolean = false
-            makeStatusNotification("0 / $total", applicationContext, cnt, total)
-            cropList.forEach { crop ->
+            val crops = cropRepositoryImpl.getPinataUploadCrops()
+            if (crops.isEmpty()) return Result.success()
+
+            setForeground(createProgressForeground("Uploading to Pinata", 0, crops.size))
+
+            var failures = 0
+            crops.forEachIndexed { index, crop ->
+                updateNotification(index + 1, crops.size)
+                if(crop.uploadedToPinata==0) {
+                    crop.uploadedToPinata = -1
+                    cropRepositoryImpl.updateCrop(crop)
+                }
+//            when (val uploadResult = pinata.uploadToPinata(crop.url.orEmpty())) {
+//                is UploadResult.Success -> {
+//                    crop.uploadedToPinata = true
+//                    cropRepository.markUploaded(crop)
+//                }
+//                is UploadResult.Failure -> {
+//                    failures++
+//                    Log.e("PinataWorker", "Failed to upload: ${uploadResult.error}")
+//                }
+//            }
                 val result = uploadImageToPinata(uriToFile(applicationContext, crop.uid))
                 result.onSuccess { url ->
-                    crop.uploadedToPinata = true
-                    crop.url ="https://gateway.pinata.cloud/ipfs/"+url
+                    crop.uploadedToPinata = 1
+                    crop.url = url
                     cropRepositoryImpl.updateCrop(crop)
-                    cnt++
-                    makeStatusNotification("$cnt / $total", applicationContext, cnt, total)
                 }
                 result.onFailure {
-                    failure = true
+                    crop.uploadedToPinata = 0
+                    cropRepositoryImpl.updateCrop(crop)
+                    failures++
                 }
             }
-            if (!failure)
-                Result.success()
-            else Result.retry()
+
+            if (failures > 0) Result.retry() else Result.success()
+
         } catch (e: Exception) {
-            Log.e("Worker", "Error uploading", e)
+            Log.e("PinataWorker", "Unexpected error", e)
             Result.retry()
         }
     }
 
-    override suspend fun getForegroundInfo(): ForegroundInfo {
-        return ForegroundInfo(
-            2,
-            createForegroundNotification(applicationContext, "Uploading..", 0, 0)
+    private suspend fun updateNotification(current: Int, total: Int) {
+        val info = ForegroundInfo(
+            1,
+            createForegroundNotification2(
+                applicationContext,
+                "Uploading $current of $total",
+                current,
+                total
+            )
         )
+        setForeground(info)
+    }
+
+    private fun createProgressForeground(title: String, progress: Int, total: Int): ForegroundInfo {
+        val notification = createForegroundNotification2(applicationContext, title, progress, total)
+        return ForegroundInfo(1, notification)
     }
 }

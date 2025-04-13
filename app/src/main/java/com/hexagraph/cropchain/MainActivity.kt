@@ -37,6 +37,7 @@ import javax.inject.Inject
 import androidx.compose.runtime.getValue
 import androidx.core.content.ContextCompat
 import androidx.navigation.toRoute
+import com.hexagraph.cropchain.farmer.ui.screen.MainScreen
 import com.hexagraph.cropchain.ui.screens.onboarding.OnboardingScreens
 import com.hexagraph.cropchain.ui.screens.onboarding.PermissionsRequired
 import kotlinx.coroutines.CoroutineScope
@@ -147,7 +148,7 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                             composable<AuthenticationNavigation.MainApp> {
-                                AppNavHost()
+                                MainScreen()
                             }
 
                         }

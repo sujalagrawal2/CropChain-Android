@@ -8,7 +8,7 @@ interface CropRepository {
 
     suspend fun insertCrop(crop: Crop)
 
-    suspend fun getAllCrop(): List<Crop>
+    fun getAllCrop(): Flow<List<Crop>>
 
     suspend fun getPinataUploadCrops(): List<Crop>
     suspend fun getBlockChainUploadCrops(): List<Crop>

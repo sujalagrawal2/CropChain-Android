@@ -9,9 +9,11 @@ data class Crop(
     val id: Long = 0,
     var url: String? = null,
     val reviewed: Boolean = false,
-    var uploadedToPinata: Boolean = false,
+    var uploadedToPinata: Int = -1, // -1 not uploaded, 0 unsuccessful , 1 successful
     var uploadedToBlockChain: Boolean = false,
     val date: String,
     val uid: String,
-    val review: String? = null
+    val review: String? = null,
+    val transactionHash: String? = null,
+    val verifiedTransactionHash : Int = -1  // -1 not verified, 0 unsuccessful , 1 successful
 )
