@@ -14,6 +14,6 @@ data class Crop(
     val date: String,
     val uid: String,
     val review: String? = null,
-    val transactionHash: String? = null,
+    var transactionHash: String? = null,
     val verifiedTransactionHash : Int = -1  // -1 not verified, 0 unsuccessful , 1 successful
 )

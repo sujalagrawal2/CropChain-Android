@@ -115,6 +115,7 @@ class UploadStatusViewModel @Inject constructor(
                     // Mark crops as uploaded in the DB
                     cropList.forEach {
                         it.uploadedToBlockChain = true
+                        it.transactionHash = txHash
                         cropRepository.updateCrop(it)
                     }
                     Log.d("MetaMask", txHash)
