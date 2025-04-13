@@ -17,7 +17,7 @@ class CropRepositoryImpl @Inject constructor(
         return cropDao.insertCrop(crop)
     }
 
-    override suspend fun getAllCrop(): List<Crop> {
+    override  fun getAllCrop(): Flow<List<Crop>> {
         return cropDao.getAllCrop()
     }
 

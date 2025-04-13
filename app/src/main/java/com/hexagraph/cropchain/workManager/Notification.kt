@@ -7,6 +7,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -53,3 +54,23 @@ fun createForegroundNotification(context: Context, message: String, done: Int, t
         .setOngoing(true)
         .build()
 }
+
+
+
+fun createForegroundNotification2(
+    context: Context,
+    contentText: String,
+    progress: Int,
+    total: Int
+): Notification {
+    return NotificationCompat.Builder(context, "upload_channel")
+        .setSmallIcon(R.drawable.ic_launcher_foreground)
+        .setContentTitle("Uploading to Pinata")
+        .setContentText(contentText)
+        .setProgress(total, progress, false)
+        .setOngoing(true)
+        .setOnlyAlertOnce(true)
+        .setPriority(NotificationCompat.PRIORITY_LOW)
+        .build()
+}
+

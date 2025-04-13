@@ -42,7 +42,7 @@ import kotlinx.coroutines.flow.collect
 @Composable
 fun DashboardScreen(
     dashboardViewModel: DashboardViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
 
@@ -79,7 +79,8 @@ fun UploadedImages(modifier: Modifier = Modifier, dashboardViewModel: DashboardV
             Button(
                 onClick = {
 
-            }, modifier = Modifier.padding(end = 8.dp)) {
+                }, modifier = Modifier.padding(end = 8.dp)
+            ) {
                 Text("Verified")
             }
         }
@@ -96,6 +97,21 @@ fun UploadedImages(modifier: Modifier = Modifier, dashboardViewModel: DashboardV
             dashboardViewModel.writeReview()
         }) {
             Text("Review Image")
+        }
+        Button(onClick = {
+            dashboardViewModel.connect()
+        }) {
+            Text("Connect")
+        }
+        Button(onClick = {
+            dashboardViewModel.send()
+        }) {
+            Text("Send")
+        }
+        if (dashboardViewModel.isConnected()) {
+            Text("Connected")
+        } else {
+            Text("Not Connected")
         }
     }
 }

@@ -70,7 +70,7 @@ fun ImageStatusScreen(viewModel: ImageStatusViewModel = hiltViewModel()) {
                                         .padding(8.dp)
                                 )
                                 if (it.uploadedToBlockChain) Text("2")
-                                else if (it.uploadedToPinata) Text("1")
+                                else if (it.uploadedToPinata == 1) Text("1")
                                 else Text("0")
                             }
                         }

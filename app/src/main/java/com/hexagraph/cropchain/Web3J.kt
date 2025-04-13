@@ -256,9 +256,8 @@ class Web3J @Inject constructor() {
         }
     }
 
-    suspend fun getFinalImages(): List<String> {
-        val credentials: Credentials = Credentials.create(privateKey)
-        val transactionManager = RawTransactionManager(web3, credentials)
+    suspend fun getFinalImages(address : String = " "): List<String> {
+
         val getImagesFunction = Function(
             "get_final_images_android", // Smart contract function name
             emptyList(),
@@ -269,7 +268,7 @@ class Web3J @Inject constructor() {
                 val encodedReadFunction = FunctionEncoder.encode(getImagesFunction)
                 val response: EthCall = web3.ethCall(
                     Transaction.createEthCallTransaction(
-                        credentials.address, // Caller address
+                        address, // Caller address
                         contractAddress,
                         encodedReadFunction
                     ),
@@ -294,12 +293,12 @@ class Web3J @Inject constructor() {
     }
 
 
-    suspend fun getVerifiedImage(): List<String> {
+    suspend fun getVerifiedImage(address: String = " "): List<String> {
         val credentials: Credentials = Credentials.create(privateKey)
         val transactionManager = RawTransactionManager(web3, credentials)
         val getImagesFunction = Function(
             "display_final_android", // Smart contract function name
-            listOf(Address(accountAddress)),
+            listOf(Address(address)),
             listOf(object : TypeReference<Utf8String>() {}) // Expecting a single string result
         )
         return withContext(Dispatchers.IO) {
@@ -442,6 +441,95 @@ class Web3J @Inject constructor() {
             }
         }
     }
+    suspend fun getFinalList(imageUrl: String,address: String=" "): Result<List<Type<*>>> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val function = Function(
+                    "finalList",
+                    listOf(Utf8String(imageUrl)),
+                    listOf(
+                        object : TypeReference<Address>() {},      // owner
+                        object : TypeReference<Utf8String>() {},   // imageUrl
+                        object : TypeReference<Utf8String>() {},   // AI_sol
+                        object : TypeReference<Address>() {},      // reviewer
+                        object : TypeReference<Utf8String>() {},   // reviewer_sol
+                        object : TypeReference<Bool>() {},         // got_AI
+                        object : TypeReference<Bool>() {},         // revived
+                        object : TypeReference<Bool>() {},         // verified
+                        object : TypeReference<Uint256>() {},      // verificationCount
+                        object : TypeReference<Uint256>() {},      // true_count
+                        object : TypeReference<Uint256>() {}       // false_count
+                    )
+                )
+
+                val encodedFunction = FunctionEncoder.encode(function)
+
+                val response = web3.ethCall(
+                    Transaction.createEthCallTransaction(
+                       address,
+                        contractAddress,
+                        encodedFunction
+                    ),
+                    DefaultBlockParameterName.LATEST
+                ).send()
+
+                val decodedResponse =
+                    FunctionReturnDecoder.decode(response.result, function.outputParameters)
+
+                Result.success(decodedResponse)
+
+            } catch (e: Exception) {
+                Log.e("Web3j", "Error in getCloseListDetails: ${e.message}", e)
+                Result.failure(e)
+            }
+        }
+    }
+
+    suspend fun getFilteredImageFromTupleFlexible(address: String = " "): List<String> {
+
+
+        // Here we assume the max possible number of fields, all as Utf8String
+        val maxPossibleFields = 1000 // adjust this number as needed
+        val outputTypes = List(maxPossibleFields) { object : TypeReference<Utf8String>() {} }
+
+        val function = Function(
+            "display_farmer",
+            listOf(Address(address)),
+            outputTypes
+        )
+
+        return withContext(Dispatchers.IO) {
+            try {
+                val encodedFunction = FunctionEncoder.encode(function)
+                val response = web3.ethCall(
+                    Transaction.createEthCallTransaction(
+                        address,
+                        contractAddress,
+                        encodedFunction
+                    ),
+                    org.web3j.protocol.core.DefaultBlockParameterName.LATEST
+                ).send()
+
+                val decoded = FunctionReturnDecoder.decode(response.result, function.outputParameters)
+
+                val imageField = decoded
+                    .mapNotNull { it.value as? String }
+                    .firstOrNull { it.contains("http")  }
+
+                if (imageField != null) {
+                    val allUrls = imageField.split("$").filter { it.isNotBlank() }
+                    if (allUrls.size > 6) allUrls.subList(3, allUrls.size - 3) else emptyList()
+                } else {
+                    emptyList()
+                }
+            } catch (e: Exception) {
+                Log.e("Web3j", "Error decoding tuple: ${e.message}", e)
+                emptyList()
+            }
+        }
+    }
+
+
 //    suspend fun getString(address: String): Result<List<String>> {
 //        return withContext(Dispatchers.IO) {
 //            try {
