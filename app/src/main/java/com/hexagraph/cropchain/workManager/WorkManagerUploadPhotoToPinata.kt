@@ -104,7 +104,7 @@ class WorkManagerUploadPhotoToPinata @AssistedInject constructor(
                 }
                 result.onFailure {
                     crop.uploadedToPinata = 0
-                    crop.uploadProgress = 0
+                    crop.uploadProgress = 0 // Hello
                     cropRepositoryImpl.updateCrop(crop)
                     failures++
                 }
