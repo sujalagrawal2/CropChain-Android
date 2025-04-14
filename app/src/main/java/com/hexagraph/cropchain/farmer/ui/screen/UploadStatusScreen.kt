@@ -262,6 +262,7 @@ fun UploadStatusCard(
                         crop.uploadedToBlockChain -> "🔗 Uploaded to Blockchain"
                         crop.uploadedToPinata == 1 -> "✅ Uploaded to Pinata"
                         crop.uploadedToPinata == 0 -> "Error in uploading. "
+                        crop.uploadProgress == 0 -> "Pending"
                         else -> "⏳ Uploading to Pinata..."
                     },
                     color = Color.LightGray,
@@ -271,7 +272,7 @@ fun UploadStatusCard(
                 if (crop.uploadedToPinata == -1) {
                     Spacer(modifier = Modifier.height(8.dp))
                     LinearProgressIndicator(
-                        progress = 0.5f, // Replace with actual progress if available
+                        progress = (crop.uploadProgress / 100f), // Replace with actual progress if available
                         modifier = Modifier.fillMaxWidth(),
                         color = Color(0xFF2ECC71),
                         trackColor = Color.DarkGray

@@ -47,6 +47,7 @@ class UploadStatusViewModel @Inject constructor(
             crops.forEach { crop ->
                 if(crop.uploadedToPinata==0) {
                     crop.uploadedToPinata = -1
+                    crop.uploadProgress = 0
                     cropRepository.updateCrop(crop)
                 }
             }

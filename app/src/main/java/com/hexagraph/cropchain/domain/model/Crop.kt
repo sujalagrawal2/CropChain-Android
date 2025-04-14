@@ -15,5 +15,6 @@ data class Crop(
     val uid: String,
     val review: String? = null,
     var transactionHash: String? = null,
-    val verifiedTransactionHash : Int = -1  // -1 not verified, 0 unsuccessful , 1 successful
+    val verifiedTransactionHash : Int = -1,  // -1 not verified, 0 unsuccessful , 1 successful,
+    var uploadProgress : Int  = 0
 )
