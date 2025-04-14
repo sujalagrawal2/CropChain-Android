@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.Pets
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -45,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import com.hexagraph.cropchain.R
 import com.hexagraph.cropchain.farmer.ui.viewModels.UploadImageViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -112,6 +114,12 @@ fun CenterCardWithIllustration(
 ) {
     Card(
         modifier = modifier,
+        colors = CardColors(
+            containerColor = Color.DarkGray,
+            contentColor = Color.White,
+            disabledContainerColor = Color.DarkGray,
+            disabledContentColor = Color.White
+        )
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -119,7 +127,7 @@ fun CenterCardWithIllustration(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
-                painter = painterResource(com.hexagraph.cropchain.R.drawable.capture_illustration),
+                painter = painterResource(R.drawable.capture_illustration),
                 contentDescription = "Capture Illustration",
                 modifier = Modifier
             )
