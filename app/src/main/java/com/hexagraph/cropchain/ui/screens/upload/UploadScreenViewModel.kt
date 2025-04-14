@@ -53,7 +53,9 @@ class UploadScreenViewModel @Inject constructor(
             uploadImageStatus = UploadImageStatus.LOADING
         )
         viewModelScope.launch {
-            val result = uploadImageToPinata(file)
+            val result = uploadImageToPinata(file, onProgress = {
+
+            })
             result.onSuccess {
                 uploadUiState.value = uploadUiState.value.copy(
                     url = it

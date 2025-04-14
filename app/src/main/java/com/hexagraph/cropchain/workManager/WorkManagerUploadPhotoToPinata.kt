@@ -11,6 +11,9 @@ import com.hexagraph.cropchain.util.uploadImageToPinata
 import com.hexagraph.cropchain.util.uriToFile
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @HiltWorker
 class WorkManagerUploadPhotoToPinata @AssistedInject constructor(
@@ -64,8 +67,9 @@ class WorkManagerUploadPhotoToPinata @AssistedInject constructor(
             var failures = 0
             crops.forEachIndexed { index, crop ->
                 updateNotification(index + 1, crops.size)
-                if(crop.uploadedToPinata==0) {
+                if (crop.uploadedToPinata == 0) {
                     crop.uploadedToPinata = -1
+                    crop.uploadProgress=0
                     cropRepositoryImpl.updateCrop(crop)
                 }
 //            when (val uploadResult = pinata.uploadToPinata(crop.url.orEmpty())) {
@@ -78,7 +82,21 @@ class WorkManagerUploadPhotoToPinata @AssistedInject constructor(
 //                    Log.e("PinataWorker", "Failed to upload: ${uploadResult.error}")
 //                }
 //            }
-                val result = uploadImageToPinata(uriToFile(applicationContext, crop.uid))
+                var lastUpdateTime = 0L
+                val result = uploadImageToPinata(
+                    uriToFile(applicationContext, crop.uid),
+                    onProgress = { progress ->
+                        Log.d("PinataUploadProgress", "crop id : ${crop.id} $progress% uploaded")
+                        if(progress>crop.uploadProgress)
+                            crop.uploadProgress = progress
+                        val now = System.currentTimeMillis()
+                        if (now - lastUpdateTime >= 300) {
+                            lastUpdateTime = now
+                            CoroutineScope(Dispatchers.IO).launch {
+                                cropRepositoryImpl.updateCrop(crop)
+                            }
+                        }
+                    })
                 result.onSuccess { url ->
                     crop.uploadedToPinata = 1
                     crop.url = url
