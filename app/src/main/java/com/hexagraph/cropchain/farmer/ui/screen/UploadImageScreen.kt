@@ -130,8 +130,10 @@ fun UploadImageScreen(
 
         Button(
             onClick = {
-                viewModel.insertCrops(imageUris.value, context)
-                goToUploadStatusScreen()
+                viewModel.insertCrops(imageUris.value, context, onCompleted = {
+                    goToUploadStatusScreen()
+                })
+
             },
             modifier = Modifier
                 .fillMaxWidth()
