@@ -21,7 +21,7 @@ class UploadImageViewModel @Inject constructor(
     private val web3j: Web3J,
     private val workManager : WorkManagerRepository
 ) : ViewModel() {
-    fun insertCrops(uid: List<Uri>, context: Context) {
+    fun insertCrops(uid: List<Uri>, context: Context,onCompleted:()-> Unit) {
         viewModelScope.launch {
             uid.forEach {
                 val newUri = saveImageToInternalStorage(context, it)
@@ -33,6 +33,7 @@ class UploadImageViewModel @Inject constructor(
                 )
             }
             workManager.count()
+            onCompleted()
         }
     }
 }
