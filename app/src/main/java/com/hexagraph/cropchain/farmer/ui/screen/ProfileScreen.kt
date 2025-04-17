@@ -15,12 +15,14 @@ import androidx.compose.ui.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hexagraph.cropchain.farmer.ui.viewModels.ProfileScreenViewModel
+import com.hexagraph.cropchain.R
 
 @Composable
 fun ProfileScreen(
@@ -107,7 +109,7 @@ fun ProfileScreen(
                 repeat(3) {
                     ProfileItem(
                         icon = Icons.Default.Pets,
-                        title = "Metamask Accounts",
+                        title = stringResource(R.string.metamask_accounts),
                         onClick = onMetamaskClick
                     )
                     Spacer(modifier = Modifier.height(12.dp))
@@ -118,7 +120,7 @@ fun ProfileScreen(
                 // Logout
                 ProfileItem(
                     icon = Icons.Default.Pets,
-                    title = "Log Out",
+                    title = stringResource(R.string.log_out),
                     onClick = onLogoutClick
                 )
             }
@@ -147,7 +149,7 @@ fun MetaMaskInfoCard(
             .padding(16.dp)
     ) {
         Text(
-            text = "MetaMask Details",
+            text =stringResource(R.string.metamask_details),
             color = borderColor,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold
@@ -155,9 +157,9 @@ fun MetaMaskInfoCard(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        MetaMaskInfoRow(label = "Wallet Address", value = address)
+        MetaMaskInfoRow(label = stringResource(R.string.wallet_address), value = address)
         Spacer(modifier = Modifier.height(8.dp))
-        MetaMaskInfoRow(label = "Chain ID", value = chainId)
+        MetaMaskInfoRow(label =stringResource(R.string.chain_id), value = chainId)
 
         Spacer(modifier = Modifier.height(12.dp))
 
@@ -173,14 +175,14 @@ fun MetaMaskInfoCard(
             modifier = Modifier.fillMaxWidth()
         ) {
             if (balanceShown.value)
-                Text("Hide Balance", color = Color.Black)
+                Text(stringResource(R.string.hide_balance), color = Color.Black)
             else
-                Text("Show Balance", color = Color.Black)
+                Text(stringResource(R.string.show_balance), color = Color.Black)
         }
         if (balanceShown.value)
             balance?.let {
                 Spacer(modifier = Modifier.height(12.dp))
-                MetaMaskInfoRow(label = "Balance", value = it)
+                MetaMaskInfoRow(label = stringResource(R.string.balance), value = it)
             }
     }
 }
@@ -260,7 +262,7 @@ fun ConnectionStatusCard(
                     .fillMaxWidth()
                     .height(48.dp)
             ) {
-                Text("Connect Wallet", color = Color.Black)
+                Text(stringResource(R.string.connect_wallet), color = Color.Black)
             }
         }
     }

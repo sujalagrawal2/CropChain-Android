@@ -69,6 +69,27 @@
     <string name="like">ಇಷ್ಟ</string>
     <string name="dislike">ಇಷ್ಟವಿಲ್ಲ</string>
     <string name="verification_count">ದೃಢೀಕರಣ ಎಣಿಕೆ</string>
+    <string name="metamask_accounts">ಮೆಟಾಮಾಸ್ಕ್ ಖಾತೆಗಳು</string>
+    <string name="metamask_details">ಮೆಟಾಮಾಸ್ಕ್ ವಿವರಗಳು</string>
+    <string name="wallet_address">ವಾಲೆಟ್ ವಿಳಾಸ</string>
+    <string name="chain_id">ಚೈನ್ ಐಡಿ</string>
+    <string name="hide_balance">ಬ್ಯಾಲೆನ್ಸ್ ಮುಚ್ಚಿ</string>
+    <string name="show_balance">ಬ್ಯಾಲೆನ್ಸ್ ತೋರಿಸಿ</string>
+    <string name="balance">ಬ್ಯಾಲೆನ್ಸ್</string>
+    <string name="connect_wallet">ವಾಲೆಟ್ ಸಂಪರ್ಕಿಸಿ</string>
+    <string name="get_reveiw_from_scientist">ವಿಜ್ಞಾನಿಗಳಿಂದ ವಿಮರ್ಶೆ ಪಡೆಯಿರಿ</string>
+    <string name="an_image_was_verified">ಚಿತ್ರವನ್ನು ದೃಢಪಡಿಸಲಾಗಿದೆ!</string>
+    <string name="tap_to_see_review">ವಿಮರ್ಶೆ ನೋಡಲು ಟ್ಯಾಪ್ ಮಾಡಿ</string>
+    <string name="upload_images">ಚಿತ್ರಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ</string>
+    <string name="upload_status">ಅಪ್‌ಲೋಡ್ ಸ್ಥಿತಿ</string>
+    <string name="yes">ಹೌದು</string>
+    <string name="no">ಇಲ್ಲ</string>
+    <string name="discard_changes">ಬದಲಾವಣೆಗಳನ್ನು ತ್ಯಜಿಸಲು?</string>
+    <string name="are_you_sure_you_want_discard_selected_images">ಆಯ್ದ ಚಿತ್ರಗಳನ್ನು ತ್ಯಜಿಸಲು ನೀವು ಖಚಿತವಾಗಿದ್ದೀರಾ?</string>
+    <string name="metamask_connected">ಮೆಟಾಮಾಸ್ಕ್ ಸಂಪರ್ಕಿಸಲಾಗಿದೆ</string>
+    <string name="metamask_not_connected">ಮೆಟಾಮಾಸ್ಕ್ ಸಂಪರ್ಕಿಸಲಾಗಿಲ್ಲ</string>
+
+
 
 
     <!-- Certificate arrays left unchanged -->

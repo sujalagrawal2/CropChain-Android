@@ -52,6 +52,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -82,7 +83,7 @@ fun HomeScreen(
             .background(Color.Black)
             .padding(horizontal = 16.dp)
     ) {
-        DashboardScreenTitle()
+        DashboardScreenTitle(farmerName = uiState.value.userName)
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
@@ -99,13 +100,13 @@ fun HomeScreen(
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "Upload an Image",
+                        text = stringResource(R.string.upload_image),
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp
                     )
                     Text(
-                        text = "Get reviews from scientists",
+                        text = stringResource(R.string.get_reveiw_from_scientist),
                         color = Color.White.copy(alpha = 0.9f),
                         fontSize = 12.sp
                     )
@@ -123,7 +124,7 @@ fun HomeScreen(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.Pets, contentDescription = null, tint = Color(0xFFFF6D00))
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Uploaded Images", color = Color.White, fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.uploaded_images), color = Color.White, fontWeight = FontWeight.Bold)
             }
 
             IconButton(onClick = onUploadedImagesClick) {
@@ -180,7 +181,7 @@ fun HomeScreen(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(Icons.Default.Pets, contentDescription = null, tint = Color(0xFFFF6D00))
             Spacer(modifier = Modifier.width(8.dp))
-            Text("Recent Activity", color = Color.White, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.recent_activity), color = Color.White, fontWeight = FontWeight.Bold)
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -193,8 +194,8 @@ fun HomeScreen(
                 .padding(16.dp)
         ) {
             Column {
-                Text("An image was verified!", color = Color.White, fontWeight = FontWeight.Medium)
-                Text("Tap to see review", color = Color.LightGray, fontSize = 12.sp)
+                Text(stringResource(R.string.an_image_was_verified), color = Color.White, fontWeight = FontWeight.Medium)
+                Text(stringResource(R.string.tap_to_see_review), color = Color.LightGray, fontSize = 12.sp)
             }
         }
 
@@ -223,7 +224,7 @@ fun DashboardScreenTitle(
             )
             Column(modifier = Modifier.padding(8.dp)) {
                 Text(
-                    "Hello",
+                    stringResource(R.string.hello),
                     color = Color.Gray,
                     fontSize = 16.sp
                 )

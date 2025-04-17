@@ -97,24 +97,28 @@ class OnboardingViewModel @Inject constructor(
         }
     }
 
-    suspend fun checkAndSaveAadhaarAndPassword(aadhaar: String, password: String, name: String): Boolean{
-        if(aadhaar.isEmpty()){
+    suspend fun checkAndSaveAadhaarAndPassword(
+        aadhaar: String,
+        password: String,
+        name: String
+    ): Boolean {
+        if (aadhaar.isEmpty()) {
             emitError(R.string.aadhaar_id_cannot_be_empty)
             return false
         }
-        if(password.isEmpty()){
+        if (password.isEmpty()) {
             emitError(R.string.password_cannot_be_empty)
             return false
         }
-        if(name.isEmpty()){
+        if (name.isEmpty()) {
             emitError(R.string.name_cannot_be_empty)
             return false
         }
-        if(aadhaar.length != 12){
+        if (aadhaar.length != 12) {
             emitError(R.string.aadhaar_id_must_be_12_digits)
             return false
         }
-        if(!aadhaar.all { it.isDigit() }){
+        if (!aadhaar.all { it.isDigit() }) {
             emitError(R.string.aadhaar_id_must_be_numeric)
             return false
         }
@@ -125,6 +129,7 @@ class OnboardingViewModel @Inject constructor(
     fun nextButtonAction(context: Context) {
 
         viewModelScope.launch {
+//            appPreferences.username.set(name ?: "")
             when (uiState.value.currentScreenName) {
                 OnboardingScreens.LANGUAGE_SELECTION -> {
                     appPreferences.appLanguage.set(uiState.value.selectedLanguageQuery)
@@ -148,16 +153,24 @@ class OnboardingViewModel @Inject constructor(
                     appPreferences.isCurrentUserFarmer.set(uiState.value.isUserFarmerQuery)
                     moveForwardWithinOnboarding()
                 }
+
                 OnboardingScreens.PERMISSIONS_SCREEN -> {
                     //No button here
                 }
+
                 OnboardingScreens.AADHAR_INPUT -> {
                     val aadhaar = uiState.value.aadhaarQuery
                     val password = uiState.value.password
-                    if (checkAndSaveAadhaarAndPassword(aadhaar, password, uiState.value.nameQuery)) {
+                    if (checkAndSaveAadhaarAndPassword(
+                            aadhaar,
+                            password,
+                            uiState.value.nameQuery
+                        )
+                    ) {
                         moveForwardWithinOnboarding()
                     }
                 }
+
                 OnboardingScreens.VERIFICATION_REQUEST_SENT -> {
                     moveForwardWithinOnboarding()
                 }
@@ -167,7 +180,7 @@ class OnboardingViewModel @Inject constructor(
     }
 
     fun moveForwardWithinOnboarding() {
-        if (uiState.value.currentScreenIndex >= uiState.value.allowedScreens.size - 1){
+        if (uiState.value.currentScreenIndex >= uiState.value.allowedScreens.size - 1) {
             uiState.value.onCompletion()
             return
         }
@@ -221,9 +234,11 @@ class OnboardingViewModel @Inject constructor(
                 uiState.value.copy(
                     aadhaarQuery = aadhaar ?: uiState.value.aadhaarQuery,
                     password = password ?: uiState.value.password,
-                    nameQuery = name?: uiState.value.nameQuery
+                    nameQuery = name ?: uiState.value.nameQuery
                 )
             )
+//            appPreferences.username.set(name ?: "")
+
         }
     }
 
