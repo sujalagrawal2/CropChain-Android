@@ -25,7 +25,7 @@ class HomeScreenViewModel @Inject constructor(private val cropRepository: CropRe
     }
     private fun getUploadedImages(){
         viewModelScope.launch {
-            cropRepository.getAllCrop().collect {it->
+            cropRepository.getAllUploadedCrops().collect {it->
                 _uiState.value = _uiState.value.copy(uploadedImages = it)
             }
         }
