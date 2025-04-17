@@ -24,7 +24,7 @@ data class OnboardingUIState(
             if(password.length < 6){
                 return false
             }
-            return false
+            return true
         }
 
     val isAadhaarValid: Boolean

@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.hexagraph.cropchain.R
 
@@ -32,13 +33,13 @@ fun UploadScreen(
                         painter = painterResource(R.drawable.upload_image2),
                         contentDescription = "Upload Image Icon",
                     )
-                    Text("Upload Image")
+                    Text(stringResource(R.string.upload_image))
                 }
             }
             Button(onClick = {
                 uploadImageScreen.value = false
             }) {
-                Text("Status")
+                Text(stringResource(R.string.status))
             }
         }
         if (uploadImageScreen.value) UploadImageScreen(goToStatusScreen = {

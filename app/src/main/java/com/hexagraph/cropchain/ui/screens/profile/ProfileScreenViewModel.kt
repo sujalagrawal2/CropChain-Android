@@ -1,13 +1,37 @@
 package com.hexagraph.cropchain.ui.screens.profile
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.hexagraph.cropchain.Web3J
+import com.hexagraph.cropchain.domain.repository.apppreferences.AppPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 @HiltViewModel
-class ProfileScreenViewModel @Inject constructor(private val web3j: Web3J) : ViewModel() {
+class ProfileScreenViewModel @Inject constructor(
+    private val web3j: Web3J,
+    private val appPreferences: AppPreferences
+) : ViewModel() {
+
+    val uiStateFlow = MutableStateFlow(ProfileUIState())
+
+    init {
+        viewModelScope.launch {
+            appPreferences.username.getFlow().collect(){
+                uiStateFlow.value = uiStateFlow.value.copy(
+                    currentUserName = it
+                )
+            }
+            appPreferences.aadharID.getFlow().collect(){
+                uiStateFlow.value = uiStateFlow.value.copy(
+                    aadharId = it
+                )
+            }
+        }
+    }
 
     fun changeWallet(accountAddress: String){
         var privateKey =""

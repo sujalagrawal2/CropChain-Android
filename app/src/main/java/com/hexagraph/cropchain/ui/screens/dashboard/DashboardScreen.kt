@@ -29,6 +29,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,16 +39,19 @@ import com.hexagraph.cropchain.domain.model.RecentActivityType
 import com.hexagraph.cropchain.ui.component.DisplayImageFromIPFS
 import com.hexagraph.cropchain.ui.component.RecentActivityCard
 import kotlinx.coroutines.flow.collect
+import androidx.compose.runtime.getValue
 
 @Composable
 fun DashboardScreen(
-    dashboardViewModel: DashboardViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
+    dashboardViewModel: DashboardViewModel = hiltViewModel()
 ) {
+    val uiState by dashboardViewModel.uiState
     Column(modifier = modifier) {
 
 //        Text("Dashboard", fontSize = 32.sp, modifier = Modifier.padding(8.dp))
         DashboardScreenTitle(
+            farmerName = uiState.userName,
             modifier = Modifier.padding(start = 8.dp)
         ) { /*TODO*/ }
         UploadedImagesContentWrapper(
@@ -74,14 +78,14 @@ fun UploadedImages(modifier: Modifier = Modifier, dashboardViewModel: DashboardV
                 },
                 modifier = Modifier.padding(end = 8.dp)
             ) {
-                Text("Pending")
+                Text(stringResource(R.string.pending))
             }
             Button(
                 onClick = {
 
                 }, modifier = Modifier.padding(end = 8.dp)
             ) {
-                Text("Verified")
+                Text(stringResource(R.string.verified))
             }
         }
         LazyColumn(modifier = Modifier.padding(16.dp)) {
@@ -96,22 +100,22 @@ fun UploadedImages(modifier: Modifier = Modifier, dashboardViewModel: DashboardV
         Button(onClick = {
             dashboardViewModel.writeReview()
         }) {
-            Text("Review Image")
+            Text(stringResource(R.string.review_image))
         }
         Button(onClick = {
             dashboardViewModel.connect()
         }) {
-            Text("Connect")
+            Text(stringResource(R.string.connect))
         }
         Button(onClick = {
             dashboardViewModel.send()
         }) {
-            Text("Send")
+            Text(stringResource(R.string.send))
         }
         if (dashboardViewModel.isConnected()) {
-            Text("Connected")
+            Text(stringResource(R.string.connected))
         } else {
-            Text("Not Connected")
+            Text(stringResource(R.string.not_connected))
         }
     }
 }
@@ -124,13 +128,13 @@ fun RecentActivity(modifier: Modifier = Modifier) {
         ) {
             Image(
                 painter = painterResource(R.drawable.recent_activity_icon),
-                contentDescription = "Upload Image Icon",
+                contentDescription = stringResource(R.string.upload_image_icon),
                 modifier = Modifier
                     .size(36.dp)
                     .padding(top = 8.dp)
             )
             Text(
-                "Recent Activity",
+                stringResource(R.string.recent_activity),
                 fontSize = 20.sp,
                 modifier = Modifier.padding(start = 8.dp, top = 8.dp)
             )
@@ -167,7 +171,7 @@ fun UploadedImagesContentWrapper(
                     .padding(top = 8.dp)
             )
             Text(
-                "Uploaded Images",
+                stringResource(R.string.uploaded_images),
                 fontSize = 20.sp,
                 modifier = Modifier.padding(start = 8.dp, top = 8.dp)
             )
@@ -202,7 +206,7 @@ fun DashboardScreenTitle(
             )
             Column(modifier = Modifier.padding(8.dp)) {
                 Text(
-                    "Hello",
+                    stringResource(R.string.hello),
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                     fontSize = 16.sp
                 )
