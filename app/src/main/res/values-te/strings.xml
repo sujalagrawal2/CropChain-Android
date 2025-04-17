@@ -69,6 +69,27 @@
     <string name="like">Like</string>
     <string name="dislike">DisLike</string>
     <string name="verification_count">Verification Count</string>
+    <string name="metamask_accounts">మెటామాస్క్ ఖాతాలు</string>
+    <string name="metamask_details">మెటామాస్క్ వివరాలు</string>
+    <string name="wallet_address">వాలెట్ చిరునామా</string>
+    <string name="chain_id">చెయిన్ ఐడి</string>
+    <string name="hide_balance">బ్యాలెన్స్ను దాచు</string>
+    <string name="show_balance">బ్యాలెన్స్ను చూపించు</string>
+    <string name="balance">బ్యాలెన్స్</string>
+    <string name="connect_wallet">వాలెట్‌ను కనెక్ట్ చేయండి</string>
+    <string name="get_reveiw_from_scientist">శాస్త్రవేత్తల నుండి సమీక్షను పొందండి</string>
+    <string name="an_image_was_verified">ఒక చిత్రం ధృవీకరించబడింది!</string>
+    <string name="tap_to_see_review">సమీక్షను చూడటానికి ట్యాప్ చేయండి</string>
+    <string name="upload_images">చిత్రాలను అప్‌లోడ్ చేయండి</string>
+    <string name="upload_status">అప్‌లోడ్ స్థితి</string>
+    <string name="yes">అవును</string>
+    <string name="no">కాదు</string>
+    <string name="discard_changes">మార్పులను విస్మరించాలా?</string>
+    <string name="are_you_sure_you_want_discard_selected_images">ఎంచుకున్న చిత్రాలను తీసివేయాలని మీరు ఖచ్చితంగా అనుకుంటున్నారా?</string>
+    <string name="metamask_connected">మెటామాస్క్ కనెక్ట్ అయింది</string>
+    <string name="metamask_not_connected">మెటామాస్క్ కనెక్ట్ కాలేదు</string>
+
+
 
 
     <!-- Certificate arrays left unchanged -->

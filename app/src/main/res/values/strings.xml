@@ -68,6 +68,25 @@
     <string name="like">Like</string>
     <string name="dislike">DisLike</string>
     <string name="verification_count">Verification Count</string>
+    <string name="metamask_accounts">MetaMask Accounts</string>
+    <string name="metamask_details">MetaMask Details</string>
+    <string name="wallet_address">Wallet Address</string>
+    <string name="chain_id">Chain Id</string>
+    <string name="hide_balance">Hide Balance</string>
+    <string name="show_balance">Show Balance</string>
+    <string name="balance">Balance</string>
+    <string name="connect_wallet">Connect Wallet</string>
+    <string name="get_reveiw_from_scientist">Get reviews from scientists</string>
+    <string name="an_image_was_verified">An image was verified!</string>
+    <string name="tap_to_see_review">Tap to see review</string>
+    <string name="upload_images">Upload Images</string>
+    <string name="upload_status">Upload Status</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="discard_changes">Discard Changes?</string>
+    <string name="are_you_sure_you_want_discard_selected_images">Are you sure you want to discard selected images?</string>
+    <string name="metamask_connected">MetaMask Connected</string>
+    <string name="metamask_not_connected">MetaMask Not Connected</string>
     <array name="com_google_android_gms_fonts_certs">
         <item>@array/com_google_android_gms_fonts_certs_dev</item>
         <item>@array/com_google_android_gms_fonts_certs_prod</item>

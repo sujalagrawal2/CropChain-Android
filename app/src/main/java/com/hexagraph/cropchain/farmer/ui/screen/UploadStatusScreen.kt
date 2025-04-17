@@ -47,11 +47,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import com.hexagraph.cropchain.R
 import com.hexagraph.cropchain.domain.model.Crop
 import com.hexagraph.cropchain.farmer.ui.viewModels.ScreenStatus
 import com.hexagraph.cropchain.farmer.ui.viewModels.UploadStatusViewModel
@@ -90,7 +92,7 @@ fun UploadStatusScreen(
                 )
             }
             Text(
-                text = "Upload Status",
+                text = stringResource(R.string.upload_status),
                 style = MaterialTheme.typography.headlineSmall.copy(color = Color.White),
                 modifier = Modifier.padding(start = 8.dp)
             )
@@ -148,7 +150,7 @@ fun UploadStatusScreen(
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(
-                                        text = if (isConnected) "MetaMask Connected" else "MetaMask Not Connected",
+                                        text = if (isConnected) stringResource(R.string.metamask_connected) else stringResource(R.string.metamask_not_connected),
                                         color = Color.White,
                                         style = MaterialTheme.typography.bodyMedium
                                     )
@@ -165,7 +167,7 @@ fun UploadStatusScreen(
                                         ),
                                         modifier = Modifier.align(Alignment.End)
                                     ) {
-                                        Text("Connect", color = Color.White)
+                                        Text(stringResource(R.string.connect), color = Color.White)
                                     }
                                 }
                             }

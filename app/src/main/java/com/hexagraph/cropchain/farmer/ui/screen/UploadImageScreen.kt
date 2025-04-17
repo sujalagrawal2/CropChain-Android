@@ -42,6 +42,8 @@ import coil.compose.rememberAsyncImagePainter
 import com.hexagraph.cropchain.farmer.ui.viewModels.UploadImageViewModel
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.hexagraph.cropchain.R
 
 @Composable
 fun UploadImageScreen(
@@ -69,16 +71,16 @@ fun UploadImageScreen(
                     showBackDialog.value = false
                     onBackButtonPressed()
                 }) {
-                    Text("Yes")
+                    Text(stringResource(R.string.yes))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showBackDialog.value = false }) {
-                    Text("No")
+                    Text(stringResource(R.string.no))
                 }
             },
-            title = { Text("Discard Changes?") },
-            text = { Text("Are you sure you want to discard selected images?") }
+            title = { Text(stringResource(R.string.discard_changes)) },
+            text = { Text(stringResource(R.string.are_you_sure_you_want_discard_selected_images)) }
         )
     }
     Column(
@@ -99,7 +101,7 @@ fun UploadImageScreen(
                 )
             }
             Text(
-                text = "Upload Image",
+                text = stringResource(R.string.upload_image),
                 style = MaterialTheme.typography.titleLarge.copy(color = Color.White),
                 modifier = Modifier.padding(bottom = 16.dp)
             )
@@ -139,7 +141,7 @@ fun UploadImageScreen(
                 .fillMaxWidth()
                 .height(50.dp)
         ) {
-            Text("Upload")
+            Text(stringResource(R.string.upload))
         }
     }
 }

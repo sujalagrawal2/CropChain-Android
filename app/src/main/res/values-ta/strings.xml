@@ -69,6 +69,27 @@
     <string name="like">Like</string>
     <string name="dislike">DisLike</string>
     <string name="verification_count">Verification Count</string>
+    <string name="metamask_accounts">மெட்டாமாஸ்க் கணக்குகள்</string>
+    <string name="metamask_details">மெட்டாமாஸ்க் விவரங்கள்</string>
+    <string name="wallet_address">வாலட் முகவரி</string>
+    <string name="chain_id">செயின் ஐடி</string>
+    <string name="hide_balance">இருப்பை மறைக்க</string>
+    <string name="show_balance">இருப்பை காட்ட</string>
+    <string name="balance">இருப்பு</string>
+    <string name="connect_wallet">வாலட்டை இணைக்க</string>
+    <string name="get_reveiw_from_scientist">அறிஞர்களிடம் விமர்சனங்களை பெறுங்கள்</string>
+    <string name="an_image_was_verified">ஒரு படம் சரிபார்க்கப்பட்டது!</string>
+    <string name="tap_to_see_review">விமர்சனத்தை காண தட்டவும்</string>
+    <string name="upload_images">படங்களை பதிவேற்றவும்</string>
+    <string name="upload_status">பதிவேற்ற நிலை</string>
+    <string name="yes">ஆம்</string>
+    <string name="no">இல்லை</string>
+    <string name="discard_changes">மாற்றங்களை நீக்க வேண்டுமா?</string>
+    <string name="are_you_sure_you_want_discard_selected_images">தேர்ந்தெடுத்த படங்களை நீக்க விரும்புகிறீர்களா?</string>
+    <string name="metamask_connected">மெட்டாமாஸ்க் இணைக்கப்பட்டுள்ளது</string>
+    <string name="metamask_not_connected">மெட்டாமாஸ்க் இணைக்கப்படவில்லை</string>
+
+
 
     <!-- Certificate arrays left unchanged -->
     <array name="com_google_android_gms_fonts_certs">

@@ -41,6 +41,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -63,7 +64,7 @@ fun SelectImageScreen(
             .padding(16.dp)
     ) {
         Text(
-            text = "Upload Images",
+            text = stringResource(R.string.upload_images),
             style = MaterialTheme.typography.titleLarge.copy(color = Color.White),
             modifier = Modifier.padding(bottom = 16.dp)
         )
@@ -77,7 +78,7 @@ fun SelectImageScreen(
                 Button(onClick = {
                     goToUploadImageScreen()
                 }) {
-                    Text(text = "Select Image")
+                    Text(text = stringResource(R.string.select_image))
                 }
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -92,7 +93,11 @@ fun SelectImageScreen(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.Pets, contentDescription = null, tint = Color(0xFFFF6D00))
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Upload Status", color = Color.White, fontWeight = FontWeight.Bold)
+                Text(
+                    stringResource(R.string.upload_status),
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
             }
 
             IconButton(onClick = { goToUploadStatusScreen() }) {
@@ -131,7 +136,7 @@ fun CenterCardWithIllustration(
                 contentDescription = "Capture Illustration",
                 modifier = Modifier
             )
-            Text(text = "Take a clear picture of the crop", fontSize = 16.sp)
+            Text(text = stringResource(R.string.take_a_clear_picture_of_the_crop), fontSize = 16.sp)
             Spacer(modifier = Modifier.height(16.dp))
             buttonContent()
         }

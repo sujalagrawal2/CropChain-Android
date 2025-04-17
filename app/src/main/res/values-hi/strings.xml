@@ -68,6 +68,27 @@
     <string name="like">पसंद</string>
     <string name="dislike">नापसंद</string>
     <string name="verification_count">सत्यापन संख्या</string>
+    <string name="metamask_accounts">मेटामास्क खाते</string>
+    <string name="metamask_details">मेटामास्क विवरण</string>
+    <string name="wallet_address">वॉलेट पता</string>
+    <string name="chain_id">चेन आईडी</string>
+    <string name="hide_balance">बैलेंस छिपाएँ</string>
+    <string name="show_balance">बैलेंस दिखाएँ</string>
+    <string name="balance">बैलेंस</string>
+    <string name="connect_wallet">वॉलेट कनेक्ट करें</string>
+    <string name="get_reveiw_from_scientist">वैज्ञानिकों से समीक्षा प्राप्त करें</string>
+    <string name="an_image_was_verified">एक छवि सत्यापित की गई!</string>
+    <string name="tap_to_see_review">समीक्षा देखने के लिए टैप करें</string>
+    <string name="upload_images">छवियाँ अपलोड करें</string>
+    <string name="upload_status">अपलोड स्थिति</string>
+    <string name="yes">हाँ</string>
+    <string name="no">नहीं</string>
+    <string name="discard_changes">परिवर्तन त्यागें?</string>
+    <string name="are_you_sure_you_want_discard_selected_images">क्या आप वाकई चयनित छवियाँ हटाना चाहते हैं?</string>
+    <string name="metamask_connected">मेटामास्क कनेक्टेड</string>
+    <string name="metamask_not_connected">मेटामास्क कनेक्टेड नहीं है</string>
+
+
 
     <!-- Certificate arrays left unchanged -->
     <array name="com_google_android_gms_fonts_certs">

@@ -44,10 +44,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import com.hexagraph.cropchain.R
 import com.hexagraph.cropchain.farmer.ui.viewModels.UploadedImageUIState
 import com.hexagraph.cropchain.farmer.ui.viewModels.UploadedImageViewModel
 
@@ -80,7 +82,7 @@ fun UploadedImageScreen(
                 )
             }
             Text(
-                text = "Uploaded Images",
+                text = stringResource(R.string.uploaded_images ),
                 style = MaterialTheme.typography.headlineSmall.copy(color = textColor),
                 modifier = Modifier.padding(start = 8.dp)
             )
