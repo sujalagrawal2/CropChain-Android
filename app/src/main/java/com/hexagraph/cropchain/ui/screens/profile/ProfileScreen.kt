@@ -31,6 +31,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,6 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -52,6 +54,7 @@ fun ProfileScreen(
     modifier: Modifier = Modifier,
     viewModel: ProfileScreenViewModel = hiltViewModel(),
 ) {
+    val uiState by viewModel.uiStateFlow.collectAsState()
     var expanded by remember { mutableStateOf(false) }
     val accounts = listOf(
         "0xCAA2c6ef9fAed6caa3316816a0e511fbcAB4807E",
@@ -73,7 +76,7 @@ fun ProfileScreen(
                 .height(300.dp)
         ) {
             Text(
-                "Profile",
+                stringResource(R.string.profile),
                 fontSize = 32.sp,
                 modifier = Modifier.padding(top = 60.dp, start = 16.dp),
                 color = Color.White
@@ -87,7 +90,8 @@ fun ProfileScreen(
                     .align(Alignment.BottomCenter)
             ) {}
             ProfileCard(
-                Modifier
+                uiState = uiState,
+                modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 160.dp)
             )
@@ -95,7 +99,7 @@ fun ProfileScreen(
 
         Text(
             modifier = Modifier.padding(horizontal = 16.dp),
-            text = "Other Settings",
+            text = stringResource(R.string.other_settings),
             fontSize = 20.sp
         )
 
@@ -180,7 +184,7 @@ fun ProfileScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(Icons.Default.Edit, null, modifier = Modifier.padding(8.dp))
-                    Text("Edit Profile", modifier = Modifier.weight(1f))
+                    Text(stringResource(R.string.edit_profile), modifier = Modifier.weight(1f))
                     Image(
                         Icons.AutoMirrored.Filled.KeyboardArrowRight, null,
                         modifier = Modifier.padding(8.dp),
@@ -207,7 +211,7 @@ fun ProfileScreen(
                     )
 
                     Text(
-                        text = "Generic Setting",
+                        text = stringResource(R.string.generic_setting),
                         modifier = Modifier.weight(1f)
                     )
 
@@ -282,7 +286,7 @@ fun ProfileScreen(
                         modifier = Modifier.padding(8.dp),
                         colorFilter = ColorFilter.tint(Color.Red)
                     )
-                    Text("Log Out", modifier = Modifier.weight(1f), color = Color.Red)
+                    Text(stringResource(R.string.log_out), modifier = Modifier.weight(1f), color = Color.Red)
                     Image(
                         Icons.AutoMirrored.Filled.KeyboardArrowRight, null,
                         modifier = Modifier.padding(8.dp),
@@ -299,7 +303,8 @@ fun ProfileScreen(
 }
 
 @Composable
-fun ProfileCard(modifier: Modifier = Modifier) {
+fun ProfileCard(modifier: Modifier = Modifier,
+                uiState: ProfileUIState) {
     Card(
         modifier = modifier.padding(horizontal = 16.dp),
         elevation = CardDefaults.cardElevation(4.dp),
@@ -317,8 +322,8 @@ fun ProfileCard(modifier: Modifier = Modifier) {
                     .weight(1f)
                     .padding(8.dp)
             ) {
-                Text("Dilip Gogoi", style = MaterialTheme.typography.titleLarge)
-                Text("Aadhaar ID: 12345XXXXX", style = MaterialTheme.typography.bodyMedium)
+                Text(uiState.currentUserName, style = MaterialTheme.typography.titleLarge)
+                Text(stringResource(R.string.aadhaar_id, uiState.aadharId), style = MaterialTheme.typography.bodyMedium)
             }
         }
     }

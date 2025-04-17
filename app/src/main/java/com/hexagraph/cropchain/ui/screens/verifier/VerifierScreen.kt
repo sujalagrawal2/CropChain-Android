@@ -12,8 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.hexagraph.cropchain.R
 import com.hexagraph.cropchain.ui.component.DisplayImageFromIPFS
 
 @Composable
@@ -28,24 +30,28 @@ fun VerifierScreen(modifier: Modifier, viewModel: VerifierScreenViewModel = hilt
                         item {
                             DisplayImageFromIPFS(cid = image.images)
                             Column {
-                                Text("AI Solution : ${image.aiSolution}")
+                                Text(stringResource(R.string.ai_solution, image.aiSolution))
                                 Spacer(modifier = Modifier.height(4.dp))
 
-                                Text("Scientist Solution : ${image.scientistSolution}")
+                                Text(
+                                    stringResource(
+                                        R.string.scientist_solution,
+                                        image.scientistSolution
+                                    ))
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Button(onClick = {
                                     viewModel.verifyImage(image.images, true)
                                 }) {
-                                    Text("Like")
+                                    Text(stringResource(R.string.like))
                                 }
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Button(onClick = {
                                     viewModel.verifyImage(image.images, false)
                                 }) {
-                                    Text("DisLike")
+                                    Text(stringResource(R.string.dislike))
                                 }
                             }
-                            Text("Verification Count : ${image.verificationCount}")
+                            Text(stringResource(R.string.verification_count) +" : ${image.verificationCount}")
                         }
                     }
             }

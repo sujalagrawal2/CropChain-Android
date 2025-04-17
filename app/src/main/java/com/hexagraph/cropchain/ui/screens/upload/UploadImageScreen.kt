@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -56,7 +57,7 @@ fun UploadImageScreen(
                         launcher.launch(arrayOf("image/*"))
                         imagesSelected.value = true
                     }) {
-                        Text(text = "Select Image")
+                        Text(text = stringResource(R.string.select_image))
                     }
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -160,7 +161,7 @@ fun UploadImageScreen(
                         Log.d("Correct", uri.toString())
                         Image(
                             painter = rememberAsyncImagePainter(uri),
-                            contentDescription = "Selected Image",
+                            contentDescription = stringResource(R.string.selected_image),
                             modifier = Modifier
                                 .size(100.dp)
                                 .padding(8.dp)
@@ -170,7 +171,7 @@ fun UploadImageScreen(
                         viewModel.insertCrops(imageUris.value, context)
                         goToStatusScreen()
                     }) {
-                        Text("Upload")
+                        Text(stringResource(R.string.upload))
                     }
                 }
             }
@@ -195,10 +196,10 @@ fun CenterCardWithIllustration(
         ) {
             Image(
                 painter = painterResource(R.drawable.capture_illustration),
-                contentDescription = "Capture Illustration",
+                contentDescription = stringResource(R.string.capture_illustration),
                 modifier = Modifier
             )
-            Text(text = "Take a clear picture of the crop", fontSize = 16.sp)
+            Text(text = stringResource(R.string.take_a_clear_picture_of_the_crop), fontSize = 16.sp)
             Spacer(modifier = Modifier.height(16.dp))
             buttonContent()
         }

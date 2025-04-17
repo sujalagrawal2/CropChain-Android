@@ -9,8 +9,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.gson.annotations.Until
+import com.hexagraph.cropchain.R
 import com.hexagraph.cropchain.ui.component.DisplayImageFromIPFS
 
 @Composable
@@ -27,7 +29,7 @@ fun HomeScreen(
                 Column(modifier = Modifier.clickable(onClick = {
                     onFarmerSelect(uiState.addresses[farmerIndex])
                 })) {
-                    Text("Farmer ${farmerIndex + 1}")
+                    Text(stringResource(R.string.farmer_1) +" ${farmerIndex + 1}")
                     LazyRow {
                         item {
                             images.forEach { image ->

@@ -52,11 +52,11 @@ fun LoginScreen(
             modifier = Modifier,
             value = uiState.nameQuery,
             onValueChange = onNameChange,
-            outerText = "Name",
-            placeholderText = "Enter your name",
+            outerText = stringResource(R.string.name),
+            placeholderText = stringResource(R.string.enter_your_name),
             icon = Icons.Default.Person,
             isError = false,
-            errorText = "Invalid name",
+            errorText = stringResource(R.string.invalid_name),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next),
             keyboardActions = KeyboardActions(onNext = {
                 localFocusManager.moveFocus(FocusDirection.Down)
