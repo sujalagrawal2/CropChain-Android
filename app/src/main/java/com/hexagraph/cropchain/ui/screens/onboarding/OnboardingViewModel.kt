@@ -123,6 +123,7 @@ class OnboardingViewModel @Inject constructor(
             return false
         }
         appPreferences.aadharID.set(aadhaar)
+        appPreferences.username.set(name)
         return true
     }
 

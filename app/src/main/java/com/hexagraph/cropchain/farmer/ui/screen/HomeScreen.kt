@@ -27,6 +27,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Close
@@ -63,6 +64,9 @@ import coil.compose.rememberAsyncImagePainter
 import com.hexagraph.cropchain.R
 import com.hexagraph.cropchain.farmer.ui.viewModels.HomeScreenUIState
 import com.hexagraph.cropchain.farmer.ui.viewModels.HomeScreenViewModel
+import com.hexagraph.cropchain.ui.theme.cropChainGradient
+import com.hexagraph.cropchain.ui.theme.cropChainOrange
+import com.hexagraph.cropchain.ui.theme.lightCropChainGradient
 import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.net.URI
@@ -80,19 +84,18 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black)
             .padding(horizontal = 16.dp)
     ) {
         DashboardScreenTitle(farmerName = uiState.value.userName)
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(
-            onClick = onUploadClick,
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(120.dp), // Increased height
-            shape = RoundedCornerShape(16.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2ECC71))
+                .clickable { onUploadClick() }
+                .height(120.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .background(brush = cropChainGradient),
         ) {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -101,8 +104,8 @@ fun HomeScreen(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = stringResource(R.string.upload_image),
-                        color = Color.White,
                         fontWeight = FontWeight.Bold,
+                        color = Color.White,
                         fontSize = 18.sp
                     )
                     Text(
@@ -124,14 +127,13 @@ fun HomeScreen(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.Pets, contentDescription = null, tint = Color(0xFFFF6D00))
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(stringResource(R.string.uploaded_images), color = Color.White, fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.uploaded_images), fontWeight = FontWeight.Bold)
             }
 
             IconButton(onClick = onUploadedImagesClick) {
                 Icon(
-                    Icons.Default.KeyboardArrowRight,
+                    Icons.AutoMirrored.Filled.KeyboardArrowRight,
                     contentDescription = "Go",
-                    tint = Color.White
                 )
             }
         }
@@ -179,9 +181,9 @@ fun HomeScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Default.Pets, contentDescription = null, tint = Color(0xFFFF6D00))
+            Icon(Icons.Default.Pets, contentDescription = null, tint = cropChainOrange)
             Spacer(modifier = Modifier.width(8.dp))
-            Text(stringResource(R.string.recent_activity), color = Color.White, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.recent_activity), fontWeight = FontWeight.Bold)
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -189,13 +191,13 @@ fun HomeScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.DarkGray, shape = RoundedCornerShape(12.dp))
+                .background(MaterialTheme.colorScheme.onBackground.copy(0.15f), shape = RoundedCornerShape(12.dp))
                 .clickable { onRecentActivityClick() }
                 .padding(16.dp)
         ) {
             Column {
-                Text(stringResource(R.string.an_image_was_verified), color = Color.White, fontWeight = FontWeight.Medium)
-                Text(stringResource(R.string.tap_to_see_review), color = Color.LightGray, fontSize = 12.sp)
+                Text(stringResource(R.string.an_image_was_verified), fontWeight = FontWeight.Medium)
+                Text(stringResource(R.string.tap_to_see_review), fontSize = 12.sp)
             }
         }
 
@@ -225,10 +227,10 @@ fun DashboardScreenTitle(
             Column(modifier = Modifier.padding(8.dp)) {
                 Text(
                     stringResource(R.string.hello),
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
                     fontSize = 16.sp
                 )
-                Text(farmerName, fontSize = 20.sp, color = Color.White)
+                Text(farmerName, fontSize = 20.sp)
             }
         }
     }
@@ -271,7 +273,7 @@ fun CropImageGallery(uiState: HomeScreenUIState) {
                         modifier = Modifier
                             .align(Alignment.TopEnd)
                             .padding(8.dp)
-                            .background(Color.Black.copy(alpha = 0.5f), shape = CircleShape)
+                            .background(MaterialTheme.colorScheme.background.copy(alpha = 0.5f), shape = CircleShape)
                             .size(24.dp)
                     ) {
                         Icon(

@@ -1,7 +1,10 @@
 package com.hexagraph.cropchain.workManager
 
 import android.content.Context
+import android.content.pm.ServiceInfo
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
@@ -51,7 +54,14 @@ class WorkManagerUploadPhotoToBlockChain @AssistedInject constructor(
         }
     }
 
+
     override suspend fun getForegroundInfo(): ForegroundInfo {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q)
+        return ForegroundInfo(
+            2,
+            createForegroundNotification(applicationContext, "Uploading..", 0, 0),
+            ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+        )
         return ForegroundInfo(
             2,
             createForegroundNotification(applicationContext, "Uploading..", 0, 0)

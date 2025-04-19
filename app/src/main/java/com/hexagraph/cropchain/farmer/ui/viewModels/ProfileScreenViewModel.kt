@@ -1,20 +1,25 @@
 package com.hexagraph.cropchain.farmer.ui.viewModels
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hexagraph.cropchain.MainActivity
 import com.hexagraph.cropchain.MetaMask
+import com.hexagraph.cropchain.domain.model.SupportedLanguages
 import com.hexagraph.cropchain.domain.repository.apppreferences.AppPreferences
-import com.hexagraph.cropchain.ui.screens.profile.ProfileUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.metamask.androidsdk.EthereumState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class ProfileUIState(
     val currentUserName: String = "",
-    val aadharId: String = ""
+    val aadharId: String = "",
+    val selectedLanguage: SupportedLanguages = SupportedLanguages.ENGLISH,
+    val isLanguageSelectionBottomSheetVisible: Boolean = false,
 )
 
 @HiltViewModel
@@ -45,6 +50,11 @@ class ProfileScreenViewModel @Inject constructor(
             appPreferences.aadharID.getFlow().collect(){
                 uiStateFlow.value = uiStateFlow.value.copy(
                     aadharId = it
+                )
+            }
+            appPreferences.appLanguage.getFlow().collectLatest {
+                uiStateFlow.value = uiStateFlow.value.copy(
+                    selectedLanguage = it
                 )
             }
         }
@@ -81,5 +91,28 @@ class ProfileScreenViewModel @Inject constructor(
         _isConnected.value = metaMask.isConnected()
     }
 
+    fun toggleVisibilityOfLanguagePreferenceBottomSheet(){
+        viewModelScope.launch {
+            uiStateFlow.value = uiStateFlow.value.copy(
+                 isLanguageSelectionBottomSheetVisible = !uiStateFlow.value.isLanguageSelectionBottomSheetVisible
+            )
+        }
+    }
+
+    fun changeSelectedLanguage(selectedLanguage: SupportedLanguages){
+        viewModelScope.launch {
+            appPreferences.appLanguage.set(selectedLanguage)
+            uiStateFlow.value = uiStateFlow.value.copy(
+                selectedLanguage = selectedLanguage
+            )
+        }
+    }
+
+    fun saveSelectedLanguage(selectedLanguage: SupportedLanguages, context: Context){
+        viewModelScope.launch {
+            appPreferences.appLanguage.set(selectedLanguage)
+            (context as MainActivity).recreate()
+        }
+    }
 
 }

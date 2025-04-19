@@ -87,6 +87,12 @@
     <string name="are_you_sure_you_want_discard_selected_images">क्या आप वाकई चयनित छवियाँ हटाना चाहते हैं?</string>
     <string name="metamask_connected">मेटामास्क कनेक्टेड</string>
     <string name="metamask_not_connected">मेटामास्क कनेक्टेड नहीं है</string>
+    <string name="change_your_language_preference">अपनी भाषा वरीयता बदलें</string>
+    <string name="save">सहेजें</string>
+    <string name="dashboard">डैशबोर्ड</string>
+    <string name="connected_to_metamask">मेटामास्क से जुड़ा हुआ</string>
+    <string name="not_connected_to_metamask">मेटामास्क से नहीं जुड़ा हुआ</string>
+    <string name="edit">संपादित करें</string>
 
 
 

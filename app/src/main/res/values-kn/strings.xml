@@ -88,7 +88,12 @@
     <string name="are_you_sure_you_want_discard_selected_images">ಆಯ್ದ ಚಿತ್ರಗಳನ್ನು ತ್ಯಜಿಸಲು ನೀವು ಖಚಿತವಾಗಿದ್ದೀರಾ?</string>
     <string name="metamask_connected">ಮೆಟಾಮಾಸ್ಕ್ ಸಂಪರ್ಕಿಸಲಾಗಿದೆ</string>
     <string name="metamask_not_connected">ಮೆಟಾಮಾಸ್ಕ್ ಸಂಪರ್ಕಿಸಲಾಗಿಲ್ಲ</string>
-
+    <string name="change_your_language_preference">ನಿಮ್ಮ ಭಾಷಾ ಆಯ್ಕೆಯನ್ನು ಬದಲಾಯಿಸಿ</string>
+    <string name="save">ಉಳಿಸಿ</string>
+    <string name="dashboard">ಡ್ಯಾಶ್‌ಬೋರ್ಡ್</string>
+    <string name="connected_to_metamask">ಮೆಟಾಮಾಸ್ಕ್‌ಗೆ ಸಂಪರ್ಕವಾಗಿದೆ</string>
+    <string name="not_connected_to_metamask">ಮೆಟಾಮಾಸ್ಕ್‌ಗೆ ಸಂಪರ್ಕವಾಗಿಲ್ಲ</string>
+    <string name="edit">ತಿದ್ದು</string>
 
 
 

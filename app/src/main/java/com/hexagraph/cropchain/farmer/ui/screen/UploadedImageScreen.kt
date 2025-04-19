@@ -60,16 +60,11 @@ fun UploadedImageScreen(
 ) {
     var selectedTab by remember { mutableStateOf("Verified") }
     val tabs = listOf("Verified", "Pending")
-    val backgroundColor = Color(0xFF000000)
-    val cardColor = Color(0xFF1E1E1E)
-    val accentColor = Color(0xFF4CAF50)
-    val textColor = Color.White
     val uiState = viewModel.uiState
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(backgroundColor)
             .padding(16.dp)
     ) {
         // Top Bar
@@ -78,21 +73,20 @@ fun UploadedImageScreen(
                 Icon(
                     imageVector = Icons.Default.ArrowBackIosNew,
                     contentDescription = null,
-                    tint = textColor
                 )
             }
             Text(
                 text = stringResource(R.string.uploaded_images ),
-                style = MaterialTheme.typography.headlineSmall.copy(color = textColor),
+                style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.padding(start = 8.dp)
             )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        val tabBackground = Color(0xFF1E1E1E)
-        val selectedTabColor = Color(0xFF66BB6A) // Soft green, more pastel
-        val unselectedTabColor = Color(0xFF888888)
+        val tabBackground = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f)
+        val selectedTabColor = MaterialTheme.colorScheme.primary// Soft green, more pastel
+        val unselectedTabColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
 
         Card(
             modifier = Modifier
@@ -100,7 +94,6 @@ fun UploadedImageScreen(
                 .padding(vertical = 12.dp),
             colors = CardDefaults.cardColors(containerColor = tabBackground),
             shape = RoundedCornerShape(20.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
         ) {
             Row(
                 modifier = Modifier
