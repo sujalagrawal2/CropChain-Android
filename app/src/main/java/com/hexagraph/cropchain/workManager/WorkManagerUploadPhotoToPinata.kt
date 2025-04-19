@@ -1,6 +1,8 @@
 package com.hexagraph.cropchain.workManager
 
 import android.content.Context
+import android.content.pm.ServiceInfo
+import android.os.Build
 import android.util.Log
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
@@ -69,7 +71,7 @@ class WorkManagerUploadPhotoToPinata @AssistedInject constructor(
                 updateNotification(index + 1, crops.size)
                 if (crop.uploadedToPinata == 0) {
                     crop.uploadedToPinata = -1
-                    crop.uploadProgress=0
+                    crop.uploadProgress = 0
                     cropRepositoryImpl.updateCrop(crop)
                 }
 //            when (val uploadResult = pinata.uploadToPinata(crop.url.orEmpty())) {
@@ -87,7 +89,7 @@ class WorkManagerUploadPhotoToPinata @AssistedInject constructor(
                     uriToFile(applicationContext, crop.uid),
                     onProgress = { progress ->
                         Log.d("PinataUploadProgress", "crop id : ${crop.id} $progress% uploaded")
-                        if(progress>crop.uploadProgress)
+                        if (progress > crop.uploadProgress)
                             crop.uploadProgress = progress
                         val now = System.currentTimeMillis()
                         if (now - lastUpdateTime >= 300) {
@@ -119,20 +121,30 @@ class WorkManagerUploadPhotoToPinata @AssistedInject constructor(
     }
 
     private suspend fun updateNotification(current: Int, total: Int) {
-        val info = ForegroundInfo(
-            1,
-            createForegroundNotification2(
-                applicationContext,
-                "Uploading $current of $total",
-                current,
-                total
-            )
+        val notification = createForegroundNotification2(
+            applicationContext,
+            "Uploading $current of $total",
+            current,
+            total
         )
+        val info =
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q)
+                ForegroundInfo(
+                    1,
+                    notification,
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+                ) else
+                ForegroundInfo(
+                    1,
+                    notification
+                )
         setForeground(info)
     }
 
     private fun createProgressForeground(title: String, progress: Int, total: Int): ForegroundInfo {
         val notification = createForegroundNotification2(applicationContext, title, progress, total)
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q)
+        return ForegroundInfo(1, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
         return ForegroundInfo(1, notification)
     }
 }

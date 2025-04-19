@@ -9,14 +9,17 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemColors
@@ -30,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -41,7 +45,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.hexagraph.cropchain.R
 import com.hexagraph.cropchain.farmer.ui.navigation.NavRoutes
+import com.hexagraph.cropchain.ui.theme.cropChainGradient
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,32 +56,23 @@ fun MainScreen() {
     val navController = rememberNavController()
     val currentBackStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry.value?.destination?.route
-    val systemUiController = rememberSystemUiController()
-    val useDarkIcons = false // For white icons
 
-    // Set status bar color to black
-    SideEffect {
-        systemUiController.setSystemBarsColor(
-            color = Color.Black,
-            darkIcons = useDarkIcons
-        )
-    }
     val showBottomBar =
         (currentRoute == NavRoutes.HomeScreen.route || currentRoute == NavRoutes.ProfileScreen.route || currentRoute == NavRoutes.SelectImageScreen.route)
-
-
     Scaffold(
         bottomBar = {
             if (showBottomBar) {
                 BottomNavigationBar(navController)
             }
         },
-        containerColor = Color.Black
     ) { innerPadding ->
         NavHost(
             navController = navController,
             startDestination = NavRoutes.HomeScreen.route,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.then(
+                if(navController.currentDestination?.route == NavRoutes.ProfileScreen.route) Modifier.padding(bottom = innerPadding.calculateBottomPadding())
+                else Modifier.padding(innerPadding)
+            )
         ) {
             composable(
                 NavRoutes.HomeScreen.route,
@@ -213,20 +210,16 @@ fun MainScreen() {
 fun BottomNavigationBar(navController: NavController) {
     val navBackStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry.value?.destination?.route
-    val color = NavigationBarItemColors(
-        selectedIconColor = Color.White, // Green for selected icon
-        selectedTextColor = Color.White, // Green for selected text
-        selectedIndicatorColor = Color(0xFF4FEC90), // Same green for selected indicator
-        unselectedIconColor = Color.Gray, // Gray for unselected icon
-        unselectedTextColor = Color.Gray, // Gray for unselected text
-        disabledIconColor = Color.DarkGray,
-        disabledTextColor = Color.DarkGray
+    val color = NavigationBarItemDefaults.colors().copy(
+        selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer, // Green for selected icon
+        selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer, // Green for selected text
+        selectedIndicatorColor = MaterialTheme.colorScheme.primaryContainer, // Same green for selected indicator
     )
 
-    NavigationBar(contentColor = Color.White, containerColor = Color.Black) {
+    NavigationBar() {
         NavigationBarItem(
             icon = { Icon(Icons.Default.Home, contentDescription = "Dashboard") },
-            label = { Text("Dashboard", fontWeight = FontWeight.Bold) },
+            label = { Text(stringResource(R.string.dashboard), fontWeight = FontWeight.Bold) },
             selected = currentRoute == NavRoutes.HomeScreen.route,
             onClick = {
                 if (currentRoute != NavRoutes.HomeScreen.route) {
@@ -241,7 +234,7 @@ fun BottomNavigationBar(navController: NavController) {
 
         NavigationBarItem(
             icon = { Icon(Icons.Default.AddCircle, contentDescription = "Upload") },
-            label = { Text("Upload", fontWeight = FontWeight.Bold) },
+            label = { Text(stringResource(R.string.upload), fontWeight = FontWeight.Bold) },
             selected = currentRoute == NavRoutes.SelectImageScreen.route,
             onClick = {
                 if (currentRoute != NavRoutes.SelectImageScreen.route) {
@@ -256,7 +249,7 @@ fun BottomNavigationBar(navController: NavController) {
 
         NavigationBarItem(
             icon = { Icon(Icons.Default.AccountCircle, contentDescription = "Profile") },
-            label = { Text("Profile", fontWeight = FontWeight.Bold) },
+            label = { Text(stringResource(R.string.profile), fontWeight = FontWeight.Bold) },
             selected = currentRoute == NavRoutes.ProfileScreen.route,
             onClick = {
                 if (currentRoute != NavRoutes.ProfileScreen.route) {

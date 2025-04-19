@@ -87,6 +87,12 @@
     <string name="are_you_sure_you_want_discard_selected_images">Are you sure you want to discard selected images?</string>
     <string name="metamask_connected">MetaMask Connected</string>
     <string name="metamask_not_connected">MetaMask Not Connected</string>
+    <string name="change_your_language_preference">Change app language</string>
+    <string name="save">Save</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="connected_to_metamask">Connected to MetaMask</string>
+    <string name="not_connected_to_metamask">Not Connected to MetaMask</string>
+    <string name="edit">Edit</string>
     <array name="com_google_android_gms_fonts_certs">
         <item>@array/com_google_android_gms_fonts_certs_dev</item>
         <item>@array/com_google_android_gms_fonts_certs_prod</item>

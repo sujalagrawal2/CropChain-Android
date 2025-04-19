@@ -1,32 +1,64 @@
 package com.hexagraph.cropchain.farmer.ui.screen
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import android.app.Activity
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Pets
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.runtime.*
-import androidx.compose.ui.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.hexagraph.cropchain.farmer.ui.viewModels.ProfileScreenViewModel
 import com.hexagraph.cropchain.R
+import com.hexagraph.cropchain.farmer.ui.components.LanguagePreferenceBottomSheet
+import com.hexagraph.cropchain.farmer.ui.viewModels.ProfileScreenViewModel
+import com.hexagraph.cropchain.ui.component.AppButton
+import com.hexagraph.cropchain.ui.theme.cropChainGradient
 
 @Composable
 fun ProfileScreen(
-    userName: String = "Dilip Gogoi",
     onEditClick: () -> Unit = {},
     onMetamaskClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {},
@@ -35,54 +67,68 @@ fun ProfileScreen(
     val ethereumState by viewModel.ethereumState.collectAsState()
     val isConnected by viewModel.isConnected.collectAsState()
     val balance by viewModel.balance.collectAsState()
+    val uiState by viewModel.uiStateFlow.collectAsState()
+    val context = LocalContext.current
+    val view = LocalView.current
+    val window = (view.context as Activity).window
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black)
+            .background(brush = cropChainGradient)
     ) {
-        LazyColumn() {
-            item {
-                // Header
-                Box(
+        // Header
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 36.dp, bottom = 24.dp),
+            contentAlignment = Alignment.TopEnd
+        ) {
+            Box(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .background(
+                    Color.White.copy(alpha = 0.2f),
+                    shape = RoundedCornerShape(16.dp)
+                )
+                    .clickable { onEditClick() }
+            ){
+                Text(
+                    text = stringResource(R.string.edit),
+                    color = Color.White,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 32.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.farmer_icon_with_crop),
+                    contentDescription = "Farmer icon with crop",
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color(0xFF2ECC71))
-                        .padding(top = 32.dp, bottom = 24.dp),
-                    contentAlignment = Alignment.TopEnd
-                ) {
-                    TextButton(
-                        onClick = onEditClick,
-                        modifier = Modifier
-                            .padding(end = 16.dp)
-                            .background(Color.White.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
-                            .height(28.dp)
-                    ) {
-                        Text("Edit", fontSize = 12.sp, color = Color.Black)
-                    }
+                        .clip(CircleShape)
+                        .size(80.dp)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    uiState.currentUserName,
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
 
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 32.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(80.dp)
-                                .clip(CircleShape)
-                                .background(Color.LightGray)
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            userName,
-                            color = Color.White,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
-
+        LazyColumn(
+            modifier = Modifier
+                .clip(RoundedCornerShape(32.dp, 32.dp, 0.dp, 0.dp))
+                .background(MaterialTheme.colorScheme.background)
+                .fillMaxHeight(),
+        ) {
+            item {
                 Spacer(modifier = Modifier.height(24.dp))
 
 
@@ -116,15 +162,36 @@ fun ProfileScreen(
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))
-
+                ProfileItem(
+                    icon = Icons.Default.Language,
+                    title = stringResource(R.string.change_your_language_preference),
+                    onClick = {
+                        viewModel.toggleVisibilityOfLanguagePreferenceBottomSheet()
+                    }
+                )
+                Spacer(modifier = Modifier.height(12.dp))
                 // Logout
                 ProfileItem(
-                    icon = Icons.Default.Pets,
+                    icon = Icons.AutoMirrored.Filled.Logout,
                     title = stringResource(R.string.log_out),
                     onClick = onLogoutClick
                 )
             }
         }
+    }
+
+    // Language Preference Bottom Sheet
+    if (uiState.isLanguageSelectionBottomSheetVisible) {
+        LanguagePreferenceBottomSheet(
+            onDismissRequest = { viewModel.toggleVisibilityOfLanguagePreferenceBottomSheet() },
+            onChangeSelectedLanguage = { language ->
+                viewModel.changeSelectedLanguage(language)
+            },
+            selectedLanguage = uiState.selectedLanguage,
+            onSaveSelectedLanguage = {
+                viewModel.saveSelectedLanguage(uiState.selectedLanguage, context)
+            }
+        )
     }
 }
 
@@ -136,7 +203,6 @@ fun MetaMaskInfoCard(
     onShowBalanceClick: () -> Unit,
     clearBalance: () -> Unit
 ) {
-    val cardBgColor = Color(0xFF1E1E1E)
     val borderColor = Color(0xFF2ECC71)
     val balanceShown = remember { mutableStateOf(false) }
 
@@ -144,13 +210,16 @@ fun MetaMaskInfoCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .background(cardBgColor, RoundedCornerShape(16.dp))
+            .background(
+                MaterialTheme.colorScheme.onBackground.copy(0.2f),
+                RoundedCornerShape(16.dp)
+            )
             .border(1.dp, borderColor.copy(alpha = 0.6f), RoundedCornerShape(16.dp))
             .padding(16.dp)
     ) {
         Text(
-            text =stringResource(R.string.metamask_details),
-            color = borderColor,
+            text = stringResource(R.string.metamask_details),
+            color = MaterialTheme.colorScheme.primary,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold
         )
@@ -159,26 +228,24 @@ fun MetaMaskInfoCard(
 
         MetaMaskInfoRow(label = stringResource(R.string.wallet_address), value = address)
         Spacer(modifier = Modifier.height(8.dp))
-        MetaMaskInfoRow(label =stringResource(R.string.chain_id), value = chainId)
+        MetaMaskInfoRow(label = stringResource(R.string.chain_id), value = chainId)
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Button(
+        AppButton(
             onClick = {
                 balanceShown.value = !balanceShown.value
                 if (balanceShown.value)
                     onShowBalanceClick()
                 else clearBalance()
             },
-            colors = ButtonDefaults.buttonColors(containerColor = borderColor),
-            shape = RoundedCornerShape(8.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            if (balanceShown.value)
-                Text(stringResource(R.string.hide_balance), color = Color.Black)
+            modifier = Modifier.fillMaxWidth(),
+            isEnabled = true,
+            text = if (balanceShown.value) stringResource(R.string.hide_balance)
             else
-                Text(stringResource(R.string.show_balance), color = Color.Black)
-        }
+                stringResource(R.string.show_balance)
+        )
+
         if (balanceShown.value)
             balance?.let {
                 Spacer(modifier = Modifier.height(12.dp))
@@ -193,19 +260,19 @@ fun MetaMaskInfoRow(label: String, value: String) {
     Column {
         Text(
             text = label,
-            color = Color.Gray,
+            color = MaterialTheme.colorScheme.onBackground,
             fontSize = 13.sp,
         )
         Spacer(modifier = Modifier.height(4.dp))
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.DarkGray, RoundedCornerShape(8.dp))
+                .background(MaterialTheme.colorScheme.onBackground.copy(0.25f), RoundedCornerShape(8.dp))
                 .padding(8.dp)
         ) {
             Text(
                 text = value,
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 fontSize = 14.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -224,7 +291,10 @@ fun ConnectionStatusCard(
         if (isConnected) Color(0xFF2ECC71).copy(alpha = 0.15f) else Color(0xFFB53737).copy(alpha = 0.15f)
     val borderColor = if (isConnected) Color(0xFF2ECC71) else Color(0xFFB53737)
     val icon = if (isConnected) Icons.Default.Check else Icons.Default.Warning
-    val statusText = if (isConnected) "Connected to MetaMask" else "Not Connected to MetaMask"
+    val statusText =
+        if (isConnected) stringResource(R.string.connected_to_metamask) else stringResource(
+            R.string.not_connected_to_metamask
+        )
     val iconTint = if (isConnected) Color(0xFF2ECC71) else Color(0xFFFF6D00)
 
     Column(
@@ -247,23 +317,20 @@ fun ConnectionStatusCard(
             Spacer(modifier = Modifier.width(12.dp))
             Text(
                 text = statusText,
-                color = Color.White,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.SemiBold
             )
         }
 
         if (!isConnected) {
-            Button(
+            AppButton(
                 onClick = onConnectClick,
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2ECC71)),
-                shape = RoundedCornerShape(12.dp),
+                text = stringResource(R.string.connect_wallet),
+                isEnabled = true,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp)
-            ) {
-                Text(stringResource(R.string.connect_wallet), color = Color.Black)
-            }
+            )
         }
     }
 }
@@ -279,7 +346,10 @@ fun ProfileItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .background(Color.DarkGray, RoundedCornerShape(12.dp))
+            .background(
+                MaterialTheme.colorScheme.onBackground.copy(0.15f),
+                RoundedCornerShape(12.dp)
+            )
             .clickable { onClick() }
             .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
@@ -291,13 +361,12 @@ fun ProfileItem(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(icon, contentDescription = null, tint = Color(0xFFFF6D00))
                 Spacer(modifier = Modifier.width(12.dp))
-                Text(title, color = Color.White, fontWeight = FontWeight.Medium)
+                Text(title, fontWeight = FontWeight.Medium)
             }
 
             Icon(
-                imageVector = Icons.Default.KeyboardArrowRight,
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 contentDescription = "Go",
-                tint = Color.White
             )
         }
     }

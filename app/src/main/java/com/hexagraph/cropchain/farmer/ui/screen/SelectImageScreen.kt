@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Pets
 import androidx.compose.material3.AlertDialog
@@ -49,6 +50,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.hexagraph.cropchain.R
 import com.hexagraph.cropchain.farmer.ui.viewModels.UploadImageViewModel
+import com.hexagraph.cropchain.ui.theme.cropChainOrange
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,12 +62,11 @@ fun SelectImageScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black)
             .padding(16.dp)
     ) {
         Text(
             text = stringResource(R.string.upload_images),
-            style = MaterialTheme.typography.titleLarge.copy(color = Color.White),
+            style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(bottom = 16.dp)
         )
         CenterCardWithIllustration(
@@ -91,20 +92,18 @@ fun SelectImageScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.Pets, contentDescription = null, tint = Color(0xFFFF6D00))
+                Icon(Icons.Default.Pets, contentDescription = null, tint = cropChainOrange)
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     stringResource(R.string.upload_status),
-                    color = Color.White,
                     fontWeight = FontWeight.Bold
                 )
             }
 
             IconButton(onClick = { goToUploadStatusScreen() }) {
                 Icon(
-                    Icons.Default.KeyboardArrowRight,
+                    Icons.AutoMirrored.Filled.KeyboardArrowRight,
                     contentDescription = "Go",
-                    tint = Color.White
                 )
             }
         }
@@ -119,12 +118,6 @@ fun CenterCardWithIllustration(
 ) {
     Card(
         modifier = modifier,
-        colors = CardColors(
-            containerColor = Color.DarkGray,
-            contentColor = Color.White,
-            disabledContainerColor = Color.DarkGray,
-            disabledContentColor = Color.White
-        )
     ) {
         Column(
             modifier = Modifier.padding(16.dp),

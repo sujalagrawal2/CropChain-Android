@@ -51,7 +51,7 @@ import com.hexagraph.cropchain.ui.component.LanguageSelector
 import com.hexagraph.cropchain.ui.component.OnboardingTitleSubtitle
 import com.hexagraph.cropchain.ui.screens.onboarding.introscreens.IntroScreen
 import com.hexagraph.cropchain.ui.screens.onboarding.login.LoginScreen
-import com.hexagraph.cropchain.ui.theme.OceanGradient
+import com.hexagraph.cropchain.ui.theme.cropChainGradient
 import kotlinx.coroutines.flow.collectLatest
 
 
@@ -98,7 +98,7 @@ fun OnBoardingScreen(
             .fillMaxSize()
             .then(
                 if (!isFullScreen) Modifier
-                    .background(brush = OceanGradient) else Modifier.background(MaterialTheme.colorScheme.surface)
+                    .background(brush = cropChainGradient) else Modifier.background(MaterialTheme.colorScheme.surface)
             ),
         containerColor = Color.Transparent,
         snackbarHost = {
