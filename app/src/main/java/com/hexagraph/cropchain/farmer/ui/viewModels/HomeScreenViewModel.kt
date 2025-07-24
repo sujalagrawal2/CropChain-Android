@@ -4,6 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hexagraph.cropchain.MetaMask
 import com.hexagraph.cropchain.domain.model.Crop
 import com.hexagraph.cropchain.domain.repository.CropRepository
 import com.hexagraph.cropchain.domain.repository.apppreferences.AppPreferences
@@ -21,7 +22,13 @@ data class HomeScreenUIState(
 class HomeScreenViewModel @Inject constructor(
     private val cropRepository: CropRepository,
     private val appPreferences: AppPreferences,
+    private val metaMask: MetaMask
 ) : ViewModel() {
+
+
+    fun getAccount(): String {
+        return metaMask.walletAddress
+    }
 
 
     private val _uiState = mutableStateOf(HomeScreenUIState())

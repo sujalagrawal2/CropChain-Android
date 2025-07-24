@@ -1,61 +1,64 @@
 package com.hexagraph.cropchain.farmer.ui.screen
 
-import android.app.Activity
-import android.view.View
-import android.view.WindowManager
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.core.view.WindowInsetsControllerCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.hexagraph.cropchain.R
 import com.hexagraph.cropchain.farmer.ui.navigation.NavRoutes
-import com.hexagraph.cropchain.ui.theme.cropChainGradient
+import com.hexagraph.cropchain.farmer.ui.viewModels.MainScreenViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(viewModel: MainScreenViewModel = hiltViewModel()) {
     val navController = rememberNavController()
     val currentBackStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry.value?.destination?.route
+    val metaMaskMessage = viewModel.getMetaMaskMessage().collectAsState(initial = "")
+
+    if (metaMaskMessage.value != "") {
+        AlertDialog(
+            onDismissRequest = { viewModel.setMetaMaskMessageToDefault() },
+            title = { Text("MetaMask Message") },
+            text = { Text(metaMaskMessage.value) },
+            confirmButton = {
+                TextButton(onClick = {
+                    viewModel.setMetaMaskMessageToDefault()
+                }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
 
     val showBottomBar =
         (currentRoute == NavRoutes.HomeScreen.route || currentRoute == NavRoutes.ProfileScreen.route || currentRoute == NavRoutes.SelectImageScreen.route)
@@ -70,7 +73,9 @@ fun MainScreen() {
             navController = navController,
             startDestination = NavRoutes.HomeScreen.route,
             modifier = Modifier.then(
-                if(navController.currentDestination?.route == NavRoutes.ProfileScreen.route) Modifier.padding(bottom = innerPadding.calculateBottomPadding())
+                if (navController.currentDestination?.route == NavRoutes.ProfileScreen.route) Modifier.padding(
+                    bottom = innerPadding.calculateBottomPadding()
+                )
                 else Modifier.padding(innerPadding)
             )
         ) {
@@ -177,9 +182,12 @@ fun MainScreen() {
                     })
             }
             composable(NavRoutes.UploadStatusScreen.route) {
-                UploadStatusScreen(onBackButtonPressed = {
-                    navController.navigateUp()
-                })
+                UploadStatusScreen(
+                    onBackButtonPressed = {
+                        navController.navigateUp()
+                    },
+                    goToProfileScreen = { navController.navigate(NavRoutes.ProfileScreen.route) }
+                )
             }
             composable(NavRoutes.UploadIImageScreen.route) {
                 UploadImageScreen(

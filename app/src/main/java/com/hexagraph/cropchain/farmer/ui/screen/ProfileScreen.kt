@@ -1,6 +1,5 @@
 package com.hexagraph.cropchain.farmer.ui.screen
 
-import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -8,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -18,18 +18,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Pets
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,13 +42,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -64,20 +69,17 @@ fun ProfileScreen(
     onLogoutClick: () -> Unit = {},
     viewModel: ProfileScreenViewModel = hiltViewModel()
 ) {
-    val ethereumState by viewModel.ethereumState.collectAsState()
-    val isConnected by viewModel.isConnected.collectAsState()
-    val balance by viewModel.balance.collectAsState()
+
     val uiState by viewModel.uiStateFlow.collectAsState()
     val context = LocalContext.current
-    val view = LocalView.current
-    val window = (view.context as Activity).window
+    val isConnected: Boolean = uiState.connectedAccounts.isNotEmpty()
 
+    val accountSelected = uiState.accountSelected
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(brush = cropChainGradient)
     ) {
-        // Header
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -88,15 +90,16 @@ fun ProfileScreen(
                 modifier = Modifier
                     .padding(8.dp)
                     .background(
-                    Color.White.copy(alpha = 0.2f),
-                    shape = RoundedCornerShape(16.dp)
-                )
+                        Color.White.copy(alpha = 0.2f),
+                        shape = RoundedCornerShape(16.dp)
+                    )
                     .clickable { onEditClick() }
-            ){
+            ) {
                 Text(
                     text = stringResource(R.string.edit),
                     color = Color.White,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                )
             }
 
             Column(
@@ -133,35 +136,61 @@ fun ProfileScreen(
 
 
                 // Metamask Connection Status
-                ConnectionStatusCard(isConnected, onConnectClick = { viewModel.connect() })
+                ConnectionStatusCard(isConnected, onConnectClick = {
+                    viewModel.connectWallet(onSuccess = {
+
+                    })
+                })
 
                 Spacer(modifier = Modifier.height(24.dp))
-                if (isConnected && ethereumState != null) {
-                    MetaMaskInfoCard(
-                        address = ethereumState!!.selectedAddress,
-                        chainId = ethereumState!!.chainId,
-                        balance = balance,
-                        onShowBalanceClick = {
-                            viewModel.fetchBalance()
-                        },
-                        clearBalance = {
-                            viewModel.clearBalance()
-                        }
+                if (isConnected) {
+//                    MetaMaskInfoCard(
+//                        address = ethereumState!!.selectedAddress,
+//                        chainId = ethereumState!!.chainId,
+//                        balance = balance,
+//                        onShowBalanceClick = {
+//                            viewModel.fetchBalance()
+//                        },
+//                        clearBalance = {
+//                            viewModel.clearBalance()
+//                        }
+//                    )
+
+                    AccountDetailSection(
+                        accounts = uiState.connectedAccounts,
+                        viewModel,
+                        selectedAccount = accountSelected,
+                        isConnected = true
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
+
+                if (uiState.disconnectedAccounts.isNotEmpty()) {
+                    AccountDetailSection(
+                        accounts = uiState.disconnectedAccounts,
+                        viewModel,
+                        selectedAccount = accountSelected,
+                        isConnected = false
                     )
                     Spacer(modifier = Modifier.height(24.dp))
                 }
 
+
                 // Metamask Accounts Section
-                repeat(3) {
+                if (isConnected || uiState.disconnectedAccounts.isNotEmpty()) {
                     ProfileItem(
                         icon = Icons.Default.Pets,
-                        title = stringResource(R.string.metamask_accounts),
-                        onClick = onMetamaskClick
+                        title = "Update Account",
+                        onClick = {
+                            viewModel.updateWallet {
+
+                            }
+                        }
                     )
-                    Spacer(modifier = Modifier.height(12.dp))
                 }
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(12.dp))
                 ProfileItem(
                     icon = Icons.Default.Language,
                     title = stringResource(R.string.change_your_language_preference),
@@ -174,7 +203,10 @@ fun ProfileScreen(
                 ProfileItem(
                     icon = Icons.AutoMirrored.Filled.Logout,
                     title = stringResource(R.string.log_out),
-                    onClick = onLogoutClick
+                    onClick = {
+                        onLogoutClick()
+                        viewModel.logOut()
+                    }
                 )
             }
         }
@@ -196,67 +228,239 @@ fun ProfileScreen(
 }
 
 @Composable
-fun MetaMaskInfoCard(
-    address: String,
-    chainId: String,
-    balance: String?,
-    onShowBalanceClick: () -> Unit,
-    clearBalance: () -> Unit
+fun AccountDetailSection(
+    accounts: List<String>,
+    viewModel: ProfileScreenViewModel,
+    selectedAccount: String,
+    isConnected: Boolean
 ) {
-    val borderColor = Color(0xFF2ECC71)
-    val balanceShown = remember { mutableStateOf(false) }
 
-    Column(
+    val balance by viewModel.balance.collectAsState()
+    var expandedAccountIndex by remember { mutableStateOf<Int?>(null) }
+    Text(
+        text = if (isConnected) "Connected Account" else "Disconnected Accounts",
+        color = MaterialTheme.colorScheme.onSurface,
+        fontSize = 16.sp,
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier.padding(horizontal = 16.dp)
+    )
+
+    Spacer(modifier = Modifier.height(12.dp))
+
+    if (expandedAccountIndex != null) {
+
+        MetaMaskInfoCard(
+            address = accounts[expandedAccountIndex!!],
+            onShowBalanceClick = {
+                viewModel.clearBalance()
+                viewModel.fetchBalance(account = accounts[expandedAccountIndex!!])
+            },
+            balance = balance,
+            onExpandToggle = {
+                expandedAccountIndex = null
+            },
+            clearBalance = {
+                viewModel.clearBalance()
+            },
+            onUseThisAccount = {
+                viewModel.onAccountSelected(accounts[expandedAccountIndex!!])
+            },
+            index = expandedAccountIndex!!,
+            selectedAccount = selectedAccount,
+            isConnected = isConnected
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+    } else {
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            itemsIndexed(accounts) { index, account ->
+                MetaMaskAccountCard(
+                    index = index,
+                    address = account,
+                    isExpanded = false,
+                    onExpandToggle = { expandedAccountIndex = index },
+                    onUseThisAccount = {
+                        viewModel.onAccountSelected(account)
+                    },
+                    selectedAccount = selectedAccount,
+                    isConnected = isConnected
+                )
+            }
+
+        }
+
+
+    }
+}
+
+@Composable
+fun MetaMaskAccountCard(
+    index: Int,
+    address: String,
+    isExpanded: Boolean,
+    onExpandToggle: () -> Unit,
+    onUseThisAccount: () -> Unit,
+    selectedAccount: String,
+    isConnected: Boolean
+) {
+    val cardBgColor = MaterialTheme.colorScheme.surface
+//    val borderColor = MaterialTheme.colorScheme.primary
+    val borderColor = if (isConnected) Color(0xFF2ECC71) else Color(0xFFB53737)
+    val textColor = MaterialTheme.colorScheme.onSurface
+
+    var modifier = Modifier
+        .width(240.dp)
+        .background(cardBgColor, RoundedCornerShape(16.dp))
+        .border(1.dp, borderColor.copy(alpha = 0.6f), RoundedCornerShape(16.dp))
+        .padding(16.dp)
+
+    if (isExpanded) {
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .background(
-                MaterialTheme.colorScheme.onBackground.copy(0.2f),
-                RoundedCornerShape(16.dp)
-            )
+            .background(cardBgColor, RoundedCornerShape(16.dp))
             .border(1.dp, borderColor.copy(alpha = 0.6f), RoundedCornerShape(16.dp))
             .padding(16.dp)
-    ) {
-        Text(
-            text = stringResource(R.string.metamask_details),
-            color = MaterialTheme.colorScheme.primary,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
-        )
+    }
 
-        Spacer(modifier = Modifier.height(12.dp))
-
-        MetaMaskInfoRow(label = stringResource(R.string.wallet_address), value = address)
-        Spacer(modifier = Modifier.height(8.dp))
-        MetaMaskInfoRow(label = stringResource(R.string.chain_id), value = chainId)
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        AppButton(
-            onClick = {
-                balanceShown.value = !balanceShown.value
-                if (balanceShown.value)
-                    onShowBalanceClick()
-                else clearBalance()
-            },
-            modifier = Modifier.fillMaxWidth(),
-            isEnabled = true,
-            text = if (balanceShown.value) stringResource(R.string.hide_balance)
-            else
-                stringResource(R.string.show_balance)
-        )
-
-        if (balanceShown.value)
-            balance?.let {
-                Spacer(modifier = Modifier.height(12.dp))
-                MetaMaskInfoRow(label = stringResource(R.string.balance), value = it)
+    Column(modifier = modifier) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = "Account ${index + 1}",
+                color = textColor,
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp
+            )
+            IconButton(onClick = onExpandToggle) {
+                Icon(
+                    imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                    contentDescription = null,
+                    tint = textColor
+                )
             }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        MetaMaskInfoRow(label = "Wallet Address", value = address)
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Button(
+            onClick = onUseThisAccount,
+            colors = ButtonDefaults.buttonColors(containerColor = borderColor),
+            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier.fillMaxWidth(),
+            enabled = selectedAccount != address
+        ) {
+            if (selectedAccount != address)
+                Text("Use this account", color = MaterialTheme.colorScheme.onPrimary)
+            else
+                Text("In Use", color = MaterialTheme.colorScheme.onPrimary)
+        }
     }
 }
 
 
 @Composable
-fun MetaMaskInfoRow(label: String, value: String) {
+fun MetaMaskInfoCard(
+    address: String,
+    balance: String?,
+    onExpandToggle: () -> Unit,
+    onShowBalanceClick: () -> Unit,
+    clearBalance: () -> Unit,
+    onUseThisAccount: () -> Unit,
+    index: Int,
+    selectedAccount: String,
+    isConnected: Boolean
+) {
+//    val borderColor = MaterialTheme.colorScheme.primary
+    val borderColor = if (isConnected) Color(0xFF2ECC71) else Color(0xFFB53737)
+    val textColor = MaterialTheme.colorScheme.onSurface
+    val balanceShown = remember { mutableStateOf(false) }
+    val cardBgColor = MaterialTheme.colorScheme.surface
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .background(cardBgColor, RoundedCornerShape(16.dp))
+            .border(1.dp, borderColor.copy(alpha = 0.6f), RoundedCornerShape(16.dp))
+            .padding(16.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = "Account ${index + 1}",
+                color = textColor,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            IconButton(onClick = onExpandToggle) {
+                Icon(
+                    imageVector = Icons.Default.ExpandLess,
+                    contentDescription = "Collapse",
+                    tint = textColor
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        MetaMaskInfoRow(label = stringResource(R.string.wallet_address), value = address)
+
+        Spacer(modifier = Modifier.height(12.dp))
+        if (isConnected)
+            AppButton(
+                onClick = {
+                    balanceShown.value = !balanceShown.value
+                    if (balanceShown.value)
+                        onShowBalanceClick()
+                    else clearBalance()
+                },
+                modifier = Modifier.fillMaxWidth(),
+                isEnabled = true,
+                text = if (balanceShown.value)
+                    stringResource(R.string.hide_balance)
+                else
+                    stringResource(R.string.show_balance)
+            )
+
+        if (balanceShown.value && !balance.isNullOrEmpty()) {
+            Spacer(modifier = Modifier.height(12.dp))
+            MetaMaskInfoRow(label = stringResource(R.string.balance), value = balance)
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Button(
+            onClick = onUseThisAccount,
+            colors = ButtonDefaults.buttonColors(containerColor = borderColor),
+            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier.fillMaxWidth(),
+            enabled = selectedAccount != address
+        ) {
+            if (selectedAccount != address)
+                Text("Use this account", color = MaterialTheme.colorScheme.onPrimary)
+            else
+                Text("In Use", color = MaterialTheme.colorScheme.onPrimary)
+        }
+    }
+}
+
+
+@Composable
+fun MetaMaskInfoRow(label: String, value: String, showFull: Boolean = false) {
     Column {
         Text(
             text = label,
@@ -267,7 +471,10 @@ fun MetaMaskInfoRow(label: String, value: String) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.onBackground.copy(0.25f), RoundedCornerShape(8.dp))
+                .background(
+                    MaterialTheme.colorScheme.onBackground.copy(0.25f),
+                    RoundedCornerShape(8.dp)
+                )
                 .padding(8.dp)
         ) {
             Text(
@@ -275,7 +482,8 @@ fun MetaMaskInfoRow(label: String, value: String) {
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 fontSize = 14.sp,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = if (showFull) TextOverflow.Visible else
+                    TextOverflow.Ellipsis
             )
         }
     }

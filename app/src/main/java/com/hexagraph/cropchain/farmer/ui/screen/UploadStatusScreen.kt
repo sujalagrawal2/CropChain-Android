@@ -61,11 +61,12 @@ import com.hexagraph.cropchain.farmer.ui.viewModels.UploadStatusViewModel
 @Composable
 fun UploadStatusScreen(
     onBackButtonPressed: () -> Unit,
-    viewModel: UploadStatusViewModel = hiltViewModel()
+    viewModel: UploadStatusViewModel = hiltViewModel(),
+    goToProfileScreen: () -> Unit
 ) {
     val uiState = viewModel.uiState
     val status = viewModel.status
-    val isConnected by viewModel.isConnected.collectAsState()
+    val isConnected = viewModel.isConnected()
     val snackBarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
 
@@ -150,7 +151,7 @@ fun UploadStatusScreen(
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(
-                                        text = if (isConnected) stringResource(R.string.metamask_connected) else stringResource(R.string.metamask_not_connected),
+                                        text = if (isConnected) stringResource(R.string.metamask_connected) else "Account not selected",
                                         color = Color.White,
                                         style = MaterialTheme.typography.bodyMedium
                                     )
@@ -159,7 +160,7 @@ fun UploadStatusScreen(
                                 if (!isConnected) {
                                     Spacer(modifier = Modifier.height(12.dp))
                                     Button(
-                                        onClick = { viewModel.connect() },
+                                        onClick = { goToProfileScreen() },
                                         colors = ButtonDefaults.buttonColors(
                                             containerColor = Color(
                                                 0xFF0077CC
@@ -167,7 +168,7 @@ fun UploadStatusScreen(
                                         ),
                                         modifier = Modifier.align(Alignment.End)
                                     ) {
-                                        Text(stringResource(R.string.connect), color = Color.White)
+                                        Text("Select the account", color = Color.White)
                                     }
                                 }
                             }
