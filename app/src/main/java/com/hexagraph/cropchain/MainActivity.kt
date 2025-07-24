@@ -18,9 +18,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.hexagraph.cropchain.domain.repository.apppreferences.AppPreferences
-import com.hexagraph.cropchain.domain.repository.apppreferences.AppPreferencesImpl
-import com.hexagraph.cropchain.farmer.ui.screen.MainScreen
+import com.hexagraph.cropchain.data.local.apppreferences.AppPreferences
+import com.hexagraph.cropchain.data.local.apppreferences.AppPreferencesImpl
+import com.hexagraph.cropchain.ui.navigation.farmer.MainScreen
 import com.hexagraph.cropchain.ui.screens.onboarding.AuthenticationNavigation
 import com.hexagraph.cropchain.ui.screens.onboarding.OnBoardingScreen
 import com.hexagraph.cropchain.ui.screens.onboarding.OnboardingScreens

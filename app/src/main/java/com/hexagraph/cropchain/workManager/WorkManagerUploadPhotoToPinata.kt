@@ -9,7 +9,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import com.hexagraph.cropchain.domain.repository.CropRepository
-import com.hexagraph.cropchain.util.uploadImageToPinata
+import com.hexagraph.cropchain.domain.repository.PinataRepository
 import com.hexagraph.cropchain.util.uriToFile
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -21,44 +21,10 @@ import kotlinx.coroutines.launch
 class WorkManagerUploadPhotoToPinata @AssistedInject constructor(
     @Assisted ctx: Context,
     @Assisted param: WorkerParameters,
-    private val cropRepositoryImpl: CropRepository
+    private val cropRepositoryImpl: CropRepository,
+    private val pinataRepositoryImpl: PinataRepository
 ) : CoroutineWorker(ctx, param) {
-    //    override suspend fun doWork(): Result {
-//        return try {
-//            setForeground(getForegroundInfo())
-//            val cropList = cropRepositoryImpl.getPinataUploadCrops()
-//            val total = cropList.size
-//            var cnt = 0
-//            var failure: Boolean = false
-//            makeStatusNotification("0 / $total", applicationContext, cnt, total)
-//            cropList.forEach { crop ->
-//                val result = uploadImageToPinata(uriToFile(applicationContext, crop.uid))
-//                result.onSuccess { url ->
-//                    crop.uploadedToPinata = true
-//                    crop.url ="https://gateway.pinata.cloud/ipfs/"+url
-//                    cropRepositoryImpl.updateCrop(crop)
-//                    cnt++
-//                    makeStatusNotification("$cnt / $total", applicationContext, cnt, total)
-//                }
-//                result.onFailure {
-//                    failure = true
-//                }
-//            }
-//            if (!failure)
-//                Result.success()
-//            else Result.retry()
-//        } catch (e: Exception) {
-//            Log.e("Worker", "Error uploading", e)
-//            Result.retry()
-//        }
-//    }
-//
-//    override suspend fun getForegroundInfo(): ForegroundInfo {
-//        return ForegroundInfo(
-//            2,
-//            createForegroundNotification(applicationContext, "Uploading..", 0, 0)
-//        )
-//    }
+
     override suspend fun doWork(): Result {
         return try {
             val crops = cropRepositoryImpl.getPinataUploadCrops()
@@ -74,18 +40,10 @@ class WorkManagerUploadPhotoToPinata @AssistedInject constructor(
                     crop.uploadProgress = 0
                     cropRepositoryImpl.updateCrop(crop)
                 }
-//            when (val uploadResult = pinata.uploadToPinata(crop.url.orEmpty())) {
-//                is UploadResult.Success -> {
-//                    crop.uploadedToPinata = true
-//                    cropRepository.markUploaded(crop)
-//                }
-//                is UploadResult.Failure -> {
-//                    failures++
-//                    Log.e("PinataWorker", "Failed to upload: ${uploadResult.error}")
-//                }
-//            }
+
                 var lastUpdateTime = 0L
-                val result = uploadImageToPinata(
+
+                val result = pinataRepositoryImpl.uploadImageToPinata(
                     uriToFile(applicationContext, crop.uid),
                     onProgress = { progress ->
                         Log.d("PinataUploadProgress", "crop id : ${crop.id} $progress% uploaded")
@@ -144,7 +102,7 @@ class WorkManagerUploadPhotoToPinata @AssistedInject constructor(
     private fun createProgressForeground(title: String, progress: Int, total: Int): ForegroundInfo {
         val notification = createForegroundNotification2(applicationContext, title, progress, total)
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q)
-        return ForegroundInfo(1, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
+            return ForegroundInfo(1, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
         return ForegroundInfo(1, notification)
     }
 }

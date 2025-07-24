@@ -22,13 +22,9 @@ import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
 import org.web3j.protocol.core.methods.request.Transaction
 import org.web3j.protocol.core.methods.response.EthCall
-import org.web3j.protocol.core.methods.response.EthSendTransaction
 import org.web3j.protocol.http.HttpService
 import org.web3j.tx.RawTransactionManager
-import org.web3j.tx.gas.DefaultGasProvider
-import org.web3j.utils.Convert
 import org.web3j.utils.Numeric
-import java.math.BigDecimal
 import java.math.BigInteger
 import javax.inject.Inject
 
