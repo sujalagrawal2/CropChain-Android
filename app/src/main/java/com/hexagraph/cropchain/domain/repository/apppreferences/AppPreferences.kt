@@ -9,4 +9,6 @@ interface AppPreferences {
     val isCurrentUserFarmer: DataStorePreference<Boolean>
     val appLanguage: DataStorePreference<SupportedLanguages>
     val areAllPermissionsGranted: DataStorePreference<Boolean>
+    val accountSelected : DataStorePreference<String>
+    val metaMaskMessage : DataStorePreference<String>
 }

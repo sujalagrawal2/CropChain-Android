@@ -4,6 +4,9 @@ import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
+import com.hexagraph.cropchain.domain.model.MetaMaskAccounts
+import com.hexagraph.cropchain.domain.repository.apppreferences.AppPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.metamask.androidsdk.CommunicationClientModule
 import io.metamask.androidsdk.DappMetadata
@@ -17,6 +20,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.web3j.abi.FunctionEncoder
 import org.web3j.abi.datatypes.Address
@@ -29,15 +33,23 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 
-class MetaMask @Inject constructor(private val context: Context) {
+class MetaMask @Inject constructor(
+    private val context: Context,
+    private val appPreferences: AppPreferences,
+) {
 
     private val dAppMetadata = DappMetadata(
         name = "Crop Chain",
         url = "http://www.cropchain.com"
     )
+
+    //    private val sdkOptions = SDKOptions(
+//        infuraAPIKey = "0xdo7Ieek_okE7Do3XTfAHaZyh-9D81Z",
+//        readonlyRPCMap = mapOf("0xaa36a7" to "https://eth-sepolia.g.alchemy.com/v2/0xdo7Ieek_okE7Do3XTfAHaZyh-9D81Z")
+//    )
     private val sdkOptions = SDKOptions(
-        infuraAPIKey = "0xdo7Ieek_okE7Do3XTfAHaZyh-9D81Z",
-        readonlyRPCMap = mapOf("0xaa36a7" to "https://eth-sepolia.g.alchemy.com/v2/0xdo7Ieek_okE7Do3XTfAHaZyh-9D81Z")
+        infuraAPIKey = null,
+        readonlyRPCMap = null
     )
     private val logger = object : Logger {
         override fun error(message: String) {
@@ -52,9 +64,14 @@ class MetaMask @Inject constructor(private val context: Context) {
         context = context
     )
 
+    //    private val readOnlyRPCProvider = ReadOnlyRPCProvider(
+//        infuraAPIKey = "0xdo7Ieek_okE7Do3XTfAHaZyh-9D81Z",
+//        readonlyRPCMap = mapOf("0xaa36a7" to "https://eth-sepolia.g.alchemy.com/v2/0xdo7Ieek_okE7Do3XTfAHaZyh-9D81Z"),
+//        logger = logger
+//    )
     private val readOnlyRPCProvider = ReadOnlyRPCProvider(
-        infuraAPIKey = "0xdo7Ieek_okE7Do3XTfAHaZyh-9D81Z",
-        readonlyRPCMap = mapOf("0xaa36a7" to "https://eth-sepolia.g.alchemy.com/v2/0xdo7Ieek_okE7Do3XTfAHaZyh-9D81Z"),
+        infuraAPIKey = null,
+        readonlyRPCMap = null,
         logger = logger
     )
 
@@ -67,40 +84,35 @@ class MetaMask @Inject constructor(private val context: Context) {
         readOnlyRPCProvider = readOnlyRPCProvider,
     )
 
-    val communicationClient = ethereum.communicationClient
-    fun isConnected(): Boolean {
-        return communicationClient?.isServiceConnected ?: false
-    }
+//    val communicationClient = ethereum.communicationClient
+//    fun isConnected(): Boolean {
+//        return communicationClient?.isServiceConnected ?: false
+//    }
 
-
-    private val _readResult = mutableStateOf<List<String>>(emptyList())
-    val readResult: androidx.compose.runtime.State<List<String>> = _readResult
-
-    private val _txHash = mutableStateOf<String?>(null)
-    val txHash: androidx.compose.runtime.State<String?> = _txHash
-
-    private val _ethereumState = MutableStateFlow<EthereumState?>(null)
-    val ethereumState: StateFlow<EthereumState?> = _ethereumState
 
     init {
-        ethereum.ethereumState.observeForever { state ->
-            _ethereumState.value = state
+
+
+        CoroutineScope(Dispatchers.IO).launch {
+            appPreferences.accountSelected.getFlow().collectLatest {
+                Log.d("MetaMask", it)
+                walletAddress = it
+            }
         }
+
     }
 
-    val walletAddress: String
-        get() = ethereumState.value?.selectedAddress ?: "Not Connected"
+
+    var walletAddress: String = ""
 
 
-    fun connect(onError: (String) -> Unit, onSuccess: () -> Unit) {
-
+    fun connect(onError: (String) -> Unit, onSuccess: (List<String>) -> Unit) {
         ethereum.connect { result ->
             when (result) {
                 is io.metamask.androidsdk.Result.Success.Items -> {
                     val addresses = result.value
-                    val address = addresses.firstOrNull()
-                    Log.d("MetaMask", "Connected: $address")
-                    onSuccess()
+                    Log.d("MetaMask", "Connected: $addresses")
+                    onSuccess(addresses)
                 }
 
                 is io.metamask.androidsdk.Result.Error -> {
@@ -111,10 +123,6 @@ class MetaMask @Inject constructor(private val context: Context) {
                 else -> Log.d("MetaMask", "Unexpected result type: $result")
             }
         }
-    }
-
-    fun details(): LiveData<EthereumState> {
-        return ethereum.ethereumState
     }
 
 
@@ -184,7 +192,7 @@ class MetaMask @Inject constructor(private val context: Context) {
         }
     }
 
-    fun getAccountBalance(address: String = walletAddress!!, callback: (String?) -> Unit) {
+    fun getAccountBalance(address: String = walletAddress, callback: (String?) -> Unit) {
         if (address.isNullOrEmpty()) {
             callback(null)
             return

@@ -18,8 +18,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlin.getValue
 
-class AppPreferencesImpl(private val context: Context): AppPreferences {
+class AppPreferencesImpl(private val context: Context) : AppPreferences {
     private val datastore = DataStoreProvider.getInstance(context)
+
     private object PreferenceKeys {
         val AADHAR_ID = stringPreferencesKey("aadhar_id")
         val USERNAME = stringPreferencesKey("username")
@@ -27,11 +28,13 @@ class AppPreferencesImpl(private val context: Context): AppPreferences {
         val IS_USER_LOGGED_IN = booleanPreferencesKey("is_user_logged_in")
         val IS_CURRENT_USER_FARMER = booleanPreferencesKey("is_current_user_farmer")
         val ARE_ALL_PERMISSIONS_GRANTED = booleanPreferencesKey("are_all_permissions_granted")
+        val ACCOUNT_SELECTED = stringPreferencesKey("account_selected")
+        val METAMASK_MESSAGE = stringPreferencesKey("metamask_message")
     }
 
 
     override val aadharID: DataStorePreference<String>
-        get() = object : DataStorePreference<String>{
+        get() = object : DataStorePreference<String> {
             override fun getFlow(): Flow<String> {
                 return datastore.data.map {
                     it[PreferenceKeys.AADHAR_ID] ?: ""
@@ -39,14 +42,14 @@ class AppPreferencesImpl(private val context: Context): AppPreferences {
             }
 
             override suspend fun set(value: String) {
-                datastore.edit { prefs->
+                datastore.edit { prefs ->
                     prefs[PreferenceKeys.AADHAR_ID] = value
                 }
             }
         }
 
     override val isUserLoggedIn: DataStorePreference<Boolean>
-        get() = object : DataStorePreference<Boolean>{
+        get() = object : DataStorePreference<Boolean> {
             override fun getFlow(): Flow<Boolean> {
                 return datastore.data.map {
                     it[PreferenceKeys.IS_USER_LOGGED_IN] ?: false
@@ -65,8 +68,10 @@ class AppPreferencesImpl(private val context: Context): AppPreferences {
         get() = object : DataStorePreference<SupportedLanguages> {
             override fun getFlow(): Flow<SupportedLanguages> {
                 return datastore.data.map { prefs ->
-                    val langID = prefs[PreferenceKeys.APP_LANGUAGE] ?: SupportedLanguages.ENGLISH.langID
-                    SupportedLanguages.entries.find { it.langID == langID } ?: SupportedLanguages.ENGLISH
+                    val langID =
+                        prefs[PreferenceKeys.APP_LANGUAGE] ?: SupportedLanguages.ENGLISH.langID
+                    SupportedLanguages.entries.find { it.langID == langID }
+                        ?: SupportedLanguages.ENGLISH
                 }
             }
 
@@ -106,6 +111,36 @@ class AppPreferencesImpl(private val context: Context): AppPreferences {
                 }
             }
         }
+    override val accountSelected: DataStorePreference<String>
+        get() = object : DataStorePreference<String> {
+            override fun getFlow(): Flow<String> {
+                return datastore.data.map { prefs ->
+                    prefs[PreferenceKeys.ACCOUNT_SELECTED] ?: ""
+                }
+            }
+
+            override suspend fun set(value: String) {
+                datastore.edit { prefs ->
+                    prefs[PreferenceKeys.ACCOUNT_SELECTED] = value
+                }
+            }
+        }
+
+    override val metaMaskMessage: DataStorePreference<String>
+        get() = object : DataStorePreference<String> {
+            override fun getFlow(): Flow<String> {
+                return datastore.data.map { prefs ->
+                    prefs[PreferenceKeys.METAMASK_MESSAGE] ?: ""
+                }
+            }
+
+            override suspend fun set(value: String) {
+                datastore.edit { prefs ->
+                    prefs[PreferenceKeys.METAMASK_MESSAGE] = value
+                }
+            }
+
+        }
 
     override val username: DataStorePreference<String>
         get() = object : DataStorePreference<String> {
@@ -128,7 +163,8 @@ object DataStoreProvider {
     private val dataStoreScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     @Volatile
-    private var INSTANCE: androidx.datastore.core.DataStore<androidx.datastore.preferences.core.Preferences>? = null
+    private var INSTANCE: androidx.datastore.core.DataStore<androidx.datastore.preferences.core.Preferences>? =
+        null
 
     fun getInstance(context: Context): androidx.datastore.core.DataStore<androidx.datastore.preferences.core.Preferences> {
         return INSTANCE ?: synchronized(this) {

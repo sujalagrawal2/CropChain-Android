@@ -1,10 +1,8 @@
 package com.hexagraph.cropchain.farmer.ui.screen
 
-import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +10,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,17 +22,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Fullscreen
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Pets
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -48,7 +38,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -66,8 +55,6 @@ import com.hexagraph.cropchain.farmer.ui.viewModels.HomeScreenUIState
 import com.hexagraph.cropchain.farmer.ui.viewModels.HomeScreenViewModel
 import com.hexagraph.cropchain.ui.theme.cropChainGradient
 import com.hexagraph.cropchain.ui.theme.cropChainOrange
-import com.hexagraph.cropchain.ui.theme.lightCropChainGradient
-import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.net.URI
 
@@ -130,7 +117,10 @@ fun HomeScreen(
                 Text(stringResource(R.string.uploaded_images), fontWeight = FontWeight.Bold)
             }
 
-            IconButton(onClick = onUploadedImagesClick) {
+            IconButton(onClick = {
+                onUploadedImagesClick()
+                Log.d("Home Screen", viewModel.getAccount())
+            }) {
                 Icon(
                     Icons.AutoMirrored.Filled.KeyboardArrowRight,
                     contentDescription = "Go",
@@ -191,7 +181,10 @@ fun HomeScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.onBackground.copy(0.15f), shape = RoundedCornerShape(12.dp))
+                .background(
+                    MaterialTheme.colorScheme.onBackground.copy(0.15f),
+                    shape = RoundedCornerShape(12.dp)
+                )
                 .clickable { onRecentActivityClick() }
                 .padding(16.dp)
         ) {
@@ -273,7 +266,10 @@ fun CropImageGallery(uiState: HomeScreenUIState) {
                         modifier = Modifier
                             .align(Alignment.TopEnd)
                             .padding(8.dp)
-                            .background(MaterialTheme.colorScheme.background.copy(alpha = 0.5f), shape = CircleShape)
+                            .background(
+                                MaterialTheme.colorScheme.background.copy(alpha = 0.5f),
+                                shape = CircleShape
+                            )
                             .size(24.dp)
                     ) {
                         Icon(

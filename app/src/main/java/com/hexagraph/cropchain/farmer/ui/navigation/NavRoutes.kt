@@ -1,7 +1,5 @@
 package com.hexagraph.cropchain.farmer.ui.navigation
 
-import kotlinx.serialization.Serializable
-
 sealed class NavRoutes(val route: String) {
     object HomeScreen : NavRoutes("home")
     object SelectImageScreen : NavRoutes("select_image_screen")

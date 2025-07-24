@@ -13,11 +13,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import androidx.compose.runtime.State
 import com.hexagraph.cropchain.MetaMask
+import com.hexagraph.cropchain.domain.repository.MetaMaskRepository
+import com.hexagraph.cropchain.domain.repository.apppreferences.AppPreferences
 import com.hexagraph.cropchain.workManager.WorkManagerRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.first
 
 
 data class StatusScreenUIState(
@@ -33,7 +36,9 @@ enum class ScreenStatus {
 class UploadStatusViewModel @Inject constructor(
     private val cropRepository: CropRepository,
     private val metaMask: MetaMask,
-    private val workManager: WorkManagerRepository
+    private val workManager: WorkManagerRepository,
+    private val metaMaskRepository: MetaMaskRepository,
+    private val appPreferences: AppPreferences
 ) : ViewModel() {
 
     private val _uiState = mutableStateOf(StatusScreenUIState())
@@ -45,7 +50,7 @@ class UploadStatusViewModel @Inject constructor(
         viewModelScope.launch {
             val crops = cropRepository.getPinataUploadCrops()
             crops.forEach { crop ->
-                if(crop.uploadedToPinata==0) {
+                if (crop.uploadedToPinata == 0) {
                     crop.uploadedToPinata = -1
                     crop.uploadProgress = 0
                     cropRepository.updateCrop(crop)
@@ -68,23 +73,9 @@ class UploadStatusViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(progress = progress)
     }
 
-    private val _isConnected = MutableStateFlow(metaMask.isConnected())
-    val isConnected: StateFlow<Boolean> = _isConnected
-    fun connect() {
-        metaMask.connect(onError = {
-            _isConnected.value = false
-
-        }, onSuccess = {
-            _isConnected.value = true
-
-        })
-
+    fun isConnected(): Boolean {
+        return metaMask.walletAddress != ""
     }
-
-    fun isConnected() {
-        _isConnected.value = metaMask.isConnected()
-    }
-
 
     private val _snackBarMessage = MutableSharedFlow<String>()
     val snackBarMessage = _snackBarMessage.asSharedFlow()
@@ -95,45 +86,79 @@ class UploadStatusViewModel @Inject constructor(
 
 
     fun uploadToBlockChain() {
-        viewModelScope.launch {
-            try {
-                // 1. Get crops to upload
-                val cropList = cropRepository.getBlockChainUploadCrops()
 
-                if (cropList.isEmpty()) {
-                    showSnackBar("No crops to upload to blockchain")
-                    return@launch
-                }
+        metaMask.connect(onError = {
 
-                // 2. Format the crop URLs (concatenate with $ after each one)
-                val crops = cropList.joinToString(separator = "$") { it.url ?: "" }
+        }) { connectedAccounts ->
 
-                // 3. Call the `send()` function
-                val result = metaMask.send(crops)
-
-                // 4. Handle result
-                result.onSuccess { txHash ->
-                    // Mark crops as uploaded in the DB
-                    cropList.forEach {
-                        it.uploadedToBlockChain = true
-                        it.transactionHash = txHash
-                        cropRepository.updateCrop(it)
+            viewModelScope.launch {
+                appPreferences.metaMaskMessage.set("Transaction is not Completed. Please be patient")
+                val accounts = metaMaskRepository.getAllAccounts().first()
+                accounts.forEach { account ->
+                    var check = 0
+                    connectedAccounts.forEach { connectedAccount ->
+                        if (account.account == connectedAccount) check = 1
                     }
-                    Log.d("MetaMask", txHash)
-                    // Show transaction hash or success message
-                    showSnackBar("Crops uploaded to blockchain successfully 🚀")
+                    if (check == 1) {
+                        if (!account.isConnected) {
+                            metaMaskRepository.updateAccount(account.copy(isConnected = true))
+                        }
+                    } else {
+                        if (account.isConnected) {
+                            metaMaskRepository.updateAccount(account.copy(isConnected = false))
+                        }
+                    }
 
-                    // Refresh UI
-                    getAllCrops()
                 }
 
-                result.onFailure {
-                    showSnackBar("Blockchain upload failed: ${it.message}")
+                try {
+                    // 1. Get crops to upload
+                    val cropList = cropRepository.getBlockChainUploadCrops()
+
+                    if (cropList.isEmpty()) {
+                        showSnackBar("No crops to upload to blockchain")
+                        return@launch
+                    }
+
+                    // 2. Format the crop URLs (concatenate with $ after each one)
+                    val crops = cropList.joinToString(separator = "$") { it.url ?: "" }
+
+                    // 3. Call the `send()` function
+                    val result = metaMask.send(crops)
+
+                    // 4. Handle result
+                    result.onSuccess { txHash ->
+                        appPreferences.metaMaskMessage.set("Transaction Completed. ")
+
+                        // Mark crops as uploaded in the DB
+                        cropList.forEach {
+                            it.uploadedToBlockChain = true
+                            it.transactionHash = txHash
+                            cropRepository.updateCrop(it)
+                        }
+                        Log.d("MetaMask", txHash)
+                        // Show transaction hash or success message
+                        showSnackBar("Crops uploaded to blockchain successfully 🚀")
+
+                        // Refresh UI
+                        getAllCrops()
+                    }
+
+                    result.onFailure {
+                        appPreferences.metaMaskMessage.set(it.message.toString())
+
+                        Log.d("Upload Status ViewModel ", it.message.toString())
+                        showSnackBar("Blockchain upload failed: ${it.message}")
+                    }
+                } catch (e: Exception) {
+                    appPreferences.metaMaskMessage.set(e.message.toString())
+
+                    Log.d("Upload Status ViewModel ", e.message.toString())
+                    showSnackBar("Unexpected error: ${e.message}")
                 }
-            } catch (e: Exception) {
-                showSnackBar("Unexpected error: ${e.message}")
             }
         }
+
     }
 
 }
