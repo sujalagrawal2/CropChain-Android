@@ -1,8 +1,8 @@
 package com.hexagraph.cropchain.di
 
 import android.content.Context
-import com.hexagraph.cropchain.domain.repository.apppreferences.AppPreferences
-import com.hexagraph.cropchain.domain.repository.apppreferences.AppPreferencesImpl
+import com.hexagraph.cropchain.data.local.apppreferences.AppPreferences
+import com.hexagraph.cropchain.data.local.apppreferences.AppPreferencesImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

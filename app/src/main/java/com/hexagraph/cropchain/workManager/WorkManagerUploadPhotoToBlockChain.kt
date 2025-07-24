@@ -4,15 +4,12 @@ import android.content.Context
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import com.hexagraph.cropchain.Web3J
 import com.hexagraph.cropchain.domain.repository.CropRepository
-import com.hexagraph.cropchain.util.uploadImageToPinata
-import com.hexagraph.cropchain.util.uriToFile
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 

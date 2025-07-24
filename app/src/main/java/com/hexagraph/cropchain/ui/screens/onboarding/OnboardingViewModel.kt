@@ -8,8 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.hexagraph.cropchain.MainActivity
 import com.hexagraph.cropchain.R
 import com.hexagraph.cropchain.domain.model.SupportedLanguages
-import com.hexagraph.cropchain.domain.repository.apppreferences.AppPreferences
-import com.hexagraph.cropchain.ui.BaseViewModel
+import com.hexagraph.cropchain.data.local.apppreferences.AppPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
