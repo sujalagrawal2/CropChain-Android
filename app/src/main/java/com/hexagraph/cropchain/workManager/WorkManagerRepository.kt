@@ -20,10 +20,6 @@ class WorkManagerRepository @Inject constructor(@ApplicationContext context: Con
             .build()
 
         workManager.enqueue(workManager1)
-//        val workManager2 = OneTimeWorkRequestBuilder<WorkManagerUploadPhotoToBlockChain>()
-//        val continuation =
-//            workManager.beginWith(workManager1.setConstraints(constraints).build())
-//
-//        continuation.enqueue()
+
     }
 }

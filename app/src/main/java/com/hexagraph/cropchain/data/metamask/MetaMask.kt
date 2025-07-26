@@ -22,7 +22,7 @@ class MetaMask@Inject constructor(
 
     private val dAppMetadata = DappMetadata(
         name = "Crop Chain",
-        url = "http://www.cropchain.com"
+        url = "https://www.cropchain.com"
     )
     private val sdkOptions = SDKOptions(
         infuraAPIKey = null,
@@ -66,7 +66,7 @@ class MetaMask@Inject constructor(
 
     }
 
-    val contractAddress : String = "0x32E082A090AFE7E85cd6462A5AA8E3b9342Dd9dA"
+    val contractAddress : String = "0x37958a3B79628C529C37010577510A0e1a21F4e9"
 
     var walletAddress: String = ""
 }

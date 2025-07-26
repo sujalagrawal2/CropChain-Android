@@ -20,6 +20,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.hexagraph.cropchain.data.local.apppreferences.AppPreferences
 import com.hexagraph.cropchain.data.local.apppreferences.AppPreferencesImpl
+import com.hexagraph.cropchain.data.metamask.MetaMask
+import com.hexagraph.cropchain.data.repository.Web3jRepositoryImpl
+import com.hexagraph.cropchain.data.web3j.Web3j
 import com.hexagraph.cropchain.ui.navigation.farmer.MainScreen
 import com.hexagraph.cropchain.ui.screens.onboarding.AuthenticationNavigation
 import com.hexagraph.cropchain.ui.screens.onboarding.OnBoardingScreen
@@ -40,6 +43,8 @@ import kotlinx.coroutines.runBlocking
 class MainActivity : ComponentActivity() {
 
     override fun attachBaseContext(newBase: Context) {
+
+
         // Initialize locale before setting the base context
         val langCode = runBlocking { AppPreferencesImpl(newBase).appLanguage.getFlow().first() }
         Log.d("MainActivityLang", "Language code: ${langCode.languageCode}")
@@ -50,8 +55,16 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val appPreferences: AppPreferences = AppPreferencesImpl(this)
+//        val metaMask = MetaMask(this, appPreferences)
+//        val web3 = Web3j()
+//        val web3j = Web3jRepositoryImpl(metaMask, web3)
+//
+//        CoroutineScope(Dispatchers.Default).launch {
+//            println(web3j.getImageInfo("QmdiwJzKpUuDVp3TV4CRgPCHwq6Bfyhj9gPbiptZjJPQBi"))
+//        }
         // Preload values synchronously
-        val areAllPermissionsGrantedInitial = runBlocking { appPreferences.areAllPermissionsGranted.getFlow().first() }
+        val areAllPermissionsGrantedInitial =
+            runBlocking { appPreferences.areAllPermissionsGranted.getFlow().first() }
         val aadharIdInitial = runBlocking { appPreferences.aadharID.getFlow().first() }
 
         checkPermissions()
@@ -59,58 +72,66 @@ class MainActivity : ComponentActivity() {
         setContent {
             CropChainTheme {
                 val navController = rememberNavController()
-                val areAllPermissionsGranted by appPreferences.areAllPermissionsGranted.getFlow().collectAsState(areAllPermissionsGrantedInitial)
+                val areAllPermissionsGranted by appPreferences.areAllPermissionsGranted.getFlow()
+                    .collectAsState(areAllPermissionsGrantedInitial)
                 val aadharId by appPreferences.aadharID.getFlow().collectAsState(aadharIdInitial)
                 Surface(modifier = Modifier.fillMaxSize()) {
                     val onboardingViewModel = hiltViewModel<OnboardingViewModel>()
 
-                        NavHost(
-                            navController = navController,
-                            startDestination =
-                                if(aadharId.isEmpty() && !areAllPermissionsGranted){
+                    NavHost(
+                        navController = navController,
+                        startDestination =
+                            if (aadharId.isEmpty() && !areAllPermissionsGranted) {
                                 AuthenticationNavigation.OnBoarding(OnboardingScreens.entries)
-                            }else if(aadharId.isEmpty()){
+                            } else if (aadharId.isEmpty()) {
                                 AuthenticationNavigation.OnBoarding(OnboardingScreens.entries - OnboardingScreens.PERMISSIONS_SCREEN)
-                            }else if(!areAllPermissionsGranted) {
+                            } else if (!areAllPermissionsGranted) {
                                 AuthenticationNavigation.OnBoarding(listOf(OnboardingScreens.PERMISSIONS_SCREEN))
-                            }else{
+                            } else {
                                 AuthenticationNavigation.MainApp
                             }
-                        ) {
+                    ) {
 
-                            composable<AuthenticationNavigation.OnBoarding> {
-                                val allowedScreens = it.toRoute<AuthenticationNavigation.OnBoarding>().allowedScreens
-                                OnBoardingScreen(
-                                    onboardingViewModel = onboardingViewModel,
-                                    allowedScreens = allowedScreens,
-                                    onCompletion = {
-                                        navController.navigate(AuthenticationNavigation.MainApp){
-                                            popUpTo(AuthenticationNavigation.OnBoarding()){inclusive = true}
-                                            launchSingleTop = true
+                        composable<AuthenticationNavigation.OnBoarding> {
+                            val allowedScreens =
+                                it.toRoute<AuthenticationNavigation.OnBoarding>().allowedScreens
+                            OnBoardingScreen(
+                                onboardingViewModel = onboardingViewModel,
+                                allowedScreens = allowedScreens,
+                                onCompletion = {
+                                    navController.navigate(AuthenticationNavigation.MainApp) {
+                                        popUpTo(AuthenticationNavigation.OnBoarding()) {
+                                            inclusive = true
                                         }
+                                        launchSingleTop = true
                                     }
-                                )
-                            }
-                            composable<AuthenticationNavigation.MainApp> {
-                                MainScreen()
-                            }
-
+                                }
+                            )
                         }
+                        composable<AuthenticationNavigation.MainApp> {
+                            MainScreen()
+                        }
+
                     }
                 }
             }
         }
+    }
 
     override fun onResume() {
         super.onResume()
         checkPermissions()
     }
 
-    fun checkPermissions(){
-        var appPreferences: AppPreferences = AppPreferencesImpl(this)
+    fun checkPermissions() {
+        val appPreferences: AppPreferences = AppPreferencesImpl(this)
         var granted = true
-        PermissionsRequired.entries.forEach { permission->
-            if(ContextCompat.checkSelfPermission(this, permission.permission) != PackageManager.PERMISSION_GRANTED){
+        PermissionsRequired.entries.forEach { permission ->
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    permission.permission
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 granted = false
             }
         }
