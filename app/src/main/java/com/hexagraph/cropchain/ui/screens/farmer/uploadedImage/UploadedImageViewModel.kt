@@ -1,12 +1,9 @@
 package com.hexagraph.cropchain.ui.screens.farmer.uploadedImage
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hexagraph.cropchain.Web3J
-import com.hexagraph.cropchain.domain.repository.MetaMaskSDKRepository
 import com.hexagraph.cropchain.domain.repository.Web3jRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,7 +11,8 @@ import javax.inject.Inject
 
 data class UploadedImageUIState(
     val verifiedImages: List<String> = emptyList(),
-    val pendingImages: List<String> = emptyList()
+    val pendingImages: List<String> = emptyList(),
+    val error: String? = null
 )
 
 @HiltViewModel
@@ -31,12 +29,19 @@ class UploadedImageViewModel @Inject constructor(
 
     private fun getVerifiedImages() {
         viewModelScope.launch {
-            val verifiedImages = web3jRepository.getVerifiedImage()
 
-            _uiState.value = _uiState.value.copy(verifiedImages = verifiedImages)
+            web3jRepository.getFarmer(null).onSuccess { it ->
+
+                _uiState.value = _uiState.value.copy(
+                    verifiedImages = it.verifiedImages,
+                    pendingImages = it.unVerifiedImages
+                )
+            }
+                .onFailure {
+                    _uiState.value = _uiState.value.copy(error = it.message)
+                }
         }
     }
-
 
 
 }

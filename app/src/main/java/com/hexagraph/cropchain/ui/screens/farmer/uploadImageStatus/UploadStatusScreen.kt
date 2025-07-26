@@ -59,8 +59,6 @@ fun UploadStatusScreen(
     val uiState = viewModel.uiState
     val status = viewModel.status
     val isConnected = viewModel.isConnected()
-    val snackBarHostState = remember { SnackbarHostState() }
-    val coroutineScope = rememberCoroutineScope()
 
 
     LaunchedEffect(status) {
@@ -203,12 +201,7 @@ fun UploadStatusScreen(
                 Text("Error occurred", color = Color.Red)
             }
         }
-        SnackbarHost(
-            hostState = snackBarHostState,
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.CenterHorizontally)
-        )
+
     }
 }
 

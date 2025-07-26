@@ -131,8 +131,9 @@ fun UploadedImageScreen(
             ) {
                 items(uiState.value.verifiedImages) { uri ->
                     Log.d("Uploaded Image Screen", uri)
+                    val url = "https://orange-many-shrimp-59.mypinata.cloud/ipfs/$uri"
                     Image(
-                        painter = rememberAsyncImagePainter(uri),
+                        painter = rememberAsyncImagePainter(url),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
@@ -154,8 +155,9 @@ fun UploadedImageScreen(
             ) {
                 items(uiState.value.pendingImages) { uri ->
                     Log.d("Uploaded Image Screen", uri)
+                    val url = "https://orange-many-shrimp-59.mypinata.cloud/ipfs/$uri"
                     Image(
-                        painter = rememberAsyncImagePainter(uri),
+                        painter = rememberAsyncImagePainter(url),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
@@ -165,62 +167,7 @@ fun UploadedImageScreen(
                 }
             }
         }
-//        LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-//            items(10) { index ->
-//                Card(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    colors = CardDefaults.cardColors(containerColor = cardColor),
-//                    shape = RoundedCornerShape(16.dp),
-//                    elevation = CardDefaults.cardElevation(6.dp)
-//                ) {
-//                    Row(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(12.dp),
-//                        verticalAlignment = Alignment.CenterVertically
-//                    ) {
-//                        Box(
-//                            modifier = Modifier
-//                                .size(60.dp)
-//                                .clip(RoundedCornerShape(12.dp))
-//                                .background(Color.Gray.copy(alpha = 0.4f)),
-//                            contentAlignment = Alignment.Center
-//                        ) {
-//                            Icon(
-//                                imageVector = Icons.Default.Image,
-//                                contentDescription = "Image",
-//                                tint = Color.LightGray,
-//                                modifier = Modifier.size(30.dp)
-//                            )
-//                        }
-//
-//                        Spacer(modifier = Modifier.width(16.dp))
-//
-//                        Column(modifier = Modifier.weight(1f)) {
-//                            Text(
-//                                text = "crop_image_$index.jpg",
-//                                color = textColor,
-//                                style = MaterialTheme.typography.bodyLarge,
-//                                fontWeight = FontWeight.SemiBold
-//                            )
-//                            Text(
-//                                text = if (selectedTab == "Verified") "Uploaded to Blockchain"
-//                                else "Waiting for Upload",
-//                                color = Color.Gray,
-//                                style = MaterialTheme.typography.bodySmall
-//                            )
-//                        }
-//
-//                        Icon(
-//                            imageVector = if (selectedTab == "Verified") Icons.Default.CheckCircle else Icons.Default.HourglassEmpty,
-//                            contentDescription = null,
-//                            tint = if (selectedTab == "Verified") accentColor else Color.Gray,
-//                            modifier = Modifier.size(24.dp)
-//                        )
-//                    }
-//                }
-//            }
-//        }
+
     }
 }
 
