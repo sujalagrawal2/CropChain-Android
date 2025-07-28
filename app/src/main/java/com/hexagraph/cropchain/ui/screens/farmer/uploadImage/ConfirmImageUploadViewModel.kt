@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hexagraph.cropchain.Web3J
 import com.hexagraph.cropchain.domain.model.Crop
 import com.hexagraph.cropchain.domain.repository.CropRepository
 import com.hexagraph.cropchain.util.getCurrentTimestamp
@@ -18,7 +17,6 @@ import javax.inject.Inject
 @HiltViewModel
 class ConfirmImageUploadViewModel @Inject constructor(
     private val cropRepository: CropRepository,
-    private val web3j: Web3J,
     private val workManager: WorkManagerRepository
 ) : ViewModel() {
     fun insertCrops(uid: List<Uri>, context: Context, onCompleted: () -> Unit) {

@@ -1,15 +1,24 @@
 package com.hexagraph.cropchain.ui.navigation.farmer
 
+import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.hexagraph.cropchain.data.local.apppreferences.AppPreferences
+import com.hexagraph.cropchain.util.sendRegistrationToServer
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NavHostViewModel @Inject constructor(private val appPreferences: AppPreferences) :
+class NavHostViewModel @Inject constructor(
+    @ApplicationContext context: Context,
+    private val appPreferences: AppPreferences
+) :
     ViewModel() {
 
     fun getMetaMaskMessage(): Flow<String> {
@@ -22,4 +31,30 @@ class NavHostViewModel @Inject constructor(private val appPreferences: AppPrefer
         }
     }
 
+    init {
+        viewModelScope.launch {
+            appPreferences.token.getFlow().collect { token ->
+                if (token != "") {
+                    val deviceId = appPreferences.deviceId.get()
+                    val aadharNumber = appPreferences.aadharID.get()
+                    if (deviceId != "" && aadharNumber != "") {
+//                        sendRegistrationToServer(
+//                            token,
+//                            aadharNumber,
+//                            deviceId,
+//                            context
+//                        ).onSuccess { response ->
+//                            Log.d("FCM", "Token upload successful: $response")
+//                            appPreferences.token.set("")
+//                        }.onFailure { exception ->
+//                            Log.e("FCM", "Token upload failed", exception)
+//                        }
+
+                    }
+                }
+            }
+        }
+
+
+    }
 }
