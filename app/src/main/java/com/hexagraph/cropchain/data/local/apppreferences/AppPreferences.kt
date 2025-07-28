@@ -11,4 +11,6 @@ interface AppPreferences {
     val areAllPermissionsGranted: DataStorePreference<Boolean>
     val accountSelected : DataStorePreference<String>
     val metaMaskMessage : DataStorePreference<String>
+    val deviceId : DataStorePreference<String>
+    val token: DataStorePreference<String>
 }

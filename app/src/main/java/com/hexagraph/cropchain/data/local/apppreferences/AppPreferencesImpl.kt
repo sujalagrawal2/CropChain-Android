@@ -28,6 +28,8 @@ class AppPreferencesImpl(private val context: Context) : AppPreferences {
         val ARE_ALL_PERMISSIONS_GRANTED = booleanPreferencesKey("are_all_permissions_granted")
         val ACCOUNT_SELECTED = stringPreferencesKey("account_selected")
         val METAMASK_MESSAGE = stringPreferencesKey("metamask_message")
+        val DEVICE_ID = stringPreferencesKey("device_id")
+        val SEND_TOKEN = stringPreferencesKey("send_token")
     }
 
 
@@ -136,6 +138,37 @@ class AppPreferencesImpl(private val context: Context) : AppPreferences {
                 datastore.edit { prefs ->
                     prefs[PreferenceKeys.METAMASK_MESSAGE] = value
                 }
+            }
+
+        }
+    override val deviceId: DataStorePreference<String>
+        get() = object : DataStorePreference<String> {
+            override fun getFlow(): Flow<String> {
+                return datastore.data.map { prefs ->
+                    prefs[PreferenceKeys.DEVICE_ID] ?: ""
+                }
+            }
+
+            override suspend fun set(value: String) {
+                datastore.edit { prefs ->
+                    prefs[PreferenceKeys.DEVICE_ID] = value
+                }
+            }
+
+        }
+    override val token: DataStorePreference<String>
+        get() = object : DataStorePreference<String> {
+            override fun getFlow(): Flow<String> {
+                return datastore.data.map { prefs ->
+                    prefs[PreferenceKeys.SEND_TOKEN] ?: ""
+                }
+            }
+
+            override suspend fun set(value: String) {
+                datastore.edit { prefs ->
+                    prefs[PreferenceKeys.SEND_TOKEN] = value
+                }
+
             }
 
         }

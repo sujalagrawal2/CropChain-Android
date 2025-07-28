@@ -1,8 +1,10 @@
 package com.hexagraph.cropchain
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,9 +22,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.hexagraph.cropchain.data.local.apppreferences.AppPreferences
 import com.hexagraph.cropchain.data.local.apppreferences.AppPreferencesImpl
-import com.hexagraph.cropchain.data.metamask.MetaMask
-import com.hexagraph.cropchain.data.repository.Web3jRepositoryImpl
-import com.hexagraph.cropchain.data.web3j.Web3j
 import com.hexagraph.cropchain.ui.navigation.farmer.MainScreen
 import com.hexagraph.cropchain.ui.screens.onboarding.AuthenticationNavigation
 import com.hexagraph.cropchain.ui.screens.onboarding.OnBoardingScreen
@@ -52,17 +51,11 @@ class MainActivity : ComponentActivity() {
         super.attachBaseContext(context)
     }
 
+    @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val appPreferences: AppPreferences = AppPreferencesImpl(this)
-//        val metaMask = MetaMask(this, appPreferences)
-//        val web3 = Web3j()
-//        val web3j = Web3jRepositoryImpl(metaMask, web3)
-//
-//        CoroutineScope(Dispatchers.Default).launch {
-//            println(web3j.getImageInfo("QmdiwJzKpUuDVp3TV4CRgPCHwq6Bfyhj9gPbiptZjJPQBi"))
-//        }
-        // Preload values synchronously
+
         val areAllPermissionsGrantedInitial =
             runBlocking { appPreferences.areAllPermissionsGranted.getFlow().first() }
         val aadharIdInitial = runBlocking { appPreferences.aadharID.getFlow().first() }
@@ -71,6 +64,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CropChainTheme {
+
+                val deviceId = Settings.Secure.getString(
+                    contentResolver,
+                    Settings.Secure.ANDROID_ID
+                )
+                CoroutineScope(Dispatchers.Default).launch {
+                    appPreferences.deviceId.set(deviceId)
+                }
+
+
                 val navController = rememberNavController()
                 val areAllPermissionsGranted by appPreferences.areAllPermissionsGranted.getFlow()
                     .collectAsState(areAllPermissionsGrantedInitial)
