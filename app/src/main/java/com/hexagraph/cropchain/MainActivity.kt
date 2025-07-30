@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -65,13 +64,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             CropChainTheme {
 
-                val deviceId = Settings.Secure.getString(
-                    contentResolver,
-                    Settings.Secure.ANDROID_ID
-                )
-                CoroutineScope(Dispatchers.Default).launch {
-                    appPreferences.deviceId.set(deviceId)
-                }
 
 
                 val navController = rememberNavController()
@@ -143,4 +135,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+
+
 

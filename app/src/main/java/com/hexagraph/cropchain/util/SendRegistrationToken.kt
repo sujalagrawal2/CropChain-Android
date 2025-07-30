@@ -44,7 +44,7 @@ suspend fun sendRegistrationToServer(
         override fun onFailure(call: Call, e: IOException) {
             Log.e("FCM", "Token upload failed", e)
             if (continuation.isActive) {
-                continuation.resumeWithException(e)
+                continuation.resume(Result.failure(e))
             }
         }
 
