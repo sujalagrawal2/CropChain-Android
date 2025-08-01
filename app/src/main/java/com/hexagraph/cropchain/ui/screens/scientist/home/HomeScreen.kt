@@ -1,6 +1,6 @@
-package com.hexagraph.cropchain.ui.screens.farmer.home
+package com.hexagraph.cropchain.ui.screens.scientist.home
 
-import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -53,19 +53,22 @@ import coil.compose.rememberAsyncImagePainter
 import com.hexagraph.cropchain.R
 import com.hexagraph.cropchain.ui.theme.cropChainGradient
 import com.hexagraph.cropchain.ui.theme.cropChainOrange
-import java.io.File
-import java.net.URI
 
 @Composable
 fun HomeScreen(
-    onUploadClick: () -> Unit = {},
-    onUploadedImagesClick: () -> Unit = {},
+    onReviewedImagesClicked: () -> Unit = {},
     onRecentActivityClick: () -> Unit = {},
-    viewModel: HomeScreenViewModel = hiltViewModel()
+    viewModel: HomeScreenViewModel = hiltViewModel(),
+    onVerifiedImagesClicked: () -> Unit = {}
 ) {
+
 
     val uiState = viewModel.uiState
     val context = LocalContext.current
+    if (uiState.value.error != null) {
+        Toast.makeText(context, uiState.value.error, Toast.LENGTH_SHORT).show()
+        viewModel.toastMessageShown()
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -77,7 +80,7 @@ fun HomeScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { onUploadClick() }
+                .clickable { }
                 .height(120.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .background(brush = cropChainGradient),
@@ -112,12 +115,12 @@ fun HomeScreen(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.Pets, contentDescription = null, tint = Color(0xFFFF6D00))
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(stringResource(R.string.uploaded_images), fontWeight = FontWeight.Bold)
+                Text("Reviewed Images", fontWeight = FontWeight.Bold)
             }
 
             IconButton(onClick = {
-                onUploadedImagesClick()
-                Log.d("Home Screen", viewModel.getAccount())
+                onReviewedImagesClicked()
+
             }) {
                 Icon(
                     Icons.AutoMirrored.Filled.KeyboardArrowRight,
@@ -126,7 +129,36 @@ fun HomeScreen(
             }
         }
 
-        CropImageGallery(viewModel.uiState.value)
+        val reviewedImages: MutableList<String> = emptyList<String>().toMutableList()
+        for (i in uiState.value.reviewedImages) reviewedImages.add(i[0])
+        CropImageGallery(reviewedImages)
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(Icons.Default.Pets, contentDescription = null, tint = Color(0xFFFF6D00))
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Verified Images", fontWeight = FontWeight.Bold)
+            }
+
+            IconButton(onClick = {
+                onVerifiedImagesClicked()
+
+            }) {
+                Icon(
+                    Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    contentDescription = "Go",
+                )
+            }
+        }
+
+        val verifiedImages: MutableList<String> = emptyList<String>().toMutableList()
+        for (i in uiState.value.verifiedImages) verifiedImages.add(i[0])
+        CropImageGallery(verifiedImages)
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -190,13 +222,12 @@ fun DashboardScreenTitle(
 }
 
 @Composable
-fun CropImageGallery(uiState: HomeScreenUIState) {
+fun CropImageGallery(images: List<String>) {
     val scrollState = rememberScrollState()
 
     var selectedIndex by remember { mutableStateOf<Int?>(null) }
 
     Column {
-        // — thumbnail row, aligned under the header —
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -204,9 +235,8 @@ fun CropImageGallery(uiState: HomeScreenUIState) {
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            uiState.uploadedImages.forEachIndexed { index, crop ->
-                val url = if (isLocalImageExists(crop.uid)) crop.uid else crop.url
-
+            images.forEachIndexed { index, crop ->
+                val url = "https://orange-many-shrimp-59.mypinata.cloud/ipfs/$crop"
                 Box(
                     modifier = Modifier
                         .size(160.dp)
@@ -252,7 +282,7 @@ fun CropImageGallery(uiState: HomeScreenUIState) {
                 val pagerState = rememberPagerState(
                     initialPage = initialPage,
                     initialPageOffsetFraction = 0f,
-                    pageCount = { uiState.uploadedImages.size }
+                    pageCount = { images.size }
                 )
 
                 Box(
@@ -264,9 +294,8 @@ fun CropImageGallery(uiState: HomeScreenUIState) {
                         state = pagerState,
                         modifier = Modifier.fillMaxSize()
                     ) { page ->
-                        val crop = uiState.uploadedImages[page]
-                        val url = if (isLocalImageExists(crop.uid)) crop.uid else crop.url
-
+                        val crop = images[page]
+                        val url = "https://orange-many-shrimp-59.mypinata.cloud/ipfs/$crop"
                         Image(
                             painter = rememberAsyncImagePainter(model = url),
                             contentDescription = "Full Image",
@@ -289,16 +318,6 @@ fun CropImageGallery(uiState: HomeScreenUIState) {
                 }
             }
         }
-    }
-}
-
-
-fun isLocalImageExists(imagePath: String): Boolean {
-    return try {
-        val file = File(URI(imagePath))
-        file.exists()
-    } catch (e: Exception) {
-        false
     }
 }
 

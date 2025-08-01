@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ConfirmImageUploadViewModel @Inject constructor(
     private val cropRepository: CropRepository,
-    private val workManager: WorkManagerRepository
+    private val workManager: WorkManagerRepository,
 ) : ViewModel() {
     fun insertCrops(uid: List<Uri>, context: Context, onCompleted: () -> Unit) {
         viewModelScope.launch {

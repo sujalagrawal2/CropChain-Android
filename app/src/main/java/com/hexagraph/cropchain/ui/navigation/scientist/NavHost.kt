@@ -1,4 +1,4 @@
-package com.hexagraph.cropchain.ui.navigation.farmer
+package com.hexagraph.cropchain.ui.navigation.scientist
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -35,17 +35,16 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.hexagraph.cropchain.R
+import com.hexagraph.cropchain.ui.screens.scientist.home.HomeScreen
+import com.hexagraph.cropchain.ui.screens.scientist.profile.ProfileScreen
+import com.hexagraph.cropchain.ui.screens.scientist.review.ReviewScreen
 import com.hexagraph.cropchain.ui.screens.common.reviewImage.ReviewImageScreen
-import com.hexagraph.cropchain.ui.screens.farmer.home.HomeScreen
-import com.hexagraph.cropchain.ui.screens.farmer.profile.ProfileScreen
-import com.hexagraph.cropchain.ui.screens.farmer.uploadImage.ConfirmImageUploadScreen
-import com.hexagraph.cropchain.ui.screens.farmer.uploadImageStatus.UploadStatusScreen
-import com.hexagraph.cropchain.ui.screens.farmer.uploadedImage.UploadedImageScreen
+import com.hexagraph.cropchain.ui.screens.scientist.reviewedImages.ReviewedImages
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Unit={}) {
+fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Unit = {}) {
     val navController = rememberNavController()
     val currentBackStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry.value?.destination?.route
@@ -67,7 +66,7 @@ fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Un
     }
 
     val showBottomBar =
-        (currentRoute == NavRoutes.HomeScreen.route || currentRoute == NavRoutes.ProfileScreen.route || currentRoute == NavRoutes.SelectImageScreen.route)
+        (currentRoute == NavRoutes.HomeScreen.route || currentRoute == NavRoutes.ProfileScreen.route || currentRoute == NavRoutes.ReviewScreen.route)
     Scaffold(
         bottomBar = {
             if (showBottomBar) {
@@ -113,11 +112,11 @@ fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Un
                 }
             ) {
                 HomeScreen(
-                    onUploadedImagesClick = {
-                        navController.navigate(NavRoutes.UploadedImageScreen.route)
+                    onReviewedImagesClicked = {
+                        navController.navigate(NavRoutes.ReviewedImageScreen.passArgs(1))
                     },
-                    onUploadClick = {
-                        navController.navigate(NavRoutes.UploadIImageScreen.route)
+                    onVerifiedImagesClicked = {
+                        navController.navigate(NavRoutes.ReviewedImageScreen.passArgs(2))
                     })
             }
             composable(
@@ -150,7 +149,7 @@ fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Un
                 ProfileScreen(onLogoutClick = onLogOut)
             }
             composable(
-                NavRoutes.SelectImageScreen.route,
+                NavRoutes.ReviewScreen.route,
                 enterTransition = {
                     slideInHorizontally(
                         initialOffsetX = { it },
@@ -176,50 +175,11 @@ fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Un
                     )
                 }
             ) {
-                ConfirmImageUploadScreen(
-                    goToUploadStatusScreen = {
-                        navController.navigate(NavRoutes.UploadStatusScreen.route) {
-                            popUpTo(NavRoutes.SelectImageScreen.route) { inclusive = false }
-                            launchSingleTop = true
-                        }
-                    },
-                    goToUploadImageScreen = {
-                        navController.navigate(NavRoutes.UploadIImageScreen.route)
-                    })
-            }
-            composable(NavRoutes.UploadStatusScreen.route) {
-                UploadStatusScreen(
-                    onBackButtonPressed = {
-                        navController.navigateUp()
-                    },
-                    goToProfileScreen = { navController.navigate(NavRoutes.ProfileScreen.route) }
-                )
-            }
-            composable(NavRoutes.UploadIImageScreen.route) {
-                ConfirmImageUploadScreen(
-                    onBackButtonPressed = {
-                        navController.navigateUp()
-                    },
-                    goToUploadStatusScreen = {
-                        navController.navigate(NavRoutes.UploadStatusScreen.route) {
-                            popUpTo(NavRoutes.SelectImageScreen.route) { inclusive = false }
-                            launchSingleTop = true
-                        }
-                    })
-            }
-
-            composable(NavRoutes.UploadedImageScreen.route) {
-                UploadedImageScreen(
-                    onBackButtonPressed = {
-                        navController.navigateUp()
-                    },
-                    onImageSelected = { url, type ->
-                        navController.navigate(
-                            NavRoutes.ReviewImageScreen.passArgs(url = url, type = type)
-                        )
-
-                    }
-                )
+                ReviewScreen(onImageSelected = { url, type ->
+                    navController.navigate(
+                        NavRoutes.ReviewImageScreen.passArgs(url = url, type = type)
+                    )
+                })
             }
 
             composable(
@@ -233,6 +193,21 @@ fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Un
                 val type = it.arguments?.getInt("type")!!
                 ReviewImageScreen(imageUrl = url, type = type)
             }
+
+            composable(
+                route = NavRoutes.ReviewedImageScreen.route,
+                arguments = listOf(
+                    navArgument("type") { type = NavType.IntType }
+                )
+            ) {
+                val type = it.arguments?.getInt("type")!!
+                ReviewedImages(type = type, onImageClicked = { url, type ->
+                    navController.navigate(
+                        NavRoutes.ReviewImageScreen.passArgs(url = url, type = type)
+                    )
+                })
+            }
+
         }
     }
 }
@@ -248,7 +223,7 @@ fun BottomNavigationBar(navController: NavController) {
         selectedIndicatorColor = MaterialTheme.colorScheme.primaryContainer, // Same green for selected indicator
     )
 
-    NavigationBar() {
+    NavigationBar {
         NavigationBarItem(
             icon = { Icon(Icons.Default.Home, contentDescription = "Dashboard") },
             label = { Text(stringResource(R.string.dashboard), fontWeight = FontWeight.Bold) },
@@ -266,11 +241,11 @@ fun BottomNavigationBar(navController: NavController) {
 
         NavigationBarItem(
             icon = { Icon(Icons.Default.AddCircle, contentDescription = "Upload") },
-            label = { Text(stringResource(R.string.upload), fontWeight = FontWeight.Bold) },
-            selected = currentRoute == NavRoutes.SelectImageScreen.route,
+            label = { Text("Review Image", fontWeight = FontWeight.Bold) },
+            selected = currentRoute == NavRoutes.ReviewScreen.route,
             onClick = {
-                if (currentRoute != NavRoutes.SelectImageScreen.route) {
-                    navController.navigate(NavRoutes.SelectImageScreen.route) {
+                if (currentRoute != NavRoutes.ReviewScreen.route) {
+                    navController.navigate(NavRoutes.ReviewScreen.route) {
                         popUpTo(navController.graph.startDestinationId) { inclusive = false }
                         launchSingleTop = true
                     }
@@ -295,9 +270,3 @@ fun BottomNavigationBar(navController: NavController) {
         )
     }
 }
-
-
-
-
-
-

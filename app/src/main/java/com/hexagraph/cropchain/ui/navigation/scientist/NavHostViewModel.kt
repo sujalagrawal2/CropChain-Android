@@ -1,4 +1,4 @@
-package com.hexagraph.cropchain.ui.navigation.farmer
+package com.hexagraph.cropchain.ui.navigation.scientist
 
 import android.annotation.SuppressLint
 import android.content.Context
