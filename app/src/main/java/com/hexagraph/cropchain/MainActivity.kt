@@ -59,16 +59,21 @@ class MainActivity : ComponentActivity() {
             runBlocking { appPreferences.areAllPermissionsGranted.getFlow().first() }
         val aadharIdInitial = runBlocking { appPreferences.aadharID.getFlow().first() }
 
+        val isUserLoggedInInitial = runBlocking { appPreferences.isUserLoggedIn.getFlow().first() }
+
+
         checkPermissions()
         enableEdgeToEdge()
         setContent {
             CropChainTheme {
 
 
-
                 val navController = rememberNavController()
                 val areAllPermissionsGranted by appPreferences.areAllPermissionsGranted.getFlow()
                     .collectAsState(areAllPermissionsGrantedInitial)
+
+                val isUserLoggedIn = appPreferences.isUserLoggedIn.getFlow().collectAsState(isUserLoggedInInitial)
+
                 val aadharId by appPreferences.aadharID.getFlow().collectAsState(aadharIdInitial)
                 Surface(modifier = Modifier.fillMaxSize()) {
                     val onboardingViewModel = hiltViewModel<OnboardingViewModel>()
@@ -76,7 +81,7 @@ class MainActivity : ComponentActivity() {
                     NavHost(
                         navController = navController,
                         startDestination =
-                            if (aadharId.isEmpty() && !areAllPermissionsGranted) {
+                         if ((aadharId.isEmpty() && !areAllPermissionsGranted )|| !isUserLoggedIn.value) {
                                 AuthenticationNavigation.OnBoarding(OnboardingScreens.entries)
                             } else if (aadharId.isEmpty()) {
                                 AuthenticationNavigation.OnBoarding(OnboardingScreens.entries - OnboardingScreens.PERMISSIONS_SCREEN)
@@ -94,6 +99,9 @@ class MainActivity : ComponentActivity() {
                                 onboardingViewModel = onboardingViewModel,
                                 allowedScreens = allowedScreens,
                                 onCompletion = {
+                                   runBlocking {
+                                       appPreferences.isUserLoggedIn.set(true)
+                                   }
                                     navController.navigate(AuthenticationNavigation.MainApp) {
                                         popUpTo(AuthenticationNavigation.OnBoarding()) {
                                             inclusive = true
@@ -104,7 +112,15 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable<AuthenticationNavigation.MainApp> {
-                            MainScreen()
+                            var isCurrentUserFarmer = false
+
+                            runBlocking {
+                                isCurrentUserFarmer = appPreferences.isCurrentUserFarmer.get()
+                            }
+
+                            if (isCurrentUserFarmer) MainScreen()
+                            else com.hexagraph.cropchain.ui.navigation.scientist.MainScreen()
+
                         }
 
                     }

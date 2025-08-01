@@ -5,8 +5,8 @@ pragma solidity ^0.8.17;
 contract Upload {
     address kvk_manager;
 
-    mapping(address => scientist) scientist_map;
-    mapping(address => farmer) farmer_map;
+    mapping(address => scientist) public scientist_map;
+    mapping(address => farmer) public farmer_map;
 
     mapping(address => bool) scientist_bool;
     mapping(address => bool) farmer_bool;
@@ -18,13 +18,14 @@ contract Upload {
     string[]  close_images;
 
     mapping(address => bool) public verifiers_map;
+    mapping(string => string) public image_verifiers;
 
     struct farmer {
         uint level;
         uint256 adhar_id;
         uint256 auth_points;
-        string[] images_upload;
-        string[] image_VR;
+        string images_upload;
+        string image_VR;
         address farmer_add;
         uint256 correctReportCount;
     }
@@ -34,8 +35,8 @@ contract Upload {
         uint256 adhar_id;
         uint256 auth_points;
         uint256 scientist_id;
-        string[] image_VR;
-        string[] image_rvd;
+        string image_VR;
+        string image_rvd;
         address scientist_add;
         uint256 correctReportCount;
     }
@@ -91,7 +92,11 @@ contract Upload {
         farmers.push(_farmer);
     }
 
+    event ImageSubmitted(address _user, string imageUrl);
 
+    event ImageVerified(address _user, string imageUrl, bool choice);
+
+    event ImageReviewed(address _user, string imageUrl, string review);
 
     function upload_image(address _user, string memory _url) public {
         require(farmer_bool[msg.sender], "You are not a registered farmer");
@@ -99,6 +104,8 @@ contract Upload {
         new_image.imageUrl = _url;
         new_image.owner = msg.sender;
         pending_images.push(_url);
+        farmer_map[_user].images_upload = string(abi.encodePacked(farmer_map[_user].images_upload, "$$$", _url));
+        emit ImageSubmitted(_user,_url);
     }
 
     function AI_solution(string memory _url, string memory _solution) public {
@@ -109,7 +116,7 @@ contract Upload {
             new_image.got_AI = true;
 
             open_images.push(_url);
-            farmer_map[new_image.owner].images_upload.push(_url);
+            farmer_map[new_image.owner].images_upload=string(abi.encodePacked(farmer_map[new_image.owner].images_upload,"$$$",_url));
         }
 
         removeFromArray(pending_images,_url);
@@ -125,7 +132,7 @@ contract Upload {
             new_image.reviewed = true;
 
             close_images.push(_url);
-            scientist_map[msg.sender].image_rvd.push(_url);
+            scientist_map[msg.sender].image_rvd=string(abi.encodePacked(scientist_map[msg.sender].image_rvd,"$$$",_url));
 
 
             removeFromArray(open_images,_url);
@@ -145,8 +152,14 @@ contract Upload {
         for (uint i = 0; i < new_image.verifiers.length; i++) {
             require(new_image.verifiers[i] != msg.sender, "You have already verified this image");
         }
+        address reviewer_add = new_image.reviewer;
+        address farmer_add = new_image.owner;
+
+        emit ImageVerified(reviewer_add, _url, _choice);
 
         new_image.verifiers.push(msg.sender);
+        image_verifiers[_url] = string(abi.encodePacked(image_verifiers[_url],"$$$",msg.sender));
+
         new_image.verified = true;
         new_image.verificationCount += 1;
 
@@ -156,19 +169,18 @@ contract Upload {
             new_image.false_count += 1;
         }
 
+        scientist_map[msg.sender].image_VR=string(abi.encodePacked(scientist_map[msg.sender].image_VR,"$$$",_url));
 
         if (new_image.verificationCount >= 5) {
-            address reviewer_add = new_image.reviewer;
-            address farmer_add = new_image.owner;
+
             if (new_image.true_count > new_image.false_count) {
+                emit ImageReviewed(farmer_add, _url, new_image.reviewer_sol);
                 if(scientist_bool[reviewer_add]){
-                    scientist_map[reviewer_add].image_VR.push(_url);
+
                     scientist_map[reviewer_add].auth_points =scientist_map[reviewer_add].auth_points +2;
-                    removeFromArray(scientist_map[reviewer_add].image_rvd,_url);
                 }
                 if(farmer_bool[farmer_add]){
-                    farmer_map[farmer_add].image_VR.push(_url);
-                    removeFromArray(farmer_map[farmer_add].images_upload,_url);
+                    farmer_map[farmer_add].image_VR=string(abi.encodePacked(farmer_map[farmer_add].image_VR,"$$$",_url));
                 }
 
             }
@@ -203,6 +215,7 @@ contract Upload {
     }
 
     function get_farmers() public view returns (address[] memory) {
+
         return farmers;
     }
 
@@ -215,50 +228,25 @@ contract Upload {
     }
 
     function get_open_images() public view returns (string memory) {
-        uint len = open_images.length < 20 ? open_images.length : 20;
-        bytes memory ans;
-        for (uint i = 0; i < len; i++) {
-            if (i > 0) {
-                ans = abi.encodePacked(ans, "$$$");
-            }
-            ans = abi.encodePacked(ans, open_images[i]);
-        }
-        return string(ans);
+        return concatWithSeparator(open_images, "$$$", 20);
     }
 
     function get_close_images() public view returns (string memory) {
-        uint len = close_images.length < 20 ? close_images.length : 20;
-        bytes memory ans;
-        for (uint i = 0; i < len; i++) {
-            if (i > 0) {
-                ans = abi.encodePacked(ans, "$$$");
-            }
-            ans = abi.encodePacked(ans, close_images[i]);
-        }
-        return string(ans);
+        return concatWithSeparator(close_images, "$$$", 20);
     }
 
     function get_pending_images() public view returns (string memory){
-        uint len = pending_images.length;
-        bytes memory ans;
-        for (uint i = 0; i < len; i++) {
-            if (i > 0) {
-                ans = abi.encodePacked(ans, "$$$");
-            }
-            ans = abi.encodePacked(ans, pending_images[i]);
+        return concatWithSeparator(pending_images, "$$$", pending_images.length);
+    }
+
+    function concatWithSeparator(string[] memory arr, string memory sep, uint len) private pure returns (string memory) {
+        if (arr.length == 0 || len == 0) return "";
+        uint actualLen = arr.length < len ? arr.length : len;
+        bytes memory result = bytes(arr[0]);
+        for (uint i = 1; i < actualLen; i++) {
+            result = abi.encodePacked(result, sep, arr[i]);
         }
-        return string(ans);
+        return string(result);
     }
-
-    function display_farmer(address _user) public view returns (farmer memory) {
-        return farmer_map[_user];
-    }
-
-    function display_scientist(
-        address _user
-    ) public view returns (scientist memory) {
-        return scientist_map[_user];
-    }
-
 
 }

@@ -14,9 +14,7 @@ import org.web3j.abi.FunctionEncoder
 import org.web3j.abi.FunctionReturnDecoder
 import org.web3j.abi.TypeReference
 import org.web3j.abi.datatypes.Address
-import org.web3j.abi.datatypes.DynamicArray
 import org.web3j.abi.datatypes.Function
-import org.web3j.abi.datatypes.StaticArray
 import org.web3j.abi.datatypes.Uint
 import org.web3j.abi.datatypes.Utf8String
 import org.web3j.abi.datatypes.generated.Uint256
@@ -62,6 +60,7 @@ class Web3jRepositoryImpl @Inject constructor(
                 )
 
                 val urlsString = decodedResponse[0].value as String
+                Log.d("Open Images",urlsString)
                 Result.success(urlsString.split("$$$").filter { it.isNotBlank() })
 
             } catch (e: Exception) {
@@ -99,6 +98,7 @@ class Web3jRepositoryImpl @Inject constructor(
                 )
 
                 val urlsString = decodedResponse[0].value as String
+                Log.d("Close Images",urlsString)
                 Result.success(urlsString.split("$$$").filter { it.isNotBlank() })
 
             } catch (e: Exception) {

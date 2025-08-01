@@ -1,4 +1,4 @@
-package com.hexagraph.cropchain.ui.screens.farmer.profile
+package com.hexagraph.cropchain.ui.screens.scientist.profile
 
 import android.content.Context
 import android.util.Log
@@ -171,7 +171,6 @@ class ProfileScreenViewModel @Inject constructor(
             (context as MainActivity).recreate()
         }
     }
-
     fun logOut() {
         viewModelScope.launch {
             appPreferences.isUserLoggedIn.set(false)
