@@ -42,6 +42,7 @@ android {
         addStringResource("PROVIDER_URL")
         addStringResource("PINATA_SECRET_API_KEY")
         addStringResource("SERVER_API")
+        addStringResource("GEMINI_API_KEY")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -147,5 +148,7 @@ dependencies {
     implementation(libs.androidx.navigation3.runtime)
     implementation(libs.androidx.lifecycle.viewmodel.navigation3)
 
+
+    implementation(libs.generativeai)
 
 }

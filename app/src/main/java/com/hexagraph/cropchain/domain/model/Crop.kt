@@ -17,5 +17,7 @@ data class Crop(
     var transactionHash: String? = null,
     val verifiedTransactionHash: Int = -1,  // -1 not verified, 0 unsuccessful , 1 successful,
     var uploadProgress: Int = 0,
-    val fileName: String = "Unknown Image"
+    val fileName: String = "Unknown Image",
+    val title: String = "Unknown Crop",
+    val description: String = "No Description",
 )
