@@ -17,7 +17,7 @@ plugins {
 val localPropertiesFile = rootProject.file("local.properties")
 android {
     namespace = "com.hexagraph.cropchain"
-    compileSdk = 35
+    compileSdk = 36
 
     bundle {
         density { enableSplit = true }
@@ -28,7 +28,7 @@ android {
     defaultConfig {
         applicationId = "com.hexagraph.cropchain"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
