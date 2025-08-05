@@ -32,6 +32,17 @@ class AppPreferencesImpl(private val context: Context) : AppPreferences {
         val SEND_TOKEN = stringPreferencesKey("send_token")
     }
 
+    override suspend fun clearAll() {
+        aadharID.set("")
+        username.set("")
+        isUserLoggedIn.set(false)
+        isCurrentUserFarmer.set(false)
+        appLanguage.set(SupportedLanguages.ENGLISH)
+        accountSelected.set("")
+        metaMaskMessage.set("")
+        deviceId.set("")
+        token.set("")
+    }
 
     override val aadharID: DataStorePreference<String>
         get() = object : DataStorePreference<String> {

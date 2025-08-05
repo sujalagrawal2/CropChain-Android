@@ -172,9 +172,10 @@ class ProfileScreenViewModel @Inject constructor(
         }
     }
 
-    fun logOut() {
+    fun logOut(onCompleted: () -> Unit) {
         viewModelScope.launch {
-            appPreferences.isUserLoggedIn.set(false)
+            appPreferences.clearAll()
+            onCompleted()
         }
     }
 }

@@ -45,7 +45,7 @@ import com.hexagraph.cropchain.ui.screens.farmer.uploadedImage.UploadedImageScre
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Unit={}) {
+fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Unit) {
     val navController = rememberNavController()
     val currentBackStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry.value?.destination?.route

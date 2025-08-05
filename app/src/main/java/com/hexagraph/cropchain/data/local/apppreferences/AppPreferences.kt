@@ -13,4 +13,5 @@ interface AppPreferences {
     val metaMaskMessage : DataStorePreference<String>
     val deviceId : DataStorePreference<String>
     val token: DataStorePreference<String>
+    suspend fun clearAll()
 }

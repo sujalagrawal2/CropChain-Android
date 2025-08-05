@@ -19,6 +19,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import androidx.navigation3.runtime.entry
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.ui.NavDisplay
 import com.hexagraph.cropchain.data.local.apppreferences.AppPreferences
 import com.hexagraph.cropchain.data.local.apppreferences.AppPreferencesImpl
 import com.hexagraph.cropchain.ui.navigation.farmer.MainScreen
@@ -66,64 +70,53 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CropChainTheme {
-
-
-                val navController = rememberNavController()
                 val areAllPermissionsGranted by appPreferences.areAllPermissionsGranted.getFlow()
                     .collectAsState(areAllPermissionsGrantedInitial)
+                val backstack = rememberNavBackStack(
+                    if(isUserLoggedInInitial && aadharIdInitial.isNotEmpty()) AuthenticationNavigation.MainApp
+                    else AuthenticationNavigation.OnBoarding()
+                )
 
-                val isUserLoggedIn = appPreferences.isUserLoggedIn.getFlow().collectAsState(isUserLoggedInInitial)
-
-                val aadharId by appPreferences.aadharID.getFlow().collectAsState(aadharIdInitial)
                 Surface(modifier = Modifier.fillMaxSize()) {
                     val onboardingViewModel = hiltViewModel<OnboardingViewModel>()
 
-                    NavHost(
-                        navController = navController,
-                        startDestination =
-                         if ((aadharId.isEmpty() && !areAllPermissionsGranted )|| !isUserLoggedIn.value) {
-                                AuthenticationNavigation.OnBoarding(OnboardingScreens.entries)
-                            } else if (aadharId.isEmpty()) {
-                                AuthenticationNavigation.OnBoarding(OnboardingScreens.entries - OnboardingScreens.PERMISSIONS_SCREEN)
-                            } else if (!areAllPermissionsGranted) {
-                                AuthenticationNavigation.OnBoarding(listOf(OnboardingScreens.PERMISSIONS_SCREEN))
-                            } else {
-                                AuthenticationNavigation.MainApp
-                            }
-                    ) {
-
-                        composable<AuthenticationNavigation.OnBoarding> {
-                            val allowedScreens =
-                                it.toRoute<AuthenticationNavigation.OnBoarding>().allowedScreens
-                            OnBoardingScreen(
-                                onboardingViewModel = onboardingViewModel,
-                                allowedScreens = allowedScreens,
-                                onCompletion = {
-                                   runBlocking {
-                                       appPreferences.isUserLoggedIn.set(true)
-                                   }
-                                    navController.navigate(AuthenticationNavigation.MainApp) {
-                                        popUpTo(AuthenticationNavigation.OnBoarding()) {
-                                            inclusive = true
+                    NavDisplay(
+                        backStack = backstack,
+                        entryProvider = entryProvider {
+                            entry<AuthenticationNavigation.OnBoarding>{
+                                var allowedScreens = it.allowedScreens
+                                if(areAllPermissionsGranted) allowedScreens = allowedScreens.filter { it != OnboardingScreens.PERMISSIONS_SCREEN }
+                                if(aadharIdInitial.isNotEmpty()) allowedScreens = allowedScreens.filter { it != OnboardingScreens.AADHAR_INPUT }
+                                OnBoardingScreen(
+                                    onboardingViewModel = onboardingViewModel,
+                                    iteration =  it.timestamp,
+                                    allowedScreens = allowedScreens,
+                                    onCompletion = {
+                                        runBlocking {
+                                            appPreferences.isUserLoggedIn.set(true)
                                         }
-                                        launchSingleTop = true
+                                        backstack.add(AuthenticationNavigation.MainApp)
+                                        backstack.removeIf {screen-> screen is AuthenticationNavigation.OnBoarding }
                                     }
-                                }
-                            )
-                        }
-                        composable<AuthenticationNavigation.MainApp> {
-                            var isCurrentUserFarmer = false
-
-                            runBlocking {
-                                isCurrentUserFarmer = appPreferences.isCurrentUserFarmer.get()
+                                )
                             }
 
-                            if (isCurrentUserFarmer) MainScreen()
-                            else com.hexagraph.cropchain.ui.navigation.scientist.MainScreen()
+                            entry<AuthenticationNavigation.MainApp>{
+                                var isCurrentUserFarmer = false
 
+                                runBlocking {
+                                    isCurrentUserFarmer = appPreferences.isCurrentUserFarmer.get()
+                                }
+
+                                if (isCurrentUserFarmer) MainScreen(){
+                                    Log.d("MainActivity", "Navigating to Onboarding screen")
+                                    backstack.add(AuthenticationNavigation.OnBoarding())
+                                    backstack.removeIf { it is AuthenticationNavigation.MainApp }
+                                }
+                                else com.hexagraph.cropchain.ui.navigation.scientist.MainScreen()
+                            }
                         }
-
-                    }
+                    )
                 }
             }
         }
