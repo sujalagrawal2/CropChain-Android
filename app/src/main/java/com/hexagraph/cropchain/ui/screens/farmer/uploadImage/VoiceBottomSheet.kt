@@ -108,6 +108,7 @@ fun VoiceBottomSheet(
                         text = when (voiceState) {
                             VoiceState.IDLE -> "Voice Assistant"
                             VoiceState.LISTENING -> "Listening..."
+                            VoiceState.READY_TO_PROCESS -> "Ready to Generate"
                             VoiceState.PROCESSING -> "Processing..."
                         },
                         style = MaterialTheme.typography.headlineSmall.copy(
@@ -142,6 +143,27 @@ fun VoiceBottomSheet(
                             transcript = transcript,
                             isListening = isListening,
                             onStopListening = { viewModel.stopListening() },
+                            onFinish = {
+                                if (transcript.isNotEmpty()) {
+                                    viewModel.processWithGemini(
+                                        context = context,
+                                        imageUri = imageUri,
+                                        onSuccess = { title, description ->
+                                            onResult(title, description)
+                                            onDismiss()
+                                        },
+                                        onError = { error ->
+                                            // Error will be handled by the error state
+                                        }
+                                    )
+                                }
+                            }
+                        )
+                    }
+                    VoiceState.READY_TO_PROCESS -> {
+                        ReadyToProcessVoiceState(
+                            transcript = transcript,
+                            onContinueListening = { viewModel.startListening() },
                             onFinish = {
                                 if (transcript.isNotEmpty()) {
                                     viewModel.processWithGemini(
@@ -391,5 +413,85 @@ private fun ProcessingVoiceState(
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+    }
+}
+
+@Composable
+private fun ReadyToProcessVoiceState(
+    transcript: String,
+    onContinueListening: () -> Unit,
+    onFinish: () -> Unit
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Ready to generate?",
+            style = MaterialTheme.typography.bodyLarge.copy(
+                fontWeight = FontWeight.Medium
+            ),
+            color = MaterialTheme.colorScheme.onSurface
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Transcript display
+        if (transcript.isNotEmpty()) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    Text(
+                        text = "Your transcript:",
+                        style = MaterialTheme.typography.labelMedium.copy(
+                            fontWeight = FontWeight.Bold
+                        ),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = transcript,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        // Action buttons
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            OutlinedButton(
+                onClick = onContinueListening,
+                modifier = Modifier.weight(1f)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Mic,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Continue Listening")
+            }
+
+            Button(
+                onClick = onFinish,
+                enabled = transcript.isNotEmpty(),
+                modifier = Modifier.weight(1f)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Send,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Generate")
+            }
+        }
     }
 }

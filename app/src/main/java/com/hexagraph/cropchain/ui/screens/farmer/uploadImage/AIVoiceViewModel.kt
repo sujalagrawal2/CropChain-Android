@@ -21,6 +21,7 @@ import javax.inject.Inject
 enum class VoiceState {
     IDLE,
     LISTENING,
+    READY_TO_PROCESS,
     PROCESSING
 }
 
@@ -108,9 +109,11 @@ class AIVoiceViewModel @Inject constructor() : ViewModel() {
                     }
                     _isListening.value = false
 
-                    // Only go to IDLE if we haven't manually stopped listening
-                    // If we manually stopped, stay in current state to preserve transcript
-                    if (!hasStoppedListening) {
+                    // If we have a transcript, always go to READY_TO_PROCESS state
+                    // This handles both manual stop and automatic timeout scenarios
+                    if (_transcript.value.isNotEmpty()) {
+                        _voiceState.value = VoiceState.READY_TO_PROCESS
+                    } else {
                         _voiceState.value = VoiceState.IDLE
                     }
                 }
@@ -152,7 +155,7 @@ class AIVoiceViewModel @Inject constructor() : ViewModel() {
         // Keep the transcript and don't change state immediately
         // Let the speech recognizer finish processing
         if (_transcript.value.isNotEmpty()) {
-            _voiceState.value = VoiceState.IDLE
+            _voiceState.value = VoiceState.READY_TO_PROCESS
         }
     }
 
