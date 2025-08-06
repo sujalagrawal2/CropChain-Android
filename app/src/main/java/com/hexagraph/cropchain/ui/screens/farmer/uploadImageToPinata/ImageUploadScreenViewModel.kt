@@ -278,7 +278,7 @@ class ImageUploadScreenViewModel @Inject constructor(
                     }
 
                     // Create crops string for blockchain
-                    val cropsString = uploadedImages.joinToString(separator = "$") { it.url ?: "" }
+                    val cropsString = uploadedImages.joinToString(separator = "$") { it.url?.let{ it2-> extractIpfsHash(it2)} ?: "" }
 
                     // Upload to blockchain
                     val result = metaMaskSDKRepository.uploadImage(
@@ -324,4 +324,19 @@ class ImageUploadScreenViewModel @Inject constructor(
         val cropImage = _uiState.value.cropImages.find { it.uid == uri.toString() }
         cropImage?.let { removeImageUri(it.id) }
     }
+
+
+    fun extractIpfsHash(input: String): String? {
+        // If the input is already just an IPFS hash (starts with "Qm" and is 46 characters long)
+        if (input.startsWith("Qm") && input.length == 46) {
+            return input
+        }
+
+        // If the input is a Pinata gateway URL
+        val pinataUrlRegex = "https://gateway\\.pinata\\.cloud/ipfs/(Qm[a-zA-Z0-9]{44})".toRegex()
+        val matchResult = pinataUrlRegex.find(input)
+
+        return matchResult?.groupValues?.get(1)
+    }
+
 }

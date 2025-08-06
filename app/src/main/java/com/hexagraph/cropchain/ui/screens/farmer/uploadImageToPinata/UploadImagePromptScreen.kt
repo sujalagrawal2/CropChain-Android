@@ -66,28 +66,6 @@ fun ImageUploadPromptScreen(
 
             }
         }
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.Pets, contentDescription = null, tint = cropChainOrange)
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    stringResource(R.string.upload_status),
-                    fontWeight = FontWeight.Bold
-                )
-            }
-
-            IconButton(onClick = { goToUploadStatusScreen() }) {
-                Icon(
-                    Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                    contentDescription = "Go",
-                )
-            }
-        }
     }
 
 }

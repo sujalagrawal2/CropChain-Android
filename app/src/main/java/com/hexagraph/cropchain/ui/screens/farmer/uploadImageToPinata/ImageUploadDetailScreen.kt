@@ -80,7 +80,8 @@ fun ImageUploadDetailScreen(
     viewModel: ImageUploadScreenViewModel = hiltViewModel(),
     locationViewModel: LocationViewModel = hiltViewModel(),
     onBackButtonPressed: () -> Unit,
-    onSuccessfulUpload: () -> Unit
+    onSuccessfulUpload: () -> Unit,
+    onNavigateToProfile: () -> Unit
 ) {
     val context = LocalContext.current
     val showBackDialog = remember { mutableStateOf(false) }
@@ -212,7 +213,9 @@ fun ImageUploadDetailScreen(
         onAddressChanged = { locationViewModel.updateCustomAddress(it) },
         onSaveAddressPressed = { locationViewModel.stopEditingAddress() },
         onVoicePressed = { showVoiceBottomSheet.value = true },
-        onConnectMetaMask = { viewModel.connectMetaMask { /* onNavigateToProfile */ } },
+        onConnectMetaMask = {
+            onNavigateToProfile()
+        },
         onUploadPressed = {
             viewModel.uploadToBlockchain(context) {
                 onSuccessfulUpload()
@@ -392,16 +395,19 @@ fun ImageUploadLayout(
                                 }
                             }
 
-                            if (!isMetaMaskConnected) {
-                                Button(
-                                    onClick = onConnectMetaMask,
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = MaterialTheme.colorScheme.primary
-                                    ),
-                                    shape = RoundedCornerShape(12.dp)
-                                ) {
-                                    Text("Connect", color = Color.White)
-                                }
+
+                        }
+                        if (!isMetaMaskConnected) {
+                            Button(
+                                onClick = onConnectMetaMask,
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.primary
+                                ),
+                                shape = RoundedCornerShape(12.dp),
+                                modifier = Modifier.padding(top = 8.dp)
+                                    .align(Alignment.CenterHorizontally)
+                            ) {
+                                Text("Connect", color = Color.White)
                             }
                         }
                     }

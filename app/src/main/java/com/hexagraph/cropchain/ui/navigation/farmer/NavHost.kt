@@ -199,6 +199,12 @@ fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Un
                             popUpTo(NavRoutes.SelectImageScreen.route) { inclusive = false }
                             launchSingleTop = true
                         }
+                    },
+                    onNavigateToProfile = {
+                        navController.navigate(NavRoutes.ProfileScreen.route) {
+                            popUpTo(NavRoutes.SelectImageScreen.route) { inclusive = false }
+                            launchSingleTop = true
+                        }
                     })
             }
 
