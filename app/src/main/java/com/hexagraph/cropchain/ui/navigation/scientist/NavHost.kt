@@ -24,7 +24,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -46,11 +49,30 @@ import com.hexagraph.cropchain.ui.screens.scientist.reviewedImages.ReviewedImage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Unit = {}) {
+fun MainScreen(
+    fcmImageId: String? = null,
+    fcmImageType: String? = null,
+    viewModel: NavHostViewModel = hiltViewModel(),
+    onLogOut: () -> Unit = {}
+) {
     val navController = rememberNavController()
     val currentBackStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry.value?.destination?.route
     val metaMaskMessage = viewModel.getMetaMaskMessage().collectAsState(initial = "")
+
+    val hasNavigated = rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(fcmImageId, fcmImageType) {
+        if (!hasNavigated.value && fcmImageId != null && fcmImageType != null) {
+            hasNavigated.value = true
+            navController.navigate(
+                NavRoutes.ReviewImageScreen.passArgs(
+                    id = fcmImageId,
+                    type = 2
+                )
+            )
+        }
+    }
 
     if (metaMaskMessage.value != "") {
         AlertDialog(

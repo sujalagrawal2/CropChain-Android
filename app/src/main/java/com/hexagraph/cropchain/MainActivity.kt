@@ -2,6 +2,7 @@ package com.hexagraph.cropchain
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -44,6 +45,9 @@ import kotlinx.coroutines.runBlocking
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    private var fcmImageId: String? = null
+    private var fcmImageType: String? = null
+
     override fun attachBaseContext(newBase: Context) {
 
 
@@ -65,7 +69,7 @@ class MainActivity : ComponentActivity() {
 
         val isUserLoggedInInitial = runBlocking { appPreferences.isUserLoggedIn.getFlow().first() }
 
-
+        handleIntent(intent)
         checkPermissions()
         enableEdgeToEdge()
         setContent {
@@ -73,7 +77,7 @@ class MainActivity : ComponentActivity() {
                 val areAllPermissionsGranted by appPreferences.areAllPermissionsGranted.getFlow()
                     .collectAsState(areAllPermissionsGrantedInitial)
                 val backstack = rememberNavBackStack(
-                    if(isUserLoggedInInitial && aadharIdInitial.isNotEmpty()) AuthenticationNavigation.MainApp
+                    if (isUserLoggedInInitial && aadharIdInitial.isNotEmpty()) AuthenticationNavigation.MainApp
                     else AuthenticationNavigation.OnBoarding()
                 )
 
@@ -83,37 +87,39 @@ class MainActivity : ComponentActivity() {
                     NavDisplay(
                         backStack = backstack,
                         entryProvider = entryProvider {
-                            entry<AuthenticationNavigation.OnBoarding>{
+                            entry<AuthenticationNavigation.OnBoarding> {
                                 var allowedScreens = it.allowedScreens
-                                if(areAllPermissionsGranted) allowedScreens = allowedScreens.filter { it != OnboardingScreens.PERMISSIONS_SCREEN }
-                                if(aadharIdInitial.isNotEmpty()) allowedScreens = allowedScreens.filter { it != OnboardingScreens.AADHAR_INPUT }
+                                if (areAllPermissionsGranted) allowedScreens =
+                                    allowedScreens.filter { it != OnboardingScreens.PERMISSIONS_SCREEN }
+                                if (aadharIdInitial.isNotEmpty()) allowedScreens =
+                                    allowedScreens.filter { it != OnboardingScreens.AADHAR_INPUT }
                                 OnBoardingScreen(
                                     onboardingViewModel = onboardingViewModel,
-                                    iteration =  it.timestamp,
+                                    iteration = it.timestamp,
                                     allowedScreens = allowedScreens,
                                     onCompletion = {
                                         runBlocking {
                                             appPreferences.isUserLoggedIn.set(true)
                                         }
                                         backstack.add(AuthenticationNavigation.MainApp)
-                                        backstack.removeIf {screen-> screen is AuthenticationNavigation.OnBoarding }
+                                        backstack.removeIf { screen -> screen is AuthenticationNavigation.OnBoarding }
                                     }
                                 )
                             }
 
-                            entry<AuthenticationNavigation.MainApp>{
+                            entry<AuthenticationNavigation.MainApp> {
                                 var isCurrentUserFarmer = false
 
                                 runBlocking {
                                     isCurrentUserFarmer = appPreferences.isCurrentUserFarmer.get()
                                 }
 
-                                if (isCurrentUserFarmer) MainScreen(){
+                                if (isCurrentUserFarmer) MainScreen(fcmImageId, fcmImageType) {
                                     Log.d("MainActivity", "Navigating to Onboarding screen")
                                     backstack.add(AuthenticationNavigation.OnBoarding())
                                     backstack.removeIf { it is AuthenticationNavigation.MainApp }
                                 }
-                                else com.hexagraph.cropchain.ui.navigation.scientist.MainScreen()
+                                else com.hexagraph.cropchain.ui.navigation.scientist.MainScreen(fcmImageId, fcmImageType)
                             }
                         }
                     )
@@ -125,6 +131,26 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         checkPermissions()
+    }
+
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent) {
+
+        val type = intent.getStringExtra("type")
+        val imageId = intent.getStringExtra("imageId")
+        val imageType = intent.getStringExtra("imageType")
+
+        if (type != null && type == "CropChain-FCM" && imageId != null && imageType != null) {
+            fcmImageId = imageId
+            fcmImageType = imageType
+            Log.d("MainActivity", "Notification Clicked with ID: $imageId and Type: $imageType")
+
+        }
     }
 
     fun checkPermissions() {
