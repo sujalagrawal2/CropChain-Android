@@ -3,7 +3,6 @@ package com.hexagraph.cropchain.domain.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.ForeignKey
-
 @Entity(
     tableName = "cropImages",
     foreignKeys = [

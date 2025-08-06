@@ -93,6 +93,73 @@
     <string name="connected_to_metamask">Connected to MetaMask</string>
     <string name="not_connected_to_metamask">Not Connected to MetaMask</string>
     <string name="edit">Edit</string>
+    <string name="use_this_account">Use this account</string>
+    <string name="in_use">In Use</string>
+    <string name="connected_account">Connected Account</string>
+    <string name="disconnected_accounts">Disconnected Accounts</string>
+    <string name="update_account">Update Account</string>
+
+    <!-- ImageUploadDetailScreen strings -->
+    <string name="back">Back</string>
+    <string name="share_crop_photos">Share your crop photos with the community</string>
+    <string name="images_count">Images (%d)</string>
+    <string name="add_images">Add Images</string>
+    <string name="more_images">More Images</string>
+    <string name="tap_to_add_images">Tap to add images</string>
+    <string name="upload_multiple_photos">Upload multiple photos of your crops</string>
+    <string name="location">Location</string>
+    <string name="get_location">Get Location</string>
+    <string name="no_location_set">No location set</string>
+    <string name="edit_address">Edit Address</string>
+    <string name="title">Title</string>
+    <string name="voice_input">Voice Input</string>
+    <string name="description">Description</string>
+    <string name="uploading_to_blockchain">Uploading to Blockchain...</string>
+    <string name="connect_metamask_first">Connect MetaMask First</string>
+    <string name="upload_images_to_pinata">Upload Images to Pinata First</string>
+    <string name="upload_to_blockchain">Upload to Blockchain</string>
+    <string name="settings">Settings</string>
+    <string name="cancel">Cancel</string>
+    <string name="location_permission_required">Location Permission Required</string>
+    <string name="location_permission_denied_message">Location permission has been permanently denied. Please enable it in app settings to use location features.</string>
+    <string name="address">Address</string>
+    <string name="refresh">Refresh</string>
+    <string name="allow_location">Allow Location</string>
+
+    <!-- VoiceBottomSheet strings -->
+    <string name="voice_assistant">Voice Assistant</string>
+    <string name="listening">Listening...</string>
+    <string name="ready_to_generate">Ready to Generate</string>
+    <string name="processing">Processing...</string>
+    <string name="close">Close</string>
+    <string name="describe_crop_images">Describe your crop images using voice</string>
+    <string name="start_recording">Start Recording</string>
+    <string name="tap_to_start_recording">Tap to start recording</string>
+    <string name="stop_recording">Stop Recording</string>
+    <string name="listening_speak_now">Listening... Speak now</string>
+    <string name="tap_microphone_continue">Tap microphone to continue</string>
+    <string name="transcript">Transcript:</string>
+    <string name="stop">Stop</string>
+    <string name="generate">Generate</string>
+    <string name="processing_with_ai">Processing with AI...</string>
+    <string name="processing_transcript">Processing transcript:</string>
+    <string name="please_wait_generating">Please wait while we generate title and description...</string>
+    <string name="ready_to_generate_question">Ready to generate?</string>
+    <string name="your_transcript">Your transcript:</string>
+    <string name="continue_listening">Continue Listening</string>
+
+    <!-- Voice recognition error messages -->
+    <string name="audio_recording_error">Audio recording error</string>
+    <string name="client_side_error">Client side error</string>
+    <string name="insufficient_permissions">Insufficient permissions</string>
+    <string name="network_error">Network error</string>
+    <string name="network_timeout">Network timeout</string>
+    <string name="no_speech_input_detected">No speech input detected</string>
+    <string name="recognition_service_busy">Recognition service busy</string>
+    <string name="server_error">Server error</string>
+    <string name="no_speech_input">No speech input</string>
+    <string name="recognition_error">Recognition error occurred</string>
+
     <array name="com_google_android_gms_fonts_certs">
         <item>@array/com_google_android_gms_fonts_certs_dev</item>
         <item>@array/com_google_android_gms_fonts_certs_prod</item>

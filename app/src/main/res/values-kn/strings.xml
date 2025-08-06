@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">ಕ್ರಾಪ್‌ಚೈನ್</string>
     <string name="intro_screen_1_heading">ಕ್ರಾಪ್‌ಚೈನ್‌ಗೆ ಸ್ವಾಗತ!</string>
-    <string name="intro_screen_1_body">ಅಗ್ರಿಚೈನ್ ಕೃಷಿ ನಿರ್ವಹಣೆಗೆ ಕ್ರಾಂತಿಕಾರಿ ದೃಷ್ಟಿಕೋನವನ್ನು ತೆರೆದಿಡುತ್ತದೆ. ನಮ್ಮ ವೇದಿಕೆ ಬ್ಲಾಕ್‌ಚೈನ್ ತಂತ್ರಜ್ಞಾನವನ್ನು ಬಳಸಿಕೊಂಡು ಸಸ್ಯ ರೋಗ ಪತ್ತೆ ಮತ್ತು ಪರಿಹಾರ ದೃಢೀಕರಣಕ್ಕಾಗಿ ವಿಕೇಂದ್ರಿತ ಪರಿಸರವನ್ನು ರಚಿಸುತ್ತದೆ.</string>
+    <string name="intro_screen_1_body">ಅಗ್ರಿಚೈನ್ ಕೃಷಿ ನಿರ್ವಹಣೆಗೆ ಕ್ರಾಂತಿಕಾರಿ ದೃಷ್ಟಿಕೋನವನ್ನು ತೆರೆದಿಡುತ್ತದೆ. ನಮ್ಮ ವೇದಿಕೆ ಬ್ಲಾಕ್‌ಚೈನ್ ತಂತ್ರಜ್ಞಾನವನ್ನು ಬಳಸಿಕೊಂಡು ಸಸ್ಯ ರೋಗ ಪತ್ತೆ ಮತ್ತು ���ರಿಹಾರ ದೃಢೀಕರಣಕ್ಕಾಗಿ ವಿಕೇಂದ್ರಿತ ಪರಿಸರವನ್ನು ರಚಿಸುತ್ತದೆ.</string>
     <string name="intro_screen_2_title">ಎಲ್ಲರಿಗೂ ಅಗ್ರಿಟೆಕ್</string>
     <string name="intro_screen_2_body">ಕೃಷಿಕರು, ವಿಜ್ಞಾನಿಗಳು ಮತ್ತು ನಿರ್ವಾಹಕರಿಗೆ ಹೊಂದಿಕೊಂಡಿರುವ ನಮ್ಮ ಸಮಗ್ರ ಸಾಧನಗಳ ಸಮೂಹವನ್ನು ಅನ್ವೇಷಿಸಿ, ನಿಮಗೆ ತಿಳಿದ ನಿರ್ಧಾರಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳಲು ಮತ್ತು ಸ್ಥಿರ ಕೃಷಿಯನ್ನು ಮುಂದುವರಿಸಲು ಶಕ್ತಿಮಾಡುತ್ತದೆ.</string>
     <string name="intro_screen_3_title">AI ಸಹಾಯದಿಂದ ನಿಮ್ಮ ಬರವಣಿಗೆಯನ್ನು ಉತ್ತೇಜಿಸಿ</string>
@@ -95,7 +95,66 @@
     <string name="not_connected_to_metamask">ಮೆಟಾಮಾಸ್ಕ್‌ಗೆ ಸಂಪರ್ಕವಾಗಿಲ್ಲ</string>
     <string name="edit">ತಿದ್ದು</string>
 
+    <!-- ImageUploadDetailScreen strings -->
+    <string name="back">ಹಿಂದೆ</string>
+    <string name="share_crop_photos">ನಿಮ್ಮ ಬೆಳೆ ಚಿತ್ರಗಳನ್ನು ಸಮುದಾಯದೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಿ</string>
+    <string name="images_count">ಚಿತ್ರಗಳು (%d)</string>
+    <string name="add_images">ಚಿತ್ರಗಳನ್ನು ಸೇರಿಸಿ</string>
+    <string name="more_images">ಹೆಚ್ಚಿನ ಚಿತ್ರಗಳು</string>
+    <string name="tap_to_add_images">ಚಿತ್ರಗಳನ್ನು ಸೇರಿಸಲು ಟ್ಯಾಪ್ ಮಾಡಿ</string>
+    <string name="upload_multiple_photos">ನಿಮ್ಮ ಬೆಳೆಗಳ ಹಲವಾರು ಫೋಟೋಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ</string>
+    <string name="location">ಸ್ಥಳ</string>
+    <string name="get_location">ಸ್ಥಳ ��ಡೆಯಿರಿ</string>
+    <string name="no_location_set">ಯಾವುದೇ ಸ್ಥಳವನ್ನು ಹೊಂದಿಸಲಾಗಿಲ್ಲ</string>
+    <string name="edit_address">ವಿಳಾಸವನ್ನು ಸಂಪಾದಿಸಿ</string>
+    <string name="title">ಶೀರ್ಷಿಕೆ</string>
+    <string name="voice_input">ಧ್ವನಿ ಇನ್‌ಪುಟ್</string>
+    <string name="description">ವಿವರಣೆ</string>
+    <string name="uploading_to_blockchain">ಬ್ಲಾಕ್‌ಚೈನ್‌ಗೆ ಅಪ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ...</string>
+    <string name="connect_metamask_first">ಮೊದಲು ಮೆಟಾಮಾಸ್ಕ್ ಸಂಪರ್ಕಿಸಿ</string>
+    <string name="upload_images_to_pinata">ಮೊದಲು ಚಿತ್ರಗಳನ್ನು ಪಿನಾಟಾಗೆ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ</string>
+    <string name="upload_to_blockchain">ಬ್ಲಾಕ್‌ಚೈನ್‌ಗೆ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ</string>
+    <string name="settings">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</string>
+    <string name="cancel">ರದ್ದುಮಾಡು</string>
+    <string name="location_permission_required">ಸ್ಥಳ ಅನುಮತಿ ಅಗತ್ಯವಿದೆ</string>
+    <string name="location_permission_denied_message">ಸ್ಥಳ ಅನುಮತಿಯನ್ನು ಶಾಶ್ವತವಾಗಿ ನಿರಾಕರಿಸಲಾಗಿದೆ. ಸ್ಥಳ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಬಳಸಲು ದಯವಿಟ್ಟು ಅದನ್ನು ಅಪ್ಲಿಕೇಶನ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ಸಕ್ರಿಯಗೊಳಿಸಿ.</string>
+    <string name="address">ವಿಳಾಸ</string>
+    <string name="refresh">ರಿಫ್ರೆಶ್</string>
+    <string name="allow_location">ಸ್ಥಳ ಅನುಮತಿಸಿ</string>
 
+    <!-- VoiceBottomSheet strings -->
+    <string name="voice_assistant">ಧ್ವನಿ ಸಹಾಯಕ</string>
+    <string name="listening">ಆಲಿಸುತ್ತಿದೆ...</string>
+    <string name="ready_to_generate">ಉತ್ಪಾದಿಸಲು ಸಿದ್ಧವಾಗಿದೆ</string>
+    <string name="processing">ಸಂಸ್ಕರಿಸಲಾಗುತ್ತಿದೆ...</string>
+    <string name="close">ಮುಚ್ಚು</string>
+    <string name="describe_crop_images">ಧ್ವನಿಯ ಮೂಲಕ ನಿಮ್ಮ ಬೆಳೆ ಚಿತ್ರಗಳನ್ನು ವಿವರಿಸಿ</string>
+    <string name="start_recording">ರೆಕಾರ್ಡಿಂಗ್ ಪ್ರಾರಂಭಿಸಿ</string>
+    <string name="tap_to_start_recording">ರೆಕಾರ್ಡಿಂಗ್ ಪ್ರಾರಂಭಿಸಲು ಟ್ಯಾಪ್ ಮಾಡಿ</string>
+    <string name="stop_recording">ರೆಕಾರ್ಡಿಂಗ್ ನಿಲ್ಲಿಸಿ</string>
+    <string name="listening_speak_now">ಆಲಿಸುತ್ತಿದೆ... ಈಗ ಮಾತನಾಡಿ</string>
+    <string name="tap_microphone_continue">ಮುಂದುವರೆಯಲು ಮೈಕ್ರೊಫೋನ್ ಟ್ಯಾಪ್ ಮಾಡಿ</string>
+    <string name="transcript">ಟ್���ಾನ್ಸ್‌ಕ್ರಿಪ್ಟ್:</string>
+    <string name="stop">ನಿಲ್ಲಿಸು</string>
+    <string name="generate">ಉತ್ಪಾದಿಸು</string>
+    <string name="processing_with_ai">AI ಜೊತೆ ಸಂಸ್ಕರಿಸಲಾಗುತ್ತಿದೆ...</string>
+    <string name="processing_transcript">ಟ್ರಾನ್ಸ್‌ಕ್ರಿಪ್ಟ್ ಸಂಸ್ಕರಿಸಲಾಗುತ್ತಿದೆ:</string>
+    <string name="please_wait_generating">ಶೀರ್ಷಿಕೆ ಮತ್ತು ವಿವರಣೆಯನ್ನು ಉತ್ಪಾದಿಸುವವರೆಗೆ ದಯವಿಟ್ಟು ನಿರೀಕ್ಷಿಸಿ...</string>
+    <string name="ready_to_generate_question">ಉತ್ಪಾದಿಸಲು ಸಿದ್ಧವಾಗಿದ್ದೀರಾ?</string>
+    <string name="your_transcript">ನಿಮ್ಮ ಟ್ರಾನ್ಸ್‌ಕ್ರಿಪ್ಟ್:</string>
+    <string name="continue_listening">ಆಲಿಸುವುದನ್ನು ಮುಂದುವರಿಸಿ</string>
+
+    <!-- Voice recognition error messages -->
+    <string name="audio_recording_error">ಆಡಿಯೋ ರೆಕಾರ್ಡಿಂಗ್ ದೋಷ</string>
+    <string name="client_side_error">ಕ್ಲೈಂಟ್ ಸೈಡ್ ದೋಷ</string>
+    <string name="insufficient_permissions">ಅಪರ್ಯಾಪ್ತ ಅನುಮತಿಗಳು</string>
+    <string name="network_error">ನೆಟ್‌ವರ್ಕ್ ದೋಷ</string>
+    <string name="network_timeout">ನೆಟ್‌ವರ್ಕ್ ಟೈಮ್‌ಔಟ್</string>
+    <string name="no_speech_input_detected">ಯಾವುದೇ ಮಾತಿನ ಇನ್‌ಪುಟ್ ಪತ್ತೆಯಾಗಿಲ್ಲ</string>
+    <string name="recognition_service_busy">ಗುರುತಿಸುವ ಸೇವೆ ಕಾರ್ಯನಿರತವಾಗಿದೆ</string>
+    <string name="server_error">ಸರ್ವರ್ ದೋಷ</string>
+    <string name="no_speech_input">ಯಾವುದೇ ಮಾತಿನ ಇನ್‌ಪುಟ್ ಇಲ್ಲ</string>
+    <string name="recognition_error">ಗುರುತಿಸುವಿಕೆ ದೋಷ ಸಂಭವಿಸಿದೆ</string>
 
     <!-- Certificate arrays left unchanged -->
     <array name="com_google_android_gms_fonts_certs">
@@ -109,7 +168,7 @@
     </string-array>
     <string-array name="com_google_android_gms_fonts_certs_prod">
         <item>
-            MIIEQzCCAyugAwIBAgIJAMLgh0ZkSjCNMA0GCSqGSIb3DQEBBAUAMHQxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtHb29nbGUgSW5jLjEQMA4GA1UECxMHQW5kcm9pZDEQMA4GA1UEAxMHQW5kcm9pZDAeFw0wODA4MjEyMzEzMzRaFw0zNjAxMDcyMzEzMzRaMHQxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtHb29nbGUgSW5jLjEQMA4GA1UECxMHQW5kcm9pZDEQMA4GA1UEAxMHQW5kcm9pZDCCASAwDQYJKoZIhvcNAQEBBQADggENADCCAQgCggEBAKtWLgDYO6IIrgqWbxJOKdoR8qtW0I9Y4sypEwPpt1TTcvZApxsdyxMJZ2JORland2qSGT2y5b+3JKkedxiLDmpHpDsz2WCbdxgxRczfey5YZnTJ4VZbH0xqWVW/8lGmPav5xVwnIiJS6HXk+BVKZF+JcWjAsb/GEuq/eFdpuzSqeYTcfi6idkyugwfYwXFU1+5fZKUaRKYCwkkFQVfcAs1fXA5V+++FGfvjJ/CxURaSxaBvGdGDhfXE28LWuT9ozCl5xw4Yq5OGazvV24mZVSoOO0yZ31j7kYvtwYK6NeADwbSxDdJEqO4k//0zOHKrUiGYXtqw/A0LFFtqoZKFjnkCAQOjgdkwgdYwHQYDVR0OBBYEFMd9jMIhF1Ylmn/Tgt9r45jk14alMIGmBgNVHSMEgZ4wgZuAFMd9jMIhF1Ylmn/Tgt9r45jk14aloXikdjB0MQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEUMBIGA1UEChMLR29vZ2xlIEluYy4xEDAOBgNVBAsTB0FuZHJvaWQxEDAOBgNVBAMTB0FuZHJvaWSCCQDC4IdGZEowjTAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBBAUAA4IBAQBt0lLO74UwLDYKqs6Tm8/yzKkEu116FmH4rkaymUIE0P9KaMftGlMexFlaYjzmB2OxZyl6euNXEsQH8gjwyxCUKRJNexBiGcCEyj6z+a1fuHHvkiaai+KL8W1EyNmgjmyy8AW7P+LLlkR+ho5zEHatRbM/YAnqGcFh5iZBqpknHf1SKMXFh4dd239FJ1jWYfbMDMy3NS5CTMQ2XFI1MvcyUTdZPErjQfTbQe3aDQsQcafEQPD+nqActifKZ0Np0IS9L9kR/wbNvyz6ENwPiTrjV2KRkEjH78ZMcUQXg0L3BYHJ3lc69Vs5Ddf9uUGGMYldX3WfMBEmh/9iFBDAaTCK
+            MIIEQzCCAyugAwIBAgIJAMLgh0ZkSjCNMA0GCSqGSIb3DQEBBAUAMHQxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtHb29nbGUgSW5jLjEQMA4GA1UECxMHQW5kcm9pZDEQMA4GA1UEAxMHQW5kcm9pZDAeFw0wODA4MjEyMzEzMzRaFw0zNjAxMDcyMzEzMzRaMHQxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1Nb3VುದGFpbiBWaWV3MRQwEgYDVQQKEwtHb29nbGUgSW5jLjEQMA4GA1UECxMHQW5kcm9pZDEQMA4GA1UEAxMHQW5kcm9pZDCCASAwDQYJKoZIhvcNAQEBBQADggENADCCAQgCggEBAKtWLgDYO6IIrgqWbxJOKdoR8qtW0I9Y4sypEwPpt1TTcvZApxsdyxMJZ2JORland2qSGT2y5b+3JKkedxiLDmpHpDsz2WCbdxgxRczfey5YZnTJ4VZbH0xqWVW/8lGmPav5xVwnIiJS6HXk+BVKZF+JcWjAsb/GEuq/eFdpuzSqeYTcfi6idkyugwfYwXFU1+5fZKUaRKYCwkkFQVfcAs1fXA5V+++FGfvjJ/CxURaSxaBvGdGDhfXE28LWuT9ozCl5xw4Yq5OGazvV24mZVSoOO0yZ31j7kYvtwYK6NeADwbSxDdJEqO4k//0zOHKrUiGYXtqw/A0LFFtqoZKFjnkCAQOjgdkwgdYwHQYDVR0OBBYEFMd9jMIhF1Ylmn/Tgt9r45jk14alMIGmBgNVHSMEgZ4wgZuAFMd9jMIhF1Ylmn/Tgt9r45jk14aloXikdjB0MQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEUMBIGA1UEChMLR29vZ2xlIEluYy4xEDAOBgNVBAsTB0FuZHJvaWQxEDAOBgNVBAMTB0FuZHJvaWSCCQDC4IdGZEowjTAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBBAUAA4IBAQBt0lLO74UwLDYKqs6Tm8/yzKkEu116FmH4rkaymUIE0P9KaMftGlMexFlaYjzmB2OxZyl6euNXEsQH8gjwyxCUKRJNexBiGcCEyj6z+a1fuHHvkiaai+KL8W1EyNmgjmyy8AW7P+LLlkR+ho5zEHatRbM/YAnqGcFh5iZBqpknHf1SKMXFh4dd239FJ1jWYfbMDMy3NS5CTMQ2XFI1MvcyUTdZPErjQfTbQe3aDQsQcafEQPD+nqActifKZ0Np0IS9L9kR/wbNvyz6ENwPiTrjV2KRkEjH78ZMcUQXg0L3BYHJ3lc69Vs5Ddf9uUGGMYldX3WfMBEmh/9iFBDAaTCK
         </item>
     </string-array>
 </resources>

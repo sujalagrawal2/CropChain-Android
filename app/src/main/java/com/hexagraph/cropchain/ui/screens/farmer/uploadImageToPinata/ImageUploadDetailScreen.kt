@@ -153,16 +153,16 @@ fun ImageUploadDetailScreen(
                     }
                     context.startActivity(intent)
                 }) {
-                    Text("Settings")
+                    Text(stringResource(R.string.settings))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showLocationPermissionDialog.value = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             },
-            title = { Text("Location Permission Required") },
-            text = { Text("Location permission has been permanently denied. Please enable it in app settings to use location features.") }
+            title = { Text(stringResource(R.string.location_permission_required)) },
+            text = { Text(stringResource(R.string.location_permission_denied_message)) }
         )
     }
 
@@ -309,7 +309,7 @@ fun ImageUploadLayout(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.ArrowBackIosNew,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.back),
                                 tint = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier.size(20.dp)
                             )
@@ -319,15 +319,15 @@ fun ImageUploadLayout(
 
                         Column {
                             Text(
-                                text = "Upload Images",
-                                style = MaterialTheme.typography.headlineSmall.copy(
+                                text = stringResource(R.string.upload_images),
+                                style = MaterialTheme.typography.titleLarge.copy(
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 24.sp
+                                    fontSize = 20.sp
                                 ),
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
-                                text = "Share your crop photos with the community",
+                                text = stringResource(R.string.share_crop_photos),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -378,7 +378,10 @@ fun ImageUploadLayout(
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Column {
                                     Text(
-                                        text = if (isMetaMaskConnected) "MetaMask Connected" else "MetaMask Not Connected",
+                                        text = if (isMetaMaskConnected)
+                                               stringResource(R.string.metamask_connected)
+                                            else
+                                               stringResource(R.string.metamask_not_connected),
                                         style = MaterialTheme.typography.titleMedium.copy(
                                             fontWeight = FontWeight.Bold
                                         ),
@@ -386,9 +389,9 @@ fun ImageUploadLayout(
                                     )
                                     Text(
                                         text = if (isMetaMaskConnected)
-                                            "Ready to upload to blockchain"
+                                            stringResource(R.string.connected_to_metamask)
                                         else
-                                            "Connect wallet to upload to blockchain",
+                                            stringResource(R.string.not_connected_to_metamask),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -407,7 +410,7 @@ fun ImageUploadLayout(
                                 modifier = Modifier.padding(top = 8.dp)
                                     .align(Alignment.CenterHorizontally)
                             ) {
-                                Text("Connect", color = Color.White)
+                                Text(stringResource(R.string.connect), color = Color.White)
                             }
                         }
                     }
@@ -449,8 +452,8 @@ fun ImageUploadLayout(
                                 )
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Text(
-                                    text = "Images (${cropImages.size})",
-                                    style = MaterialTheme.typography.titleLarge.copy(
+                                    text = stringResource(R.string.images_count, cropImages.size),
+                                    style = MaterialTheme.typography.titleMedium.copy(
                                         fontWeight = FontWeight.Bold
                                     ),
                                     color = MaterialTheme.colorScheme.onSurface
@@ -475,7 +478,7 @@ fun ImageUploadLayout(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Add,
-                                        contentDescription = "Add Images",
+                                        contentDescription = stringResource(R.string.add_images),
                                         tint = Color.White,
                                         modifier = Modifier.size(20.dp)
                                     )
@@ -485,7 +488,7 @@ fun ImageUploadLayout(
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Icon(
                                         imageVector = Icons.Default.KeyboardArrowRight,
-                                        contentDescription = "More Images",
+                                        contentDescription = stringResource(R.string.more_images),
                                         tint = MaterialTheme.colorScheme.primary,
                                         modifier = Modifier.size(20.dp)
                                     )
@@ -542,14 +545,14 @@ fun ImageUploadLayout(
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.Add,
-                                            contentDescription = "Add Images",
+                                            contentDescription = stringResource(R.string.add_images),
                                             tint = MaterialTheme.colorScheme.primary,
                                             modifier = Modifier.size(28.dp)
                                         )
                                     }
                                     Spacer(modifier = Modifier.height(12.dp))
                                     Text(
-                                        text = "Tap to add images",
+                                        text = stringResource(R.string.tap_to_add_images),
                                         style = MaterialTheme.typography.titleMedium.copy(
                                             fontWeight = FontWeight.Medium
                                         ),
@@ -557,7 +560,7 @@ fun ImageUploadLayout(
                                         textAlign = TextAlign.Center
                                     )
                                     Text(
-                                        text = "Upload multiple photos of your crops",
+                                        text = stringResource(R.string.upload_multiple_photos),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         textAlign = TextAlign.Center
@@ -604,8 +607,8 @@ fun ImageUploadLayout(
                                 )
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Text(
-                                    text = "Location",
-                                    style = MaterialTheme.typography.titleLarge.copy(
+                                    text = stringResource(R.string.location),
+                                    style = MaterialTheme.typography.titleMedium.copy(
                                         fontWeight = FontWeight.Bold
                                     ),
                                     color = MaterialTheme.colorScheme.onSurface
@@ -636,7 +639,7 @@ fun ImageUploadLayout(
                                 } else {
                                     Icon(
                                         imageVector = Icons.Default.LocationOn,
-                                        contentDescription = "Get Location",
+                                        contentDescription = stringResource(R.string.get_location),
                                         modifier = Modifier.size(18.dp),
                                         tint = MaterialTheme.colorScheme.primary
                                     )
@@ -644,10 +647,10 @@ fun ImageUploadLayout(
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     text = when (permissionState) {
-                                        LocationPermissionState.NOT_REQUESTED -> "Get Location"
-                                        LocationPermissionState.DENIED -> "Allow Location"
-                                        LocationPermissionState.GRANTED -> "Refresh"
-                                        LocationPermissionState.PERMANENTLY_DENIED -> "Settings"
+                                        LocationPermissionState.NOT_REQUESTED -> stringResource(R.string.get_location)
+                                        LocationPermissionState.DENIED -> stringResource(R.string.allow_location)
+                                        LocationPermissionState.GRANTED -> stringResource(R.string.refresh)
+                                        LocationPermissionState.PERMANENTLY_DENIED -> stringResource(R.string.settings)
                                     },
                                     fontWeight = FontWeight.Medium
                                 )
@@ -677,7 +680,7 @@ fun ImageUploadLayout(
                             OutlinedTextField(
                                 value = customAddress,
                                 onValueChange = onAddressChanged,
-                                label = { Text("Address") },
+                                label = { Text(stringResource(R.string.address)) },
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = RoundedCornerShape(16.dp),
                                 colors = OutlinedTextFieldDefaults.colors(
@@ -695,7 +698,7 @@ fun ImageUploadLayout(
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.Edit,
-                                            contentDescription = "Save",
+                                            contentDescription = stringResource(R.string.save),
                                             tint = MaterialTheme.colorScheme.primary
                                         )
                                     }
@@ -714,7 +717,7 @@ fun ImageUploadLayout(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(
-                                    text = currentLocation?.address ?: customAddress.ifEmpty { "No location set" },
+                                    text = currentLocation?.address ?: customAddress.ifEmpty { stringResource(R.string.no_location_set) },
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.onSurface,
                                     modifier = Modifier.weight(1f)
@@ -730,7 +733,7 @@ fun ImageUploadLayout(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Edit,
-                                        contentDescription = "Edit Address",
+                                        contentDescription = stringResource(R.string.edit_address),
                                         tint = MaterialTheme.colorScheme.primary,
                                         modifier = Modifier.size(18.dp)
                                     )
@@ -768,7 +771,7 @@ fun ImageUploadLayout(
                             onValueChange = onTitleChanged,
                             label = {
                                 Text(
-                                    "Title",
+                                    stringResource(R.string.title),
                                     style = MaterialTheme.typography.bodyMedium.copy(
                                         fontWeight = FontWeight.Medium
                                     )
@@ -802,7 +805,7 @@ fun ImageUploadLayout(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Mic,
-                                contentDescription = "Voice Input",
+                                contentDescription = stringResource(R.string.voice_input),
                                 tint = Color.White,
                                 modifier = Modifier.size(24.dp)
                             )
@@ -832,7 +835,7 @@ fun ImageUploadLayout(
                         onValueChange = onDescriptionChanged,
                         label = {
                             Text(
-                                "Description",
+                                stringResource(R.string.description),
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     fontWeight = FontWeight.Medium
                                 )
@@ -880,7 +883,7 @@ fun ImageUploadLayout(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = "Uploading to Blockchain...",
+                                text = stringResource(R.string.uploading_to_blockchain),
                                 style = MaterialTheme.typography.titleLarge.copy(
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 18.sp
@@ -890,9 +893,9 @@ fun ImageUploadLayout(
                         } else {
                             Text(
                                 text = when {
-                                    !isMetaMaskConnected -> "Connect MetaMask First"
-                                    cropImages.any { it.uploadedToPinata == -1 } -> "Upload Images to Pinata First"
-                                    else -> "Upload to Blockchain"
+                                    !isMetaMaskConnected -> stringResource(R.string.connect_metamask_first)
+                                    cropImages.any { it.uploadedToPinata == -1 } -> stringResource(R.string.upload_images_to_pinata)
+                                    else -> stringResource(R.string.upload_to_blockchain)
                                 },
                                 style = MaterialTheme.typography.titleLarge.copy(
                                     fontWeight = FontWeight.Bold,
@@ -1040,7 +1043,7 @@ fun CropImageThumbnail(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Warning,
-                            contentDescription = "Upload Failed",
+                            contentDescription = stringResource(R.string.upload_status),
                             tint = Color.White,
                             modifier = Modifier.size(24.dp)
                         )
@@ -1057,7 +1060,7 @@ fun CropImageThumbnail(
                     ) {
                         Icon(
                             imageVector = Icons.Default.CheckCircle,
-                            contentDescription = "Upload Success",
+                            contentDescription = stringResource(R.string.verified),
                             tint = Color.Green,
                             modifier = Modifier
                                 .padding(8.dp)

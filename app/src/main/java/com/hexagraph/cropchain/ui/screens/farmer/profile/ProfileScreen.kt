@@ -181,7 +181,7 @@ fun ProfileScreen(
                 if (isConnected || uiState.disconnectedAccounts.isNotEmpty()) {
                     ProfileItem(
                         icon = Icons.Default.Pets,
-                        title = "Update Account",
+                        title = stringResource(R.string.update_account),
                         onClick = {
                             viewModel.updateWallet {
 
@@ -241,7 +241,7 @@ fun AccountDetailSection(
     val balance by viewModel.balance.collectAsState()
     var expandedAccountIndex by remember { mutableStateOf<Int?>(null) }
     Text(
-        text = if (isConnected) "Connected Account" else "Disconnected Accounts",
+        text = if (isConnected) stringResource(R.string.connected_account) else stringResource(R.string.disconnected_accounts),
         color = MaterialTheme.colorScheme.onSurface,
         fontSize = 16.sp,
         fontWeight = FontWeight.Bold,
@@ -352,7 +352,7 @@ fun MetaMaskAccountCard(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        MetaMaskInfoRow(label = "Wallet Address", value = address)
+        MetaMaskInfoRow(label = stringResource(R.string.wallet_address), value = address)
 
         Spacer(modifier = Modifier.height(12.dp))
 
@@ -364,9 +364,9 @@ fun MetaMaskAccountCard(
             enabled = selectedAccount != address
         ) {
             if (selectedAccount != address)
-                Text("Use this account", color = MaterialTheme.colorScheme.onPrimary)
+                Text(stringResource(R.string.use_this_account), color = MaterialTheme.colorScheme.onPrimary)
             else
-                Text("In Use", color = MaterialTheme.colorScheme.onPrimary)
+                Text(stringResource(R.string.in_use), color = MaterialTheme.colorScheme.onPrimary)
         }
     }
 }
@@ -454,9 +454,9 @@ fun MetaMaskInfoCard(
             enabled = selectedAccount != address
         ) {
             if (selectedAccount != address)
-                Text("Use this account", color = MaterialTheme.colorScheme.onPrimary)
+                Text(stringResource(R.string.use_this_account), color = MaterialTheme.colorScheme.onPrimary)
             else
-                Text("In Use", color = MaterialTheme.colorScheme.onPrimary)
+                Text(stringResource(R.string.in_use), color = MaterialTheme.colorScheme.onPrimary)
         }
     }
 }
