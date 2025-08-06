@@ -46,13 +46,14 @@ class AIVoiceViewModel @Inject constructor() : ViewModel() {
 
     companion object {
         private const val GEMINI_PROMPT = """
-            Based on the provided transcript and image, generate a concise title and detailed description for this crop image.
-            
+            Based on the provided transcript and image, generate a concise title and detailed description for this transcript.
+            Remember that image is only for reference and the main input is the transcript.
+            The response should be generated from transcript itself and avoid using any other information.
             Transcript: %s
             
             Please provide the response in the following format:
             TITLE: [A concise title for the crop]
-            DESCRIPTION: [A detailed description including crop type, growth stage, health condition, and any other relevant observations]
+            DESCRIPTION: [A detailed description including crop type, growth stage, crop disease, and any other relevant observations]
             
             Make sure to separate the title and description clearly using the above format.
         """
