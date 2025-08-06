@@ -23,8 +23,14 @@ data class ReviewImageScreenUIState(
     val dislikeCount: Int = 0,
     val aiSolution: String = "",
     val type: Int = -1,
-    val url: String = ""
+    val url: String = "",
+    val showConfirmationDialog: Boolean = false,
+    val pendingAction: PendingAction? = null
 )
+
+enum class PendingAction {
+    APPROVE, DISAPPROVE
+}
 
 @HiltViewModel
 class ReviewImageScreenViewModel @Inject constructor(
@@ -61,11 +67,34 @@ class ReviewImageScreenViewModel @Inject constructor(
     }
 
     fun onApproveClicked() {
-        _uiState.value = _uiState.value.copy(liked = true)
+        _uiState.value = _uiState.value.copy(
+            showConfirmationDialog = true,
+            pendingAction = PendingAction.APPROVE
+        )
     }
 
     fun onDisapproveClicked() {
-        _uiState.value = _uiState.value.copy(liked = false)
+        _uiState.value = _uiState.value.copy(
+            showConfirmationDialog = true,
+            pendingAction = PendingAction.DISAPPROVE
+        )
+    }
+
+    fun onConfirmationResult(confirmed: Boolean) {
+        val pending = _uiState.value.pendingAction
+        if (confirmed && pending != null) {
+            _uiState.value = _uiState.value.copy(
+                liked = (pending == PendingAction.APPROVE),
+                showConfirmationDialog = false,
+                pendingAction = null
+            )
+            submit()
+        } else {
+            _uiState.value = _uiState.value.copy(
+                showConfirmationDialog = false,
+                pendingAction = null
+            )
+        }
     }
 
     fun submit() {
