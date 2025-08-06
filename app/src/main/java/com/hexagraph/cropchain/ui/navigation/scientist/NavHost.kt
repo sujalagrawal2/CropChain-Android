@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Eco
+import androidx.compose.material.icons.filled.EnergySavingsLeaf
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -240,8 +242,8 @@ fun BottomNavigationBar(navController: NavController) {
         )
 
         NavigationBarItem(
-            icon = { Icon(Icons.Default.AddCircle, contentDescription = "Upload") },
-            label = { Text("Review Image", fontWeight = FontWeight.Bold) },
+            icon = { Icon(Icons.Default.Eco, contentDescription = "Upload") },
+            label = { Text("Review", fontWeight = FontWeight.Bold) },
             selected = currentRoute == NavRoutes.ReviewScreen.route,
             onClick = {
                 if (currentRoute != NavRoutes.ReviewScreen.route) {

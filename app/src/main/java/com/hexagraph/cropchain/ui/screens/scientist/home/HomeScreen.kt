@@ -23,8 +23,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Fullscreen
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Pets
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -102,6 +105,75 @@ fun HomeScreen(
                         fontSize = 12.sp
                     )
                 }
+            }
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Row {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(120.dp)
+                    .padding(end = 4.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(brush = cropChainGradient)
+                    .clickable(onClick = onReviewedImagesClicked),
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        Icons.Default.Person,
+                        contentDescription = "Reviewed",
+                        tint = Color.White,
+                        modifier = Modifier
+                            .size(40.dp)
+                            .padding(bottom = 8.dp)
+                    )
+
+                    Text(
+                        text = "Reviewed",
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        fontSize = 16.sp,
+                    )
+
+                }
+
+            }
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(120.dp)
+                    .padding(start = 4.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(brush = cropChainGradient)
+                    .clickable(onClick = onVerifiedImagesClicked),
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        Icons.Default.Check,
+                        contentDescription = "Verified",
+                        tint = Color.White,
+                        modifier = Modifier
+                            .size(40.dp)
+                            .padding(bottom = 8.dp)
+                    )
+
+                    Text(
+                        text = "Verified",
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        fontSize = 16.sp,
+                    )
+
+                }
+
             }
         }
 
