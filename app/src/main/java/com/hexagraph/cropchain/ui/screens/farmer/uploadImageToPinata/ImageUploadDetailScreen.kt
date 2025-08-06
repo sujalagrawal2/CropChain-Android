@@ -1,5 +1,6 @@
 package com.hexagraph.cropchain.ui.screens.farmer.uploadImageToPinata
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
@@ -74,6 +75,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.hexagraph.cropchain.R
 import com.hexagraph.cropchain.domain.model.CropImages
 import com.hexagraph.cropchain.domain.model.LocationData
+import java.io.File
 
 @Composable
 fun ImageUploadDetailScreen(
@@ -81,8 +83,13 @@ fun ImageUploadDetailScreen(
     locationViewModel: LocationViewModel = hiltViewModel(),
     onBackButtonPressed: () -> Unit,
     onSuccessfulUpload: () -> Unit,
-    onNavigateToProfile: () -> Unit
+    onNavigateToProfile: () -> Unit,
+    cropId : Long? = null,
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.startViewModel(cropId = cropId)
+    }
+
     val context = LocalContext.current
     val showBackDialog = remember { mutableStateOf(false) }
     val showVoiceBottomSheet = remember { mutableStateOf(false) }
@@ -201,9 +208,11 @@ fun ImageUploadDetailScreen(
                 LocationPermissionState.NOT_REQUESTED, LocationPermissionState.DENIED -> {
                     locationViewModel.requestLocationPermission(context, locationPermissionLauncher)
                 }
+
                 LocationPermissionState.GRANTED -> {
                     locationViewModel.getCurrentLocation(context)
                 }
+
                 LocationPermissionState.PERMANENTLY_DENIED -> {
                     showLocationPermissionDialog.value = true
                 }
@@ -379,9 +388,9 @@ fun ImageUploadLayout(
                                 Column {
                                     Text(
                                         text = if (isMetaMaskConnected)
-                                               stringResource(R.string.metamask_connected)
-                                            else
-                                               stringResource(R.string.metamask_not_connected),
+                                            stringResource(R.string.metamask_connected)
+                                        else
+                                            stringResource(R.string.metamask_not_connected),
                                         style = MaterialTheme.typography.titleMedium.copy(
                                             fontWeight = FontWeight.Bold
                                         ),
@@ -407,7 +416,8 @@ fun ImageUploadLayout(
                                     containerColor = MaterialTheme.colorScheme.primary
                                 ),
                                 shape = RoundedCornerShape(12.dp),
-                                modifier = Modifier.padding(top = 8.dp)
+                                modifier = Modifier
+                                    .padding(top = 8.dp)
                                     .align(Alignment.CenterHorizontally)
                             ) {
                                 Text(stringResource(R.string.connect), color = Color.White)
@@ -650,7 +660,9 @@ fun ImageUploadLayout(
                                         LocationPermissionState.NOT_REQUESTED -> stringResource(R.string.get_location)
                                         LocationPermissionState.DENIED -> stringResource(R.string.allow_location)
                                         LocationPermissionState.GRANTED -> stringResource(R.string.refresh)
-                                        LocationPermissionState.PERMANENTLY_DENIED -> stringResource(R.string.settings)
+                                        LocationPermissionState.PERMANENTLY_DENIED -> stringResource(
+                                            R.string.settings
+                                        )
                                     },
                                     fontWeight = FontWeight.Medium
                                 )
@@ -662,7 +674,9 @@ fun ImageUploadLayout(
                         if (locationError.isNotEmpty()) {
                             Card(
                                 colors = CardDefaults.cardColors(
-                                    containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)
+                                    containerColor = MaterialTheme.colorScheme.errorContainer.copy(
+                                        alpha = 0.3f
+                                    )
                                 ),
                                 shape = RoundedCornerShape(12.dp)
                             ) {
@@ -717,7 +731,8 @@ fun ImageUploadLayout(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(
-                                    text = currentLocation?.address ?: customAddress.ifEmpty { stringResource(R.string.no_location_set) },
+                                    text = currentLocation?.address
+                                        ?: customAddress.ifEmpty { stringResource(R.string.no_location_set) },
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.onSurface,
                                     modifier = Modifier.weight(1f)
@@ -983,6 +998,7 @@ fun CropImageThumbnail(
     cropImage: CropImages,
     onRemove: () -> Unit
 ) {
+    val context = LocalContext.current
     Box {
         Card(
             modifier = Modifier
@@ -993,7 +1009,14 @@ fun CropImageThumbnail(
         ) {
             Box {
                 Image(
-                    painter = rememberAsyncImagePainter(cropImage.uid),
+                    painter = rememberAsyncImagePainter(
+                        when {
+                            doesFileExistForUid(context, cropImage.uid) -> cropImage.uid
+                            doesLocalFileExist(cropImage.localPath) -> cropImage.localPath
+                            else -> cropImage.url
+                        }
+                    ),
+
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -1101,6 +1124,23 @@ fun CropImageThumbnail(
         }
     }
 }
+
+fun doesFileExistForUid(context: Context, uid: String): Boolean {
+    return try {
+        val uri = Uri.parse(uid)
+        val inputStream = context.contentResolver.openInputStream(uri)
+        inputStream?.close()
+        inputStream != null
+    } catch (e: Exception) {
+        false
+    }
+}
+
+fun doesLocalFileExist(localPath: String): Boolean {
+    val file = File(localPath)
+    return file.exists()
+}
+
 
 @Preview(showBackground = true)
 @Composable

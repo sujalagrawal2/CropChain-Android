@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -25,9 +26,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Fullscreen
 import androidx.compose.material.icons.filled.Pets
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -200,7 +203,7 @@ fun HomeScreen(
             }
         }
 
-        CropImageGallery(viewModel.uiState.value)
+//        CropImageGallery(viewModel.uiState.value)
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -212,6 +215,32 @@ fun HomeScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        LazyColumn {
+            item {
+                uiState.value.recentActivity.forEach { recentActivity ->
+                    RecentActivityItem(
+                        title = recentActivity.title,
+                        status = recentActivity.status,
+                        reason = recentActivity.reason,
+                        onRecentActivityClick = { onRecentActivityClick() }
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+    }
+}
+
+@Composable
+fun RecentActivityItem(
+    title: String,
+    status: Int,
+    reason: String? = null,
+    onRecentActivityClick: () -> Unit
+) {
+    Column {
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -222,15 +251,59 @@ fun HomeScreen(
                 .clickable { onRecentActivityClick() }
                 .padding(16.dp)
         ) {
-            Column {
-                Text(stringResource(R.string.an_image_was_verified), fontWeight = FontWeight.Medium)
-                Text(stringResource(R.string.tap_to_see_review), fontSize = 12.sp)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(title, fontWeight = FontWeight.Medium)
+                    Text(stringResource(R.string.tap_to_see_review), fontSize = 12.sp)
+
+                    if (status == -1 && !reason.isNullOrBlank()) {
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = reason,
+                            color = Color.Red,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                }
+
+                when (status) {
+                    1 -> {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(20.dp),
+                            strokeWidth = 2.dp
+                        )
+                    }
+
+                    -1 -> {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Error",
+                            tint = Color.Red
+                        )
+                    }
+
+                    2 -> {
+                        Icon(
+                            imageVector = Icons.Default.CheckCircle,
+                            contentDescription = "Verified",
+                            tint = Color(0xFF4CAF50) // Green
+                        )
+                    }
+
+                    else -> {}
+                }
             }
         }
 
         Spacer(modifier = Modifier.height(32.dp))
     }
 }
+
 
 @Composable
 fun DashboardScreenTitle(
@@ -263,108 +336,108 @@ fun DashboardScreenTitle(
     }
 }
 
-@Composable
-fun CropImageGallery(uiState: HomeScreenUIState) {
-    val scrollState = rememberScrollState()
-
-    var selectedIndex by remember { mutableStateOf<Int?>(null) }
-
-    Column {
-        // — thumbnail row, aligned under the header —
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(scrollState)
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            uiState.uploadedImages.forEachIndexed { index, crop ->
-                val url = if (isLocalImageExists(crop.uid)) crop.uid else crop.url
-
-                Box(
-                    modifier = Modifier
-                        .size(160.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(Color(0xFF1A1A1A))
-                ) {
-                    // thumbnail
-                    Image(
-                        painter = rememberAsyncImagePainter(model = url),
-                        contentDescription = "Crop Image",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                    // expand icon
-                    IconButton(
-                        onClick = { selectedIndex = index },
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .padding(8.dp)
-                            .background(
-                                MaterialTheme.colorScheme.background.copy(alpha = 0.5f),
-                                shape = CircleShape
-                            )
-                            .size(24.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Fullscreen,
-                            contentDescription = "Expand",
-                            tint = Color.White,
-                            modifier = Modifier.size(16.dp)
-                        )
-                    }
-                }
-            }
-        }
-
-        // — full‑screen swipeable viewer —
-        selectedIndex?.let { initialPage ->
-            Dialog(
-                onDismissRequest = { selectedIndex = null },
-                properties = DialogProperties(usePlatformDefaultWidth = false)
-            ) {
-                val pagerState = rememberPagerState(
-                    initialPage = initialPage,
-                    initialPageOffsetFraction = 0f,
-                    pageCount = { uiState.uploadedImages.size }
-                )
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Black)
-                ) {
-                    HorizontalPager(
-                        state = pagerState,
-                        modifier = Modifier.fillMaxSize()
-                    ) { page ->
-                        val crop = uiState.uploadedImages[page]
-                        val url = if (isLocalImageExists(crop.uid)) crop.uid else crop.url
-
-                        Image(
-                            painter = rememberAsyncImagePainter(model = url),
-                            contentDescription = "Full Image",
-                            contentScale = ContentScale.Fit,
-                            modifier = Modifier.fillMaxSize()
-                        )
-                    }
-
-                    // close button
-                    IconButton(
-                        onClick = { selectedIndex = null },
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .padding(16.dp)
-                            .size(32.dp)
-                            .background(Color.Black.copy(alpha = 0.6f), CircleShape)
-                    ) {
-                        Icon(Icons.Default.Close, contentDescription = "Close", tint = Color.White)
-                    }
-                }
-            }
-        }
-    }
-}
+//@Composable
+//fun CropImageGallery(uiState: HomeScreenUIState) {
+//    val scrollState = rememberScrollState()
+//
+//    var selectedIndex by remember { mutableStateOf<Int?>(null) }
+//
+//    Column {
+//        // — thumbnail row, aligned under the header —
+//        Row(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .horizontalScroll(scrollState)
+//                .padding(horizontal = 16.dp, vertical = 8.dp),
+//            horizontalArrangement = Arrangement.spacedBy(12.dp)
+//        ) {
+//            uiState.uploadedImages.forEachIndexed { index, crop ->
+//                val url = if (isLocalImageExists(crop.uid)) crop.uid else crop.url
+//
+//                Box(
+//                    modifier = Modifier
+//                        .size(160.dp)
+//                        .clip(RoundedCornerShape(20.dp))
+//                        .background(Color(0xFF1A1A1A))
+//                ) {
+//                    // thumbnail
+//                    Image(
+//                        painter = rememberAsyncImagePainter(model = url),
+//                        contentDescription = "Crop Image",
+//                        contentScale = ContentScale.Crop,
+//                        modifier = Modifier.fillMaxSize()
+//                    )
+//                    // expand icon
+//                    IconButton(
+//                        onClick = { selectedIndex = index },
+//                        modifier = Modifier
+//                            .align(Alignment.TopEnd)
+//                            .padding(8.dp)
+//                            .background(
+//                                MaterialTheme.colorScheme.background.copy(alpha = 0.5f),
+//                                shape = CircleShape
+//                            )
+//                            .size(24.dp)
+//                    ) {
+//                        Icon(
+//                            imageVector = Icons.Default.Fullscreen,
+//                            contentDescription = "Expand",
+//                            tint = Color.White,
+//                            modifier = Modifier.size(16.dp)
+//                        )
+//                    }
+//                }
+//            }
+//        }
+//
+//        // — full‑screen swipeable viewer —
+//        selectedIndex?.let { initialPage ->
+//            Dialog(
+//                onDismissRequest = { selectedIndex = null },
+//                properties = DialogProperties(usePlatformDefaultWidth = false)
+//            ) {
+//                val pagerState = rememberPagerState(
+//                    initialPage = initialPage,
+//                    initialPageOffsetFraction = 0f,
+//                    pageCount = { uiState.uploadedImages.size }
+//                )
+//
+//                Box(
+//                    modifier = Modifier
+//                        .fillMaxSize()
+//                        .background(Color.Black)
+//                ) {
+//                    HorizontalPager(
+//                        state = pagerState,
+//                        modifier = Modifier.fillMaxSize()
+//                    ) { page ->
+//                        val crop = uiState.uploadedImages[page]
+//                        val url = if (isLocalImageExists(crop.uid)) crop.uid else crop.url
+//
+//                        Image(
+//                            painter = rememberAsyncImagePainter(model = url),
+//                            contentDescription = "Full Image",
+//                            contentScale = ContentScale.Fit,
+//                            modifier = Modifier.fillMaxSize()
+//                        )
+//                    }
+//
+//                    // close button
+//                    IconButton(
+//                        onClick = { selectedIndex = null },
+//                        modifier = Modifier
+//                            .align(Alignment.TopEnd)
+//                            .padding(16.dp)
+//                            .size(32.dp)
+//                            .background(Color.Black.copy(alpha = 0.6f), CircleShape)
+//                    ) {
+//                        Icon(Icons.Default.Close, contentDescription = "Close", tint = Color.White)
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
 
 
 fun isLocalImageExists(imagePath: String): Boolean {

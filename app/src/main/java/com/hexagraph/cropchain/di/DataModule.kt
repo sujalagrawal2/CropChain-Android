@@ -7,6 +7,7 @@ import com.hexagraph.cropchain.data.local.AppDatabase
 import com.hexagraph.cropchain.data.local.CropImageDao
 import com.hexagraph.cropchain.data.local.CropTableDao
 import com.hexagraph.cropchain.data.local.MetaMaskDao
+import com.hexagraph.cropchain.data.local.RecentActivityDao
 import com.hexagraph.cropchain.data.local.apppreferences.AppPreferences
 import com.hexagraph.cropchain.data.metamask.MetaMask
 import com.hexagraph.cropchain.data.repository.CropRepositoryImpl
@@ -14,11 +15,13 @@ import com.hexagraph.cropchain.data.repository.CropTableRepositoryImpl
 import com.hexagraph.cropchain.data.repository.MetaMaskRepositoryImpl
 import com.hexagraph.cropchain.data.repository.MetaMaskSDKRepositoryImpl
 import com.hexagraph.cropchain.data.repository.PinataRepositoryImpl
+import com.hexagraph.cropchain.data.repository.RecentActivityRepositoryImpl
 import com.hexagraph.cropchain.domain.repository.CropRepository
 import com.hexagraph.cropchain.domain.repository.CropTableRepository
 import com.hexagraph.cropchain.domain.repository.MetaMaskRepository
 import com.hexagraph.cropchain.domain.repository.MetaMaskSDKRepository
 import com.hexagraph.cropchain.domain.repository.PinataRepository
+import com.hexagraph.cropchain.domain.repository.RecentActivityRepository
 import com.hexagraph.cropchain.workManager.WorkManagerRepository
 import dagger.Module
 import dagger.Provides
@@ -41,6 +44,16 @@ object DataModule {
     @Provides
     fun provideCropRepoImpl(cropRepositoryImpl: CropRepositoryImpl): CropRepository {
         return cropRepositoryImpl
+    }
+    @Provides
+    fun provideRecentActivityDao(database: AppDatabase): RecentActivityDao {
+        return database.recentActivityDao()
+    }
+    @Provides
+    fun provideRecentActivityRepository(
+        impl: RecentActivityRepositoryImpl
+    ): RecentActivityRepository {
+        return impl
     }
 
     @Provides
