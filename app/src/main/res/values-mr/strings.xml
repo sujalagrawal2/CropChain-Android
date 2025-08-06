@@ -8,8 +8,8 @@
     <string name="intro_screen_3_title">AI मदतीने लेखन सोपं करा</string>
     <string name="intro_screen_3_body">आमचं AI साधन तुमचं लेखन सोपं आणि जलद करतं. कल्पना सुचवण्यापासून लेख सुधारण्यापर्यंत मदत करतं.</string>
     <string name="choose_your_language_screen_title">तुमची भाषा निवडा</string>
-    <string name="choose_your_language_screen_subtitle">तुमच्यासाठी संवाद सोपा करा</string>
-    <string name="role_selection_title">तुम्ही कोण?</string>
+    <string name="choose_your_language_screen_subtitle">����ुमच्यासाठी संवाद सोपा करा</string>
+    <string name="role_selection_title">������म्ही कोण?</string>
     <string name="role_selection_subtitle">सुरू ठेवण्यासाठी एक निवडा</string>
     <string name="button_text_continue">पुढे चला</string>
     <string name="login_screen_title">सुरू करूया</string>
@@ -47,7 +47,7 @@
     <string name="not_connected">जोडले गेले नाही</string>
     <string name="recent_activity">अलीकडील क्रिया</string>
     <string name="upload_image_icon">प्रतिमा आयकॉन अपलोड करा</string>
-    <string name="uploaded_images">अपलोड केलेल्या प्रतिमा</string>
+    <string name="uploaded_images">अपलोड केलेल्��ा प्रतिमा</string>
     <string name="hello">नमस्कार</string>
     <string name="profile">प्रोफाइल</string>
     <string name="other_settings">इतर सेटिंग्ज</string>
@@ -72,12 +72,11 @@
 
     <string name="metamask_accounts">मेटामास्क खाती</string>
     <string name="metamask_details">मेटामास्क तपशील</string>
-    <string name="wallet_address">वॉलेट पत्ता</string>
     <string name="chain_id">चेन आयडी</string>
     <string name="hide_balance">शिल्लक लपवा</string>
     <string name="show_balance">शिल्लक दाखवा</string>
     <string name="balance">शिल्लक</string>
-    <string name="connect_wallet">वॉलेट कनेक्ट करा</string>
+    <string name="connect_wallet">व��लेट कनेक्ट करा</string>
     <string name="get_reveiw_from_scientist">शास्त्रज्ञांकडून पुनरावलोकन मिळवा</string>
     <string name="an_image_was_verified">एक प्रतिमा सत्यापित केली गेली!</string>
     <string name="tap_to_see_review">पुनरावलोकन पाहण्यासाठी टॅप करा</string>
@@ -95,7 +94,73 @@
     <string name="connected_to_metamask">मेटामास्कशी जोडले गेले आहे</string>
     <string name="not_connected_to_metamask">मेटामास्कशी जोडले गेले नाही</string>
     <string name="edit">संपादन करा</string>
+    <string name="use_this_account">हे खाते वापरा</string>
+    <string name="in_use">वापरात आहे</string>
+    <string name="connected_account">जोडलेले खाते</string>
+    <string name="disconnected_accounts">डिस्कनेक्ट केलेली खाती</string>
+    <string name="wallet_address">वॉलेट पत्ता</string>
+    <string name="update_account">खाते अपडेट करा</string>
 
+    <!-- ImageUploadDetailScreen strings -->
+    <string name="back">मागे</string>
+    <string name="share_crop_photos">आपल्या पीक फोटो समुदायासोबत शेअर करा</string>
+    <string name="images_count">प्रतिमा (%d)</string>
+    <string name="add_images">प्रतिमा जोडा</string>
+    <string name="more_images">अधिक प्रतिमा</string>
+    <string name="tap_to_add_images">प्रतिमा जोडण्यासाठी टॅप करा</string>
+    <string name="upload_multiple_photos">आपल्या पिकांचे अनेक फोटो अपलोड करा</string>
+    <string name="location">स्थान</string>
+    <string name="get_location">स्थान मिळवा</string>
+    <string name="no_location_set">कोणतेही स्थान सेट नाही</string>
+    <string name="edit_address">पत्ता संपादित करा</string>
+    <string name="title">शीर्षक</string>
+    <string name="voice_input">आवाज इनपुट</string>
+    <string name="description">वर्णन</string>
+    <string name="uploading_to_blockchain">ब्लॉकचेनवर अपलोड करत आहे...</string>
+    <string name="connect_metamask_first">प्रथम मेटामास्क जोडा</string>
+    <string name="upload_images_to_pinata">प्रथम पिनाटावर प्रतिमा अपलोड करा</string>
+    <string name="upload_to_blockchain">ब्लॉकचेनवर अपलोड करा</string>
+    <string name="settings">सेटिंग्ज</string>
+    <string name="cancel">रद्द करा</string>
+    <string name="location_permission_required">स्थान परवानगी आवश्यक आहे</string>
+    <string name="location_permission_denied_message">स्थान परवानगी कायमची नाकारली आहे. स्थान वैशिष्ट्ये वापरण्यासाठी कृपया अॅप सेटिंग्जमध्ये सक्षम करा.</string>
+    <string name="address">पत्ता</string>
+    <string name="refresh">रिफ्रेश करा</string>
+    <string name="allow_location">स्थान अनुमती द्या</string>
+
+    <!-- VoiceBottomSheet strings -->
+    <string name="voice_assistant">आवाज सहाय्यक</string>
+    <string name="listening">ऐकत आहे...</string>
+    <string name="ready_to_generate">तयार करण्यास तयार</string>
+    <string name="processing">प्रक्रिया करत आहे...</string>
+    <string name="close">बंद करा</string>
+    <string name="describe_crop_images">आवाज वापरून तुमच्या पीक प्रतिमांचे वर्णन करा</string>
+    <string name="start_recording">रेकॉर्डिंग सुर��� करा</string>
+    <string name="tap_to_start_recording">रेकॉर्डिंग सुरू करण्यासाठी टॅप करा</string>
+    <string name="stop_recording">रेकॉर्डिंग थांबवा</string>
+    <string name="listening_speak_now">ऐकत आहे... आता बोला</string>
+    <string name="tap_microphone_continue">सुर��� ठेवण्यासाठी माइक्रोफोन टॅप करा</string>
+    <string name="transcript">प्रतिलेख:</string>
+    <string name="stop">थांबवा</string>
+    <string name="generate">जनरेट करा</string>
+    <string name="processing_with_ai">AI सह प्र��्रिया करत आहे...</string>
+    <string name="processing_transcript">प्रतिलेख प्रक्रिया करत आहे:</string>
+    <string name="please_wait_generating">कृपया प्रतीक्षा करा, आम्ही शीर्षक आणि वर्णन तयार करत आहोत...</string>
+    <string name="ready_to_generate_question">जनरेट करण्यासाठी तयार आहात?</string>
+    <string name="your_transcript">आपला प्रतिलेख:</string>
+    <string name="continue_listening">ऐकणे सुरू ठेवा</string>
+
+    <!-- Voice recognition error messages -->
+    <string name="audio_recording_error">ऑडिओ रेकॉर्डिंग त्रुटी</string>
+    <string name="client_side_error">क्लायंट साइड त्रुटी</string>
+    <string name="insufficient_permissions">अपुऱ्या परवानग्या</string>
+    <string name="network_error">नेटवर्क त्रुटी</string>
+    <string name="network_timeout">नेटवर्क टाइमआउट</string>
+    <string name="no_speech_input_detected">कोणताही बोलण्याचा इनपुट आढळला नाही</string>
+    <string name="recognition_service_busy">ओळख सेवा व्यस्त आहे</string>
+    <string name="server_error">सर्व्हर त्रुटी</string>
+    <string name="no_speech_input">को���ताही बोलण्याचा इनपुट नाही</string>
+    <string name="recognition_error">ओळख त्रुटी उद्भवली</string>
 
     <!-- Certificate arrays left unchanged -->
     <array name="com_google_android_gms_fonts_certs">

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">क्रॉपचेन</string>
     <string name="intro_screen_1_heading">क्रॉपचेन में आपका स्वागत है!</string>
-    <string name="intro_screen_1_body">एग्रीचेन कृषि प्रबंधन के एक क्रांतिकारी दृष्टिकोण के द्वार खोलता है। हमारा प्लेटफ़ॉर्म ब्लॉकचेन तकनीक का उपयोग करके पौधों की बीमारियों की पहचान और समाधान सत्यापन के लिए एक विकेंद्रीकृत पारिस्थितिकी तंत्र बनाता है।</string>
+    <string name="intro_screen_1_body">एग्रीचेन कृषि प्रबंधन के एक क्रांतिकारी दृष्टिकोण के द्वार खोलता है। हमारा प्लेटफ़ॉर्म ब्लॉकचेन तकनीक का उपयोग करके पौधों की बीमारियों की पहचान और समा��ान सत्यापन के लिए एक विकेंद्रीकृत पारिस्थितिकी तंत्र बनाता है।</string>
     <string name="intro_screen_2_title">हर किसी के लिए एग्रीटेक</string>
     <string name="intro_screen_2_body">किसानों, वैज्ञानिकों और प्रशासकों के लिए तैयार किए गए हमारे व्यापक टूल्स का अन्वेषण करें, जो आपको सूचित निर्णय लेने और सतत कृषि को आगे बढ़ाने में सक्षम बनाते हैं।</string>
     <string name="intro_screen_3_title">AI के साथ अपनी लेखनी को ऊंचा उठाएं</string>
@@ -93,8 +93,72 @@
     <string name="connected_to_metamask">मेटामास्क से जुड़ा हुआ</string>
     <string name="not_connected_to_metamask">मेटामास्क से नहीं जुड़ा हुआ</string>
     <string name="edit">संपादित करें</string>
+    <string name="use_this_account">इस खाते का उपयोग करें</string>
+    <string name="in_use">उपयोग में</string>
+    <string name="connected_account">जुड़ा हुआ खाता</string>
+    <string name="disconnected_accounts">डिस्कनेक्टेड खाते</string>
+    <string name="update_account">खाता अपडेट करें</string>
 
+    <!-- ImageUploadDetailScreen strings -->
+    <string name="back">वापस</string>
+    <string name="share_crop_photos">अपनी फसल की तस्वीरें समुदाय के साथ साझा करें</string>
+    <string name="images_count">छवियाँ (%d)</string>
+    <string name="add_images">छवियाँ जोड़ें</string>
+    <string name="more_images">अधिक छवियाँ</string>
+    <string name="tap_to_add_images">छवियाँ जोड़ने के लिए टैप करें</string>
+    <string name="upload_multiple_photos">अपनी फसल की कई तस्वीरें अपलोड करें</string>
+    <string name="location">स्थान</string>
+    <string name="get_location">स्थान प्राप्त करें</string>
+    <string name="no_location_set">कोई स्थान सेट नहीं</string>
+    <string name="edit_address">पता संपादित करें</string>
+    <string name="title">शीर्षक</string>
+    <string name="voice_input">आवाज इनपुट</string>
+    <string name="description">विवरण</string>
+    <string name="uploading_to_blockchain">ब्लॉकचेन पर अपलोड हो रहा है...</string>
+    <string name="connect_metamask_first">पहले मेटामास्क कनेक्ट करें</string>
+    <string name="upload_images_to_pinata">पहले पिनाटा पर छवियाँ अपलोड करें</string>
+    <string name="upload_to_blockchain">ब्लॉकचेन पर अपलोड करें</string>
+    <string name="settings">सेटिंग्स</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="location_permission_required">स्थान अनुमति आवश्यक है</string>
+    <string name="location_permission_denied_message">स्थान अनुमति स्थायी रूप से अस्वीकृत कर दी गई है। स्थान सुविधाओं का उपयोग करने के लिए कृपया इसे ऐप सेटिंग्स में सक्षम करें।</string>
+    <string name="address">पता</string>
+    <string name="refresh">रीफ्रेश करें</string>
+    <string name="allow_location">स्थान की अनुमति दें</string>
 
+    <!-- VoiceBottomSheet strings -->
+    <string name="voice_assistant">आवाज सहायक</string>
+    <string name="listening">सुन रहा है...</string>
+    <string name="ready_to_generate">जनरेट करने के लिए तैयार</string>
+    <string name="processing">प्रोसेस हो रहा है...</string>
+    <string name="close">बंद करें</string>
+    <string name="describe_crop_images">अपनी फसल की छवियों का वर्णन आवाज से करें</string>
+    <string name="start_recording">रिकॉर्डिंग शुरू करें</string>
+    <string name="tap_to_start_recording">रिकॉर्डिंग शुरू करने के लिए टैप करें</string>
+    <string name="stop_recording">रिकॉर्डिंग बंद करें</string>
+    <string name="listening_speak_now">सुन रहा है... अब बोलें</string>
+    <string name="tap_microphone_continue">जारी रखने के लिए माइक्रोफोन पर टैप करें</string>
+    <string name="transcript">प्रतिलेख:</string>
+    <string name="stop">रोकें</string>
+    <string name="generate">जनरेट करें</string>
+    <string name="processing_with_ai">AI के साथ प्रोसेसिंग...</string>
+    <string name="processing_transcript">प्रतिलेख प्रोसेस हो रहा है:</string>
+    <string name="please_wait_generating">कृपया प्रतीक्षा करें जबकि हम शीर्षक और विवरण जनरेट करते हैं...</string>
+    <string name="ready_to_generate_question">जनरेट करने के लिए तैयार हैं?</string>
+    <string name="your_transcript">आपका प्रतिलेख:</string>
+    <string name="continue_listening">सुनना जारी रखें</string>
+
+    <!-- Voice recognition error messages -->
+    <string name="audio_recording_error">ऑडियो रिकॉर्डिंग त्रुटि</string>
+    <string name="client_side_error">क्लाइंट साइड त्रुटि</string>
+    <string name="insufficient_permissions">अपर्याप्त अनुमतियां</string>
+    <string name="network_error">नेटवर्क त्रुटि</string>
+    <string name="network_timeout">नेटवर्क टाइमआउट</string>
+    <string name="no_speech_input_detected">कोई वाक् इनपुट नहीं मिला</string>
+    <string name="recognition_service_busy">पहचान सेवा व्यस्त है</string>
+    <string name="server_error">सर्वर त्रुटि</string>
+    <string name="no_speech_input">कोई वाक् इनपुट नहीं</string>
+    <string name="recognition_error">पहचान त्रुटि हुई</string>
 
     <!-- Certificate arrays left unchanged -->
     <array name="com_google_android_gms_fonts_certs">
