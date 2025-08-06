@@ -23,6 +23,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Fullscreen
 import androidx.compose.material.icons.filled.Pets
@@ -53,6 +55,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.hexagraph.cropchain.R
 import com.hexagraph.cropchain.ui.theme.cropChainGradient
 import com.hexagraph.cropchain.ui.theme.cropChainOrange
+import com.hexagraph.cropchain.ui.theme.oceanGradient
 import java.io.File
 import java.net.URI
 
@@ -102,10 +105,81 @@ fun HomeScreen(
             }
         }
 
+        Spacer(modifier = Modifier.height(8.dp))
+        Row {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(120.dp)
+                    .padding(end = 4.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(brush = cropChainGradient),
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        Icons.Default.Check,
+                        contentDescription = "Verified",
+                        tint = Color.White,
+                        modifier = Modifier
+                            .size(40.dp)
+                            .padding(bottom = 4.dp)
+                    )
+
+                    Text(
+                        text = "Verified",
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        fontSize = 16.sp,
+                    )
+
+                }
+
+            }
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(120.dp)
+                    .padding(start = 4.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(brush = cropChainGradient),
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        Icons.Default.AccessTime,
+                        contentDescription = "Verified",
+                        tint = Color.White,
+                        modifier = Modifier
+                            .size(40.dp)
+                            .padding(bottom = 4.dp)
+                    )
+
+                    Text(
+                        text = "Pending",
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        fontSize = 16.sp,
+                    )
+
+                }
+
+            }
+        }
+
         Spacer(modifier = Modifier.height(24.dp))
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(16.dp))
+                .clickable(onClick = onUploadedImagesClick),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
