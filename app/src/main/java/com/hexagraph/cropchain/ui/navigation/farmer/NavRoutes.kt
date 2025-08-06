@@ -10,9 +10,9 @@ sealed class NavRoutes(val route: String) {
     object UploadedImageScreen : NavRoutes("uploaded_image_screen")
 
 
-    object ReviewImageScreen : NavRoutes("review_image_screen/{url}/{type}") {
-        fun passArgs(url: String, type: Int): String {
-            return "review_image_screen/$url/$type"
+    object ReviewImageScreen : NavRoutes("review_image_screen/{id}/{type}") {
+        fun passArgs(id: String, type: Int): String {
+            return "review_image_screen/$id/$type"
         }
     }
 }

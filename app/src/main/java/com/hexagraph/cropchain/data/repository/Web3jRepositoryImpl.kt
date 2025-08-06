@@ -60,7 +60,7 @@ class Web3jRepositoryImpl @Inject constructor(
                 )
 
                 val urlsString = decodedResponse[0].value as String
-                Log.d("Open Images",urlsString)
+                Log.d("Open Images", urlsString)
                 Result.success(urlsString.split("$$$").filter { it.isNotBlank() })
 
             } catch (e: Exception) {
@@ -98,7 +98,7 @@ class Web3jRepositoryImpl @Inject constructor(
                 )
 
                 val urlsString = decodedResponse[0].value as String
-                Log.d("Close Images",urlsString)
+                Log.d("Close Images", urlsString)
                 Result.success(urlsString.split("$$$").filter { it.isNotBlank() })
 
             } catch (e: Exception) {
@@ -112,7 +112,7 @@ class Web3jRepositoryImpl @Inject constructor(
 
         val getFarmer = Function(
             "farmer_map",
-            listOf(Address(address?:walletAddress)),
+            listOf(Address(address ?: walletAddress)),
             listOf(
                 object : TypeReference<Uint>() {},
                 object : TypeReference<Uint256>() {},
@@ -176,7 +176,7 @@ class Web3jRepositoryImpl @Inject constructor(
 
         val getScientist = Function(
             "scientist_map",
-            listOf(Address(address?:walletAddress)),
+            listOf(Address(address ?: walletAddress)),
             listOf(
                 object : TypeReference<Uint>() {},
                 object : TypeReference<Uint256>() {},
@@ -238,7 +238,11 @@ class Web3jRepositoryImpl @Inject constructor(
             "images",
             listOf(Utf8String(url)),
             listOf(
+                object : TypeReference<Uint256>() {},
                 object : TypeReference<Address>() {},
+                object : TypeReference<Utf8String>() {},
+                object : TypeReference<Utf8String>() {},
+                object : TypeReference<Utf8String>() {},
                 object : TypeReference<Utf8String>() {},
                 object : TypeReference<Utf8String>() {},
                 object : TypeReference<Address>() {},
@@ -269,17 +273,21 @@ class Web3jRepositoryImpl @Inject constructor(
                 Result.success(ImageInfo())
                 Result.success(
                     ImageInfo(
-                        ownerAddress = decoded[0].value as String,
-                        imageUrl = decoded[1].value as String,
-                        aiSol = decoded[2].value as String,
-                        reviewerAddress = decoded[3].value as String,
-                        reviewerSol = decoded[4].value as String,
-                        gotAI = decoded[5].value as Boolean,
-                        reviewed = decoded[6].value as Boolean,
-                        verified = decoded[7].value as Boolean,
-                        verificationCount = (decoded[8].value as BigInteger).toInt(),
-                        trueCount = (decoded[9].value as BigInteger).toInt(),
-                        falseCount = (decoded[10].value as BigInteger).toInt()
+                        id = (decoded[0].value as BigInteger).toInt(),
+                        ownerAddress = decoded[1].value as String,
+                        imageUrl = decoded[2].value as String,
+                        title = decoded[3].value as String,
+                        description = decoded[4].value as String,
+                        location = decoded[5].value as String,
+                        aiSol = decoded[6].value as String,
+                        reviewerAddress = decoded[7].value as String,
+                        reviewerSol = decoded[8].value as String,
+                        gotAI = decoded[9].value as Boolean,
+                        reviewed = decoded[10].value as Boolean,
+                        verified = decoded[11].value as Boolean,
+                        verificationCount = (decoded[12].value as BigInteger).toInt(),
+                        trueCount = (decoded[13].value as BigInteger).toInt(),
+                        falseCount = (decoded[14].value as BigInteger).toInt()
                     )
                 )
             } catch (e: Exception) {
@@ -317,6 +325,42 @@ class Web3jRepositoryImpl @Inject constructor(
 
                 val urlsString = decodedResponse[0].value as String
                 Result.success(urlsString.split("$$$").filter { it.isNotBlank() })
+
+            } catch (e: Exception) {
+                Log.e("Web3j", "Error in getting verifiers: ${e.message}", e)
+                Result.failure(Exception(e.message))
+            }
+        }
+    }
+
+    override suspend fun getUrlById(id: Int): Result<String> {
+        val getVerifiers = Function(
+            "imageUrlById",
+            listOf(Uint256(id.toBigInteger())),
+            listOf(object : TypeReference<Utf8String>() {})
+        )
+
+        return withContext(Dispatchers.IO) {
+            try {
+                val encodedReadFunction = FunctionEncoder.encode(getVerifiers)
+                val response: EthCall = web3j.web3.ethCall(
+                    Transaction.createEthCallTransaction(
+                        walletAddress,
+                        contractAddress,
+                        encodedReadFunction
+                    ),
+                    org.web3j.protocol.core.DefaultBlockParameterName.LATEST
+                ).send()
+
+                Log.d("Web3j", "Raw response data: ${response.result}")
+
+                val decodedResponse = FunctionReturnDecoder.decode(
+                    response.result,
+                    getVerifiers.outputParameters
+                )
+
+                val urlsString = decodedResponse[0].value as String
+                Result.success(urlsString)
 
             } catch (e: Exception) {
                 Log.e("Web3j", "Error in getting verifiers: ${e.message}", e)

@@ -23,4 +23,6 @@ interface Web3jRepository {
 
     suspend fun getVerifiers(url: String): Result<List<String>>
 
+    suspend fun getUrlById(id:Int):Result<String>
+
 }

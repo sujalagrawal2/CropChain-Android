@@ -23,6 +23,9 @@ data class ReviewImageScreenUIState(
     val dislikeCount: Int = 0,
     val aiSolution: String = "",
     val type: Int = -1,
+    val title: String = "",
+    val description: String = "",
+    val location: String = "",
     val url: String = "",
     val showConfirmationDialog: Boolean = false,
     val pendingAction: PendingAction? = null
@@ -40,19 +43,35 @@ class ReviewImageScreenViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    fun getInfo(url: String, type: Int) {
+    fun getInfo(id: Int, type: Int) {
         viewModelScope.launch {
+            web3JRepository.getUrlById(id).onSuccess { url ->
+                web3JRepository.getImageInfo(url).onSuccess { imageInfo ->
+                    val imageList = imageInfo.imageUrl
+                        .split("$")
+                        .map { it.trim() }
+                        .filter { it.isNotBlank() }
 
-            web3JRepository.getImageInfo(url).onSuccess { imageInfo ->
-                val images = imageInfo.imageUrl.split("$").filter { it.isNotBlank() }
+                    _uiState.value = _uiState.value.copy(
+                        images = imageList,
+                        reviewText = imageInfo.reviewerSol,
+                        likeCount = imageInfo.trueCount,
+                        dislikeCount = imageInfo.falseCount,
+                        aiSolution = imageInfo.aiSol,
+                        type = type,
+                        url = imageInfo.imageUrl,
+                        title = imageInfo.title,
+                        description = imageInfo.description,
+                        location = imageInfo.location
+                    )
+                }.onFailure {
+                    _uiState.value = _uiState.value.copy(
+                        error = "Failed to fetch image info: ${it.message}"
+                    )
+                }
+            }.onFailure {
                 _uiState.value = _uiState.value.copy(
-                    images = images,
-                    reviewText = imageInfo.reviewerSol,
-                    likeCount = imageInfo.trueCount,
-                    dislikeCount = imageInfo.falseCount,
-                    aiSolution = imageInfo.aiSol,
-                    type = type,
-                    url = imageInfo.imageUrl
+                    error = "Failed to fetch URL by ID: ${it.message}"
                 )
             }
 

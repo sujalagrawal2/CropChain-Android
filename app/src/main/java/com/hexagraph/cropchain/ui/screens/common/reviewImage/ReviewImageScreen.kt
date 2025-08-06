@@ -67,12 +67,12 @@ enum class ReviewScreenType() {
 
 @Composable
 fun ReviewImageScreen(
-    imageUrl: String,
+    id: Int,
     type: Int,
     viewModel: ReviewImageScreenViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
-        viewModel.getInfo(imageUrl, type)
+        viewModel.getInfo(id, type)
     }
     val uiState = viewModel.uiState
     val images = uiState.value.images
@@ -120,8 +120,7 @@ fun ReviewImageScreen(
                                 .fillMaxWidth()
                                 .height(200.dp)
                         ) {
-                            val url =
-                                "https://orange-many-shrimp-59.mypinata.cloud/ipfs/${images[page]}"
+                            val url = images[page]
                             Image(
                                 painter = rememberAsyncImagePainter(
                                     model = url,
@@ -182,7 +181,7 @@ fun ReviewImageScreen(
             Spacer(modifier = Modifier.height(28.dp))
 
             Text(
-                "Text",
+                "Title",
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White
@@ -190,7 +189,7 @@ fun ReviewImageScreen(
                 modifier = Modifier.fillMaxWidth()
             )
             Text(
-                text = "Text goes here. This is a placeholder for the text param, whatever that is.",
+                text = uiState.value.title,
                 color = Color.White.copy(alpha = 0.8f),
                 fontSize = 14.sp,
                 modifier = Modifier.padding(top = 4.dp)
@@ -205,7 +204,7 @@ fun ReviewImageScreen(
                 modifier = Modifier.fillMaxWidth()
             )
             Text(
-                text = "This will provide a detailed description of the image being reviewed. It can include information about the crop, its condition, and any other relevant details.",
+                text = uiState.value.description,
                 color = Color.White.copy(alpha = 0.8f),
                 fontSize = 14.sp,
                 modifier = Modifier.padding(top = 4.dp)
@@ -391,8 +390,7 @@ fun ReviewImageScreen(
                     modifier = Modifier
                         .fillMaxSize()
                 ) { pageIndex ->
-                    val imageUrlDialog =
-                        "https://orange-many-shrimp-59.mypinata.cloud/ipfs/${images[pageIndex]}"
+                    val imageUrlDialog = images[pageIndex]
                     Image(
                         painter = rememberAsyncImagePainter(model = imageUrlDialog),
                         contentDescription = "Full Screen Image $pageIndex",

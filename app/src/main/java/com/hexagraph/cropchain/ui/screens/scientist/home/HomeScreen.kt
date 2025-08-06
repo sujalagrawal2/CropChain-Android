@@ -179,61 +179,6 @@ fun HomeScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.Pets, contentDescription = null, tint = Color(0xFFFF6D00))
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Reviewed Images", fontWeight = FontWeight.Bold)
-            }
-
-            IconButton(onClick = {
-                onReviewedImagesClicked()
-
-            }) {
-                Icon(
-                    Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                    contentDescription = "Go",
-                )
-            }
-        }
-
-        val reviewedImages: MutableList<String> = emptyList<String>().toMutableList()
-        for (i in uiState.value.reviewedImages) reviewedImages.add(i[0])
-        CropImageGallery(reviewedImages)
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.Pets, contentDescription = null, tint = Color(0xFFFF6D00))
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Verified Images", fontWeight = FontWeight.Bold)
-            }
-
-            IconButton(onClick = {
-                onVerifiedImagesClicked()
-
-            }) {
-                Icon(
-                    Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                    contentDescription = "Go",
-                )
-            }
-        }
-
-        val verifiedImages: MutableList<String> = emptyList<String>().toMutableList()
-        for (i in uiState.value.verifiedImages) verifiedImages.add(i[0])
-        CropImageGallery(verifiedImages)
-
-        Spacer(modifier = Modifier.height(24.dp))
-
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(Icons.Default.Pets, contentDescription = null, tint = cropChainOrange)
             Spacer(modifier = Modifier.width(8.dp))

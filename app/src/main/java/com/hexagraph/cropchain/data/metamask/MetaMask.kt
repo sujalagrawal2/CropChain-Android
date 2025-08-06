@@ -65,7 +65,7 @@ class MetaMask@Inject constructor(
         }
     }
 
-    val contractAddress : String = "0x0231BF4C7b9d9b53FD6518fb6Aa84a87b9C3bC27"
+    val contractAddress : String = "0x1A28522Cf3FE7A14a24a200B3e1651c92C74F898"
 
     var walletAddress: String = ""
 }

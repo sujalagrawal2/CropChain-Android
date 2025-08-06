@@ -5,6 +5,7 @@ import com.hexagraph.cropchain.R
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.http.HttpService
 import javax.inject.Inject
+import org.web3j.abi.*
 
 class Web3j @Inject constructor(context: Context) {
     val web3: Web3j =

@@ -55,14 +55,17 @@ class MetaMaskSDKRepositoryImpl @Inject constructor(
 
     override suspend fun uploadImage(crops: String , title: String, description: String, locationData: LocationData): Result<String> {
         Log.d("MetaMaskSDKRepo", "$crops, $title, $description, $locationData")
-        Log.d("MetaMaskSDKRepo", "$walletAddress")
+        Log.d("MetaMaskSDKRepo", walletAddress)
         return try {
             suspendCoroutine { continuation ->
                 val function = Function(
                     "upload_image",
                     listOf(
                         Address(walletAddress),
-                        Utf8String(crops)
+                        Utf8String(crops),
+                        Utf8String(title),
+                        Utf8String(description),
+                        Utf8String(locationData.address),
                     ),
                     emptyList()
                 )
