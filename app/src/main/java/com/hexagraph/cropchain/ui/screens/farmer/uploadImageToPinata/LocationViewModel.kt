@@ -16,17 +16,13 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
+import com.hexagraph.cropchain.data.local.apppreferences.AppPreferences
+import com.hexagraph.cropchain.domain.model.LocationData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.Locale
 import javax.inject.Inject
-
-data class LocationData(
-    val latitude: Double,
-    val longitude: Double,
-    val address: String
-)
 
 enum class LocationPermissionState {
     NOT_REQUESTED,
@@ -36,7 +32,9 @@ enum class LocationPermissionState {
 }
 
 @HiltViewModel
-class LocationViewModel @Inject constructor() : ViewModel() {
+class LocationViewModel @Inject constructor(
+    private val appPreferences: AppPreferences
+) : ViewModel() {
 
     private val _permissionState = mutableStateOf(LocationPermissionState.NOT_REQUESTED)
     val permissionState: State<LocationPermissionState> = _permissionState
@@ -57,6 +55,18 @@ class LocationViewModel @Inject constructor() : ViewModel() {
     val isEditingAddress: State<Boolean> = _isEditingAddress
 
     private var fusedLocationClient: FusedLocationProviderClient? = null
+
+    init {
+        // Load saved location data on initialization
+        viewModelScope.launch {
+            appPreferences.locationData.getFlow().collect { savedLocation ->
+                if (savedLocation.address.isNotEmpty()) {
+                    _currentLocation.value = savedLocation
+                    _customAddress.value = savedLocation.address
+                }
+            }
+        }
+    }
 
     fun initializeLocationClient(context: Context) {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
@@ -141,12 +151,16 @@ class LocationViewModel @Inject constructor() : ViewModel() {
 
                 if (location != null) {
                     val address = getAddressFromLocation(context, location)
-                    _currentLocation.value = LocationData(
+                    val locationData = LocationData(
                         latitude = location.latitude,
                         longitude = location.longitude,
                         address = address
                     )
+                    _currentLocation.value = locationData
                     _customAddress.value = address
+
+                    // Save to preferences
+                    appPreferences.locationData.set(locationData)
                 } else {
                     _locationError.value = "Unable to get current location"
                 }
@@ -197,9 +211,14 @@ class LocationViewModel @Inject constructor() : ViewModel() {
 
     fun stopEditingAddress() {
         _isEditingAddress.value = false
-        // Update the current location with custom address
+        // Update the current location with custom address and save to preferences
         _currentLocation.value?.let { current ->
-            _currentLocation.value = current.copy(address = _customAddress.value)
+            val updatedLocation = current.copy(address = _customAddress.value)
+            _currentLocation.value = updatedLocation
+
+            viewModelScope.launch {
+                appPreferences.locationData.set(updatedLocation)
+            }
         }
     }
 

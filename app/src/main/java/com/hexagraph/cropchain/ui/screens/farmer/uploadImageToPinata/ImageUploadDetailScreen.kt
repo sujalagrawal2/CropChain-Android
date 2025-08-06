@@ -70,6 +70,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.hexagraph.cropchain.R
+import com.hexagraph.cropchain.domain.model.LocationData
 
 @Composable
 fun ImageUploadDetailScreen(
