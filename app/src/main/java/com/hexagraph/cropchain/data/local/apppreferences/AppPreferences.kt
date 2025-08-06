@@ -2,7 +2,6 @@ package com.hexagraph.cropchain.data.local.apppreferences
 
 import com.hexagraph.cropchain.domain.model.SupportedLanguages
 import com.hexagraph.cropchain.domain.model.LocationData
-
 interface AppPreferences {
     val aadharID: DataStorePreference<String>
     val username: DataStorePreference<String>

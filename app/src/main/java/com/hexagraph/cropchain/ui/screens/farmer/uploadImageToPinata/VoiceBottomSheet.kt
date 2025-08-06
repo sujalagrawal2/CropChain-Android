@@ -43,10 +43,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.hexagraph.cropchain.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -105,10 +107,10 @@ fun VoiceBottomSheet(
                 ) {
                     Text(
                         text = when (voiceState) {
-                            VoiceState.IDLE -> "Voice Assistant"
-                            VoiceState.LISTENING -> "Listening..."
-                            VoiceState.READY_TO_PROCESS -> "Ready to Generate"
-                            VoiceState.PROCESSING -> "Processing..."
+                            VoiceState.IDLE -> stringResource(R.string.voice_assistant)
+                            VoiceState.LISTENING -> stringResource(R.string.listening)
+                            VoiceState.READY_TO_PROCESS -> stringResource(R.string.ready_to_generate)
+                            VoiceState.PROCESSING -> stringResource(R.string.processing)
                         },
                         style = MaterialTheme.typography.headlineSmall.copy(
                             fontWeight = FontWeight.Bold
@@ -123,7 +125,7 @@ fun VoiceBottomSheet(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = "Close"
+                            contentDescription = stringResource(R.string.close)
                         )
                     }
                 }
@@ -218,7 +220,7 @@ private fun IdleVoiceState(
         }
 
         Text(
-            text = "Describe your crop images using voice",
+            text = stringResource(R.string.describe_crop_images),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -234,7 +236,7 @@ private fun IdleVoiceState(
         ) {
             Icon(
                 imageVector = Icons.Default.Mic,
-                contentDescription = "Start Recording",
+                contentDescription = stringResource(R.string.start_recording),
                 modifier = Modifier.size(32.dp)
             )
         }
@@ -242,7 +244,7 @@ private fun IdleVoiceState(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Tap to start recording",
+            text = stringResource(R.string.tap_to_start_recording),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -278,7 +280,7 @@ private fun ListeningVoiceState(
         ) {
             Icon(
                 imageVector = if (isListening) Icons.Default.Mic else Icons.Default.MicOff,
-                contentDescription = if (isListening) "Stop Recording" else "Start Recording",
+                contentDescription = if (isListening) stringResource(R.string.stop_recording) else stringResource(R.string.start_recording),
                 tint = if (isListening) Color.White else MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(32.dp)
             )
@@ -287,7 +289,7 @@ private fun ListeningVoiceState(
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = if (isListening) "Listening... Speak now" else "Tap microphone to continue",
+            text = if (isListening) stringResource(R.string.listening_speak_now) else stringResource(R.string.tap_microphone_continue),
             style = MaterialTheme.typography.bodyLarge.copy(
                 fontWeight = FontWeight.Medium
             ),
@@ -306,7 +308,7 @@ private fun ListeningVoiceState(
                     modifier = Modifier.padding(16.dp)
                 ) {
                     Text(
-                        text = "Transcript:",
+                        text = stringResource(R.string.transcript),
                         style = MaterialTheme.typography.labelMedium.copy(
                             fontWeight = FontWeight.Bold
                         ),
@@ -337,7 +339,7 @@ private fun ListeningVoiceState(
                     modifier = Modifier.size(18.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Stop")
+                Text(stringResource(R.string.stop))
             }
 
             Button(
@@ -351,7 +353,7 @@ private fun ListeningVoiceState(
                     modifier = Modifier.size(18.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Generate")
+                Text(stringResource(R.string.generate))
             }
         }
     }
@@ -372,7 +374,7 @@ private fun ProcessingVoiceState(
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = "Processing with AI...",
+            text = stringResource(R.string.processing_with_ai),
             style = MaterialTheme.typography.bodyLarge.copy(
                 fontWeight = FontWeight.Medium
             )
@@ -389,7 +391,7 @@ private fun ProcessingVoiceState(
                     modifier = Modifier.padding(16.dp)
                 ) {
                     Text(
-                        text = "Processing transcript:",
+                        text = stringResource(R.string.processing_transcript),
                         style = MaterialTheme.typography.labelMedium.copy(
                             fontWeight = FontWeight.Bold
                         ),
@@ -407,7 +409,7 @@ private fun ProcessingVoiceState(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Please wait while we generate title and description...",
+            text = stringResource(R.string.please_wait_generating),
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -425,7 +427,7 @@ private fun ReadyToProcessVoiceState(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Ready to generate?",
+            text = stringResource(R.string.ready_to_generate_question),
             style = MaterialTheme.typography.bodyLarge.copy(
                 fontWeight = FontWeight.Medium
             ),
@@ -444,7 +446,7 @@ private fun ReadyToProcessVoiceState(
                     modifier = Modifier.padding(16.dp)
                 ) {
                     Text(
-                        text = "Your transcript:",
+                        text = stringResource(R.string.your_transcript),
                         style = MaterialTheme.typography.labelMedium.copy(
                             fontWeight = FontWeight.Bold
                         ),
@@ -475,7 +477,7 @@ private fun ReadyToProcessVoiceState(
                     modifier = Modifier.size(18.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Continue Listening")
+                Text(stringResource(R.string.continue_listening))
             }
 
             Button(
@@ -489,7 +491,7 @@ private fun ReadyToProcessVoiceState(
                     modifier = Modifier.size(18.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Generate")
+                Text(stringResource(R.string.generate))
             }
         }
     }
