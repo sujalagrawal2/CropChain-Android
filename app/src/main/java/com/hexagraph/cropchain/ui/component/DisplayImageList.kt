@@ -28,10 +28,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.hexagraph.cropchain.ui.screens.farmer.uploadedImages.CropItem
 
 @Composable
 fun DisplayImageList(
-    images: List<String>,
+    images: List<CropItem>,
     onClickImage: (Int) -> Unit,
     content: @Composable (() -> Unit)? = null
 ) {
@@ -55,8 +56,8 @@ fun DisplayImageList(
 }
 
 @Composable
-fun ItemCard(image: String, onClickImage: (Int) -> Unit, idx: Int) {
-    val url = "https://orange-many-shrimp-59.mypinata.cloud/ipfs/$image"
+fun ItemCard(image: CropItem, onClickImage: (Int) -> Unit, idx: Int) {
+//    val url = "https://orange-many-shrimp-59.mypinata.cloud/ipfs/$image"
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -65,7 +66,7 @@ fun ItemCard(image: String, onClickImage: (Int) -> Unit, idx: Int) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = rememberAsyncImagePainter(model = url),
+            painter = rememberAsyncImagePainter(model = image.url),
             contentDescription = "Avatar",
             modifier = Modifier
                 .size(50.dp)
@@ -78,36 +79,31 @@ fun ItemCard(image: String, onClickImage: (Int) -> Unit, idx: Int) {
 
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = "Lorem Ipsum",
+                text = image.title,
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onBackground
             )
             Text(
-                text = "Something",
+                text = image.description,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
             )
-            Text(
-                text = "Other thing",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
-            )
         }
 
-        Column(horizontalAlignment = Alignment.End) {
-            Text(
-                text = "Date Maybe",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
-            )
-
-            IconButton(onClick = { }) {
-                Icon(
-                    imageVector = Icons.Default.MoreVert,
-                    contentDescription = "More",
-                    tint = MaterialTheme.colorScheme.onBackground
-                )
-            }
-        }
+//        Column(horizontalAlignment = Alignment.End) {
+//            Text(
+//                text = "Date Maybe",
+//                style = MaterialTheme.typography.bodySmall,
+//                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+//            )
+//
+//            IconButton(onClick = { }) {
+//                Icon(
+//                    imageVector = Icons.Default.MoreVert,
+//                    contentDescription = "More",
+//                    tint = MaterialTheme.colorScheme.onBackground
+//                )
+//            }
+//        }
     }
 }

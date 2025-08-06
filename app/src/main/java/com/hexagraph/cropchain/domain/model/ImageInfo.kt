@@ -1,6 +1,10 @@
 package com.hexagraph.cropchain.domain.model
 
 data class ImageInfo(
+    val id: Int = 0,
+    val title : String = "",
+    val description : String = "",
+    val location : String = "",
     val ownerAddress: String="",
     val imageUrl: String="",
     val aiSol: String="",

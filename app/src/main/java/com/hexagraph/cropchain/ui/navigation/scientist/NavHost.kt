@@ -177,9 +177,9 @@ fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Un
                     )
                 }
             ) {
-                ReviewScreen(onImageSelected = { url, type ->
+                ReviewScreen(onImageSelected = { id, type ->
                     navController.navigate(
-                        NavRoutes.ReviewImageScreen.passArgs(url = url, type = type)
+                        NavRoutes.ReviewImageScreen.passArgs(id = id, type = type)
                     )
                 })
             }
@@ -187,13 +187,13 @@ fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Un
             composable(
                 route = NavRoutes.ReviewImageScreen.route,
                 arguments = listOf(
-                    navArgument("url") { type = NavType.StringType },
+                    navArgument("id") { type = NavType.StringType },
                     navArgument("type") { type = NavType.IntType }
                 )
             ) {
-                val url = it.arguments?.getString("url")!!
+                val id = it.arguments?.getString("id")!!
                 val type = it.arguments?.getInt("type")!!
-                ReviewImageScreen(imageUrl = url, type = type)
+                ReviewImageScreen(id = id.toInt(), type = type)
             }
 
             composable(
@@ -203,9 +203,9 @@ fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Un
                 )
             ) {
                 val type = it.arguments?.getInt("type")!!
-                ReviewedImages(type = type, onImageClicked = { url, type ->
+                ReviewedImages(type = type, onImageClicked = { id, type ->
                     navController.navigate(
-                        NavRoutes.ReviewImageScreen.passArgs(url = url, type = type)
+                        NavRoutes.ReviewImageScreen.passArgs(id = id, type = type)
                     )
                 })
             }

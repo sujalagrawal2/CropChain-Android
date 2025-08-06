@@ -29,11 +29,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hexagraph.cropchain.ui.component.DisplayImageList
+import com.hexagraph.cropchain.ui.screens.farmer.uploadedImages.CropItem
 
 @Composable
 fun ReviewScreen(
     viewModel: ReviewScreenViewModel = hiltViewModel(),
-    onBackButtonPressed: () -> Unit={},
+    onBackButtonPressed: () -> Unit = {},
     onImageSelected: (String, Int) -> Unit = { _, _ -> }
 ) {
     val uiState = viewModel.uiState
@@ -61,15 +62,21 @@ fun ReviewScreen(
             else uiState.value.reviewImages
 
 
-
-        val imagesUrl: MutableList<String> = emptyList<String>().toMutableList()
+        val imagesUrl: MutableList<CropItem> = emptyList<CropItem>().toMutableList()
         for (images in imageSections) {
-            val splitImages = images.split("$").filter { it.isNotBlank() }
-            imagesUrl.add(splitImages[0])
+            val splitImages = images.url.split("$").filter { it.isNotBlank() }
+            imagesUrl.add(images.copy(url = splitImages[0]))
         }
         UpperScreen(onTabSelected = { selectedTab = it }, selectedTab = selectedTab)
 
-        DisplayImageList(imagesUrl, onClickImage = {onImageSelected(imageSections[it],if(selectedTab=="Verify")2 else 1)})
+        DisplayImageList(
+            imagesUrl,
+            onClickImage = {
+                onImageSelected(
+                    imageSections[it].id.toString(),
+                    if (selectedTab == "Verify") 2 else 1
+                )
+            })
 
     }
 }

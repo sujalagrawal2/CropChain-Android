@@ -68,7 +68,8 @@ class ImageUploadScreenViewModel @Inject constructor(
 
     private fun createEmptyCrop() {
         viewModelScope.launch {
-            val currentDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+            val currentDate =
+                SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
             val emptyCrop = Crop(createdDate = currentDate)
             currentCropId = cropTableRepository.insertCrop(emptyCrop)
             loadCropImages()
@@ -102,7 +103,8 @@ class ImageUploadScreenViewModel @Inject constructor(
                 val file = copyUriToInternalStorage(context, uri)
 
                 if (file != null) {
-                    val currentDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+                    val currentDate =
+                        SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
                     val cropImage = CropImages(
                         uid = uri.toString(),
                         date = currentDate,
@@ -278,7 +280,7 @@ class ImageUploadScreenViewModel @Inject constructor(
                     }
 
                     // Create crops string for blockchain
-                    val cropsString = uploadedImages.joinToString(separator = "$") { it.url?.let{ it2-> extractIpfsHash(it2)} ?: "" }
+                    val cropsString = uploadedImages.joinToString(separator = "$") { it.url ?: "" }
 
                     // Upload to blockchain
                     val result = metaMaskSDKRepository.uploadImage(
