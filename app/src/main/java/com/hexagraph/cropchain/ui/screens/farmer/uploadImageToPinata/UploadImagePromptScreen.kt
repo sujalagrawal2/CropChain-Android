@@ -1,6 +1,6 @@
 @file:JvmName("UploadImageScreenKt")
 
-package com.hexagraph.cropchain.ui.screens.farmer.uploadImage
+package com.hexagraph.cropchain.ui.screens.farmer.uploadImageToPinata
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -35,7 +35,7 @@ import com.hexagraph.cropchain.ui.theme.cropChainOrange
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ConfirmImageUploadScreen(
+fun ImageUploadPromptScreen(
     goToUploadStatusScreen: () -> Unit = {},
     goToUploadImageScreen: () -> Unit = {}
 ) {

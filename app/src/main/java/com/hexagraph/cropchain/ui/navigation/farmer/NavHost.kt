@@ -38,9 +38,10 @@ import com.hexagraph.cropchain.R
 import com.hexagraph.cropchain.ui.screens.common.reviewImage.ReviewImageScreen
 import com.hexagraph.cropchain.ui.screens.farmer.home.HomeScreen
 import com.hexagraph.cropchain.ui.screens.farmer.profile.ProfileScreen
-import com.hexagraph.cropchain.ui.screens.farmer.uploadImage.ConfirmImageUploadScreen
-import com.hexagraph.cropchain.ui.screens.farmer.uploadImageStatus.UploadStatusScreen
-import com.hexagraph.cropchain.ui.screens.farmer.uploadedImage.UploadedImageScreen
+import com.hexagraph.cropchain.ui.screens.farmer.uploadImageToPinata.ImageUploadDetailScreen
+import com.hexagraph.cropchain.ui.screens.farmer.uploadImageToPinata.ImageUploadPromptScreen
+import com.hexagraph.cropchain.ui.screens.farmer.uploadImageStatus.UploadImageToBlockchainScreen
+import com.hexagraph.cropchain.ui.screens.farmer.uploadedImages.UploadedImagesScreen
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -176,7 +177,7 @@ fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Un
                     )
                 }
             ) {
-                ConfirmImageUploadScreen(
+                ImageUploadPromptScreen(
                     goToUploadStatusScreen = {
                         navController.navigate(NavRoutes.UploadStatusScreen.route) {
                             popUpTo(NavRoutes.SelectImageScreen.route) { inclusive = false }
@@ -188,7 +189,7 @@ fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Un
                     })
             }
             composable(NavRoutes.UploadStatusScreen.route) {
-                UploadStatusScreen(
+                UploadImageToBlockchainScreen(
                     onBackButtonPressed = {
                         navController.navigateUp()
                     },
@@ -196,7 +197,7 @@ fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Un
                 )
             }
             composable(NavRoutes.UploadIImageScreen.route) {
-                ConfirmImageUploadScreen(
+                ImageUploadDetailScreen(
                     onBackButtonPressed = {
                         navController.navigateUp()
                     },
@@ -209,7 +210,7 @@ fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Un
             }
 
             composable(NavRoutes.UploadedImageScreen.route) {
-                UploadedImageScreen(
+                UploadedImagesScreen(
                     onBackButtonPressed = {
                         navController.navigateUp()
                     },

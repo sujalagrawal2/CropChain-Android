@@ -1,4 +1,4 @@
-package com.hexagraph.cropchain.ui.screens.farmer.uploadImage
+package com.hexagraph.cropchain.ui.screens.farmer.uploadImageToPinata
 
 import android.content.Context
 import android.net.Uri
@@ -17,7 +17,7 @@ import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
-class ConfirmImageUploadViewModel @Inject constructor(
+class ImageUploadScreenViewModel @Inject constructor(
     private val cropRepository: CropRepository,
     private val workManager: WorkManagerRepository,
 ) : ViewModel() {

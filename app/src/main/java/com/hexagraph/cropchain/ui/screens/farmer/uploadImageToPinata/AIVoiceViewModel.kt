@@ -1,4 +1,4 @@
-package com.hexagraph.cropchain.ui.screens.farmer.uploadImage
+package com.hexagraph.cropchain.ui.screens.farmer.uploadImageToPinata
 
 import android.content.Context
 import android.content.Intent

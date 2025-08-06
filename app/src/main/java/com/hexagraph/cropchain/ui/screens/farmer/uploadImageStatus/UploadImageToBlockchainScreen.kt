@@ -30,13 +30,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,7 +47,7 @@ import com.hexagraph.cropchain.R
 import com.hexagraph.cropchain.domain.model.Crop
 
 @Composable
-fun UploadStatusScreen(
+fun UploadImageToBlockchainScreen(
     onBackButtonPressed: () -> Unit,
     viewModel: UploadStatusViewModel = hiltViewModel(),
     goToProfileScreen: () -> Unit

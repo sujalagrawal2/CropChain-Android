@@ -1,6 +1,5 @@
-package com.hexagraph.cropchain.ui.screens.farmer.uploadImage
+package com.hexagraph.cropchain.ui.screens.farmer.uploadImageToPinata
 
-import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
@@ -57,8 +56,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -75,8 +72,8 @@ import coil.compose.rememberAsyncImagePainter
 import com.hexagraph.cropchain.R
 
 @Composable
-fun ConfirmImageUploadScreen(
-    viewModel: ConfirmImageUploadViewModel = hiltViewModel(),
+fun ImageUploadDetailScreen(
+    viewModel: ImageUploadScreenViewModel = hiltViewModel(),
     locationViewModel: LocationViewModel = hiltViewModel(),
     onBackButtonPressed: () -> Unit,
     goToUploadStatusScreen: () -> Unit

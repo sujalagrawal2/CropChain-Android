@@ -1,4 +1,4 @@
-package com.hexagraph.cropchain.ui.screens.farmer.uploadedImage
+package com.hexagraph.cropchain.ui.screens.farmer.uploadedImages
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -16,7 +16,7 @@ data class UploadedImageUIState(
 )
 
 @HiltViewModel
-class UploadedImageViewModel @Inject constructor(
+class UploadedImagesViewModel @Inject constructor(
     private val web3jRepository: Web3jRepository,
 ) : ViewModel() {
 
