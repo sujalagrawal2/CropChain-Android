@@ -17,7 +17,7 @@ plugins {
 val localPropertiesFile = rootProject.file("local.properties")
 android {
     namespace = "com.hexagraph.cropchain"
-    compileSdk = 35
+    compileSdk = 36
 
     bundle {
         density { enableSplit = true }
@@ -28,7 +28,7 @@ android {
     defaultConfig {
         applicationId = "com.hexagraph.cropchain"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -42,6 +42,7 @@ android {
         addStringResource("PROVIDER_URL")
         addStringResource("PINATA_SECRET_API_KEY")
         addStringResource("SERVER_API")
+        addStringResource("GEMINI_API_KEY")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -142,5 +143,14 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:34.0.0"))
     implementation("com.google.firebase:firebase-messaging")
 
+    //Navigation 3 API
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+
+
+    implementation(libs.generativeai)
+
+    implementation("com.google.android.gms:play-services-location:21.3.0")
 
 }

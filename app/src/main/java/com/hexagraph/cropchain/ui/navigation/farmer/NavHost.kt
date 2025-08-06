@@ -38,14 +38,15 @@ import com.hexagraph.cropchain.R
 import com.hexagraph.cropchain.ui.screens.common.reviewImage.ReviewImageScreen
 import com.hexagraph.cropchain.ui.screens.farmer.home.HomeScreen
 import com.hexagraph.cropchain.ui.screens.farmer.profile.ProfileScreen
-import com.hexagraph.cropchain.ui.screens.farmer.uploadImage.ConfirmImageUploadScreen
-import com.hexagraph.cropchain.ui.screens.farmer.uploadImageStatus.UploadStatusScreen
-import com.hexagraph.cropchain.ui.screens.farmer.uploadedImage.UploadedImageScreen
+import com.hexagraph.cropchain.ui.screens.farmer.uploadImageToPinata.ImageUploadDetailScreen
+import com.hexagraph.cropchain.ui.screens.farmer.uploadImageToPinata.ImageUploadPromptScreen
+//import com.hexagraph.cropchain.ui.screens.farmer.uploadImageStatus.UploadImageToBlockchainScreen
+import com.hexagraph.cropchain.ui.screens.farmer.uploadedImages.UploadedImagesScreen
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Unit={}) {
+fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Unit) {
     val navController = rememberNavController()
     val currentBackStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry.value?.destination?.route
@@ -176,7 +177,7 @@ fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Un
                     )
                 }
             ) {
-                ConfirmImageUploadScreen(
+                ImageUploadPromptScreen(
                     goToUploadStatusScreen = {
                         navController.navigate(NavRoutes.UploadStatusScreen.route) {
                             popUpTo(NavRoutes.SelectImageScreen.route) { inclusive = false }
@@ -187,21 +188,20 @@ fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Un
                         navController.navigate(NavRoutes.UploadIImageScreen.route)
                     })
             }
-            composable(NavRoutes.UploadStatusScreen.route) {
-                UploadStatusScreen(
-                    onBackButtonPressed = {
-                        navController.navigateUp()
-                    },
-                    goToProfileScreen = { navController.navigate(NavRoutes.ProfileScreen.route) }
-                )
-            }
+
             composable(NavRoutes.UploadIImageScreen.route) {
-                ConfirmImageUploadScreen(
+                ImageUploadDetailScreen(
                     onBackButtonPressed = {
                         navController.navigateUp()
                     },
-                    goToUploadStatusScreen = {
-                        navController.navigate(NavRoutes.UploadStatusScreen.route) {
+                    onSuccessfulUpload = {
+                        navController.navigate(NavRoutes.HomeScreen.route) {
+                            popUpTo(NavRoutes.SelectImageScreen.route) { inclusive = false }
+                            launchSingleTop = true
+                        }
+                    },
+                    onNavigateToProfile = {
+                        navController.navigate(NavRoutes.ProfileScreen.route) {
                             popUpTo(NavRoutes.SelectImageScreen.route) { inclusive = false }
                             launchSingleTop = true
                         }
@@ -209,7 +209,7 @@ fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Un
             }
 
             composable(NavRoutes.UploadedImageScreen.route) {
-                UploadedImageScreen(
+                UploadedImagesScreen(
                     onBackButtonPressed = {
                         navController.navigateUp()
                     },

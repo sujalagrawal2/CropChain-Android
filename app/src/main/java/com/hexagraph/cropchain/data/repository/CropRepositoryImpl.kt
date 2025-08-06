@@ -1,39 +1,72 @@
 package com.hexagraph.cropchain.data.repository
 
-import com.hexagraph.cropchain.data.local.CropDao
-import com.hexagraph.cropchain.domain.model.Crop
+import com.hexagraph.cropchain.data.local.CropImageDao
+import com.hexagraph.cropchain.domain.model.CropImages
 import com.hexagraph.cropchain.domain.repository.CropRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class CropRepositoryImpl @Inject constructor(
-    private val cropDao: CropDao
+    private val cropImageDao: CropImageDao
 ) : CropRepository {
-    override fun getAllCrops(): Flow<List<Crop>> {
-        return cropDao.getAllCrops()
+
+    override suspend fun insertCropImage(cropImage: CropImages): Long {
+        return cropImageDao.insertCropImage(cropImage)
     }
 
-    override suspend fun insertCrop(crop: Crop) {
-        return cropDao.insertCrop(crop)
+    override fun getCropImagesByCropId(cropId: Long): Flow<List<CropImages>> {
+        return cropImageDao.getCropImagesByCropId(cropId)
     }
 
-    override  fun getAllCrop(): Flow<List<Crop>> {
-        return cropDao.getAllCrop()
+    override suspend fun getCropImagesByCropIdSync(cropId: Long): List<CropImages> {
+        return cropImageDao.getCropImagesByCropIdSync(cropId)
     }
 
-    override suspend fun getPinataUploadCrops(): List<Crop> {
-        return cropDao.getPinataUploadCrops()
+    override fun getAllCropImages(): Flow<List<CropImages>> {
+        return cropImageDao.getAllCropImages()
     }
 
-    override suspend fun getBlockChainUploadCrops(): List<Crop> {
-        return cropDao.getBlockChainUploadCrops()
+    override suspend fun getPendingPinataUploads(): List<CropImages> {
+        return cropImageDao.getPendingPinataUploads()
     }
 
-    override suspend fun updateCrop(crop: Crop) {
-        return cropDao.updateCrop(crop)
+    override suspend fun getSuccessfulPinataUploads(): List<CropImages> {
+        return cropImageDao.getSuccessfulPinataUploads()
     }
 
-    override fun getAllUploadedCrops(): Flow<List<Crop>> {
-        return cropDao.getAllUploadedCrops()
+    override suspend fun getCropImageById(imageId: Long): CropImages? {
+        return cropImageDao.getCropImageById(imageId)
+    }
+
+    override suspend fun updateCropImage(cropImage: CropImages) {
+        return cropImageDao.updateCropImage(cropImage)
+    }
+
+    override suspend fun updateUploadProgress(imageId: Long, progress: Int) {
+        return cropImageDao.updateUploadProgress(imageId, progress)
+    }
+
+    override suspend fun updatePinataUploadStatus(imageId: Long, status: Int, url: String?) {
+        return cropImageDao.updatePinataUploadStatus(imageId, status, url)
+    }
+
+    override suspend fun deleteCropImage(cropImage: CropImages) {
+        return cropImageDao.deleteCropImage(cropImage)
+    }
+
+    override suspend fun deleteCropImageById(imageId: Long) {
+        return cropImageDao.deleteCropImageById(imageId)
+    }
+
+    override suspend fun deleteAllCropImagesByCropId(cropId: Long) {
+        return cropImageDao.deleteAllCropImagesByCropId(cropId)
+    }
+
+    override suspend fun getCropImagesCount(cropId: Long): Int {
+        return cropImageDao.getCropImagesCount(cropId)
+    }
+
+    override suspend fun getUploadedCropImagesCount(cropId: Long): Int {
+        return cropImageDao.getUploadedCropImagesCount(cropId)
     }
 }

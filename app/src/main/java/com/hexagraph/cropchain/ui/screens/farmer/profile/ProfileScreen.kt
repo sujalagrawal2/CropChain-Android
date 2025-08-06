@@ -1,5 +1,6 @@
 package com.hexagraph.cropchain.ui.screens.farmer.profile
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -194,6 +195,7 @@ fun ProfileScreen(
                     icon = Icons.Default.Language,
                     title = stringResource(R.string.change_your_language_preference),
                     onClick = {
+                        Log.d("ProfileScreen", "Visibility toggled for language preference bottom sheet")
                         viewModel.toggleVisibilityOfLanguagePreferenceBottomSheet()
                     }
                 )
@@ -203,8 +205,10 @@ fun ProfileScreen(
                     icon = Icons.AutoMirrored.Filled.Logout,
                     title = stringResource(R.string.log_out),
                     onClick = {
-                        onLogoutClick()
-                        viewModel.logOut()
+                        Log.d("ProfileScreen", "Logging out")
+                        viewModel.logOut() {
+                            onLogoutClick()
+                        }
                     }
                 )
             }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/hexagraph/cropchain/domain/model/LocationData.kt">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/app/src/main/java/com/hexagraph/cropchain/domain/model/LocationData.kt" />
+              <option name="updatedContent" value="package com.hexagraph.cropchain.domain.model&#10;&#10;import kotlinx.serialization.Serializable&#10;&#10;@Serializable&#10;data class LocationData(&#10;    val latitude: Double = 0.0,&#10;    val longitude: Double = 0.0,&#10;    val address: String = &quot;&quot;&#10;)" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

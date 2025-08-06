@@ -10,11 +10,15 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.hexagraph.cropchain.domain.model.SupportedLanguages
+import com.hexagraph.cropchain.domain.model.LocationData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 class AppPreferencesImpl(private val context: Context) : AppPreferences {
     private val datastore = DataStoreProvider.getInstance(context)
@@ -30,8 +34,25 @@ class AppPreferencesImpl(private val context: Context) : AppPreferences {
         val METAMASK_MESSAGE = stringPreferencesKey("metamask_message")
         val DEVICE_ID = stringPreferencesKey("device_id")
         val SEND_TOKEN = stringPreferencesKey("send_token")
+        val CROP_TITLE = stringPreferencesKey("crop_title")
+        val CROP_DESCRIPTION = stringPreferencesKey("crop_description")
+        val LOCATION_DATA = stringPreferencesKey("location_data")
     }
 
+    override suspend fun clearAll() {
+        aadharID.set("")
+        username.set("")
+        isUserLoggedIn.set(false)
+        isCurrentUserFarmer.set(false)
+        appLanguage.set(SupportedLanguages.ENGLISH)
+        accountSelected.set("")
+        metaMaskMessage.set("")
+        deviceId.set("")
+        token.set("")
+        cropDescription.set("")
+        cropTitle.set("")
+        locationData.set(LocationData())
+    }
 
     override val aadharID: DataStorePreference<String>
         get() = object : DataStorePreference<String> {
@@ -184,6 +205,60 @@ class AppPreferencesImpl(private val context: Context) : AppPreferences {
             override suspend fun set(value: String) {
                 datastore.edit { prefs ->
                     prefs[PreferenceKeys.USERNAME] = value
+                }
+            }
+        }
+
+    override val cropTitle: DataStorePreference<String>
+        get() = object : DataStorePreference<String> {
+            override fun getFlow(): Flow<String> {
+                return datastore.data.map { prefs ->
+                    prefs[PreferenceKeys.CROP_TITLE] ?: ""
+                }
+            }
+
+            override suspend fun set(value: String) {
+                datastore.edit { prefs ->
+                    prefs[PreferenceKeys.CROP_TITLE] = value
+                }
+            }
+        }
+
+    override val cropDescription: DataStorePreference<String>
+        get() = object : DataStorePreference<String> {
+        override fun getFlow(): Flow<String> {
+            return datastore.data.map { prefs ->
+                prefs[PreferenceKeys.CROP_DESCRIPTION] ?: ""
+            }
+        }
+
+        override suspend fun set(value: String) {
+            datastore.edit { prefs ->
+                prefs[PreferenceKeys.CROP_DESCRIPTION] = value
+            }
+        }
+    }
+
+    override val locationData: DataStorePreference<LocationData>
+        get() = object : DataStorePreference<LocationData> {
+            override fun getFlow(): Flow<LocationData> {
+                return datastore.data.map { prefs ->
+                    val jsonString = prefs[PreferenceKeys.LOCATION_DATA] ?: ""
+                    if (jsonString.isEmpty()) {
+                        LocationData()
+                    } else {
+                        try {
+                            Json.decodeFromString<LocationData>(jsonString)
+                        } catch (e: Exception) {
+                            LocationData()
+                        }
+                    }
+                }
+            }
+
+            override suspend fun set(value: LocationData) {
+                datastore.edit { prefs ->
+                    prefs[PreferenceKeys.LOCATION_DATA] = Json.encodeToString(value)
                 }
             }
         }

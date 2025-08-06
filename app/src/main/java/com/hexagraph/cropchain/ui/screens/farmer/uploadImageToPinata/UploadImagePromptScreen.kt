@@ -1,6 +1,6 @@
 @file:JvmName("UploadImageScreenKt")
 
-package com.hexagraph.cropchain.ui.screens.farmer.uploadImage
+package com.hexagraph.cropchain.ui.screens.farmer.uploadImageToPinata
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -35,7 +35,7 @@ import com.hexagraph.cropchain.ui.theme.cropChainOrange
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ConfirmImageUploadScreen(
+fun ImageUploadPromptScreen(
     goToUploadStatusScreen: () -> Unit = {},
     goToUploadImageScreen: () -> Unit = {}
 ) {
@@ -64,28 +64,6 @@ fun ConfirmImageUploadScreen(
                 }
                 Spacer(modifier = Modifier.height(16.dp))
 
-            }
-        }
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.Pets, contentDescription = null, tint = cropChainOrange)
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    stringResource(R.string.upload_status),
-                    fontWeight = FontWeight.Bold
-                )
-            }
-
-            IconButton(onClick = { goToUploadStatusScreen() }) {
-                Icon(
-                    Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                    contentDescription = "Go",
-                )
             }
         }
     }

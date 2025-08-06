@@ -3,6 +3,7 @@ package com.hexagraph.cropchain.data.repository
 
 import android.util.Log
 import com.hexagraph.cropchain.data.metamask.MetaMask
+import com.hexagraph.cropchain.domain.model.LocationData
 import com.hexagraph.cropchain.domain.repository.MetaMaskSDKRepository
 import io.metamask.androidsdk.Ethereum
 import io.metamask.androidsdk.EthereumRequest
@@ -52,8 +53,9 @@ class MetaMaskSDKRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun uploadImage(crops: String): Result<String> {
-
+    override suspend fun uploadImage(crops: String , title: String, description: String, locationData: LocationData): Result<String> {
+        Log.d("MetaMaskSDKRepo", "$crops, $title, $description, $locationData")
+        Log.d("MetaMaskSDKRepo", "$walletAddress")
         return try {
             suspendCoroutine { continuation ->
                 val function = Function(
