@@ -60,19 +60,12 @@ class ReviewImageScreenViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(reviewText = text)
     }
 
-
-    fun onLikeClicked() {
-        if (_uiState.value.liked == true) {
-            _uiState.value = _uiState.value.copy(liked = null)
-        } else
-            _uiState.value = _uiState.value.copy(liked = true)
+    fun onApproveClicked() {
+        _uiState.value = _uiState.value.copy(liked = true)
     }
 
-    fun onDislikeClicked() {
-        if (_uiState.value.liked == false) {
-            _uiState.value = _uiState.value.copy(liked = null)
-        } else
-            _uiState.value = _uiState.value.copy(liked = false)
+    fun onDisapproveClicked() {
+        _uiState.value = _uiState.value.copy(liked = false)
     }
 
     fun submit() {

@@ -296,7 +296,7 @@ fun ReviewImageScreen(
                 ) {
                     Button(
                         onClick = {
-                            viewModel.submit()
+                            viewModel.onApproveClicked()
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF007E33),
@@ -311,7 +311,7 @@ fun ReviewImageScreen(
                     }
                     Button(
                         onClick = {
-                            viewModel.submit()
+                            viewModel.onDisapproveClicked()
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF007E33),
