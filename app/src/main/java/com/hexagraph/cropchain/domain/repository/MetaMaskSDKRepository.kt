@@ -1,5 +1,7 @@
 package com.hexagraph.cropchain.domain.repository
 
+import android.location.Location
+import com.hexagraph.cropchain.domain.model.LocationData
 import io.metamask.androidsdk.Ethereum
 
 interface MetaMaskSDKRepository {
@@ -12,7 +14,7 @@ interface MetaMaskSDKRepository {
 
     fun connect(onError: (String) -> Unit, onSuccess: (List<String>) -> Unit)
 
-    suspend fun uploadImage(crops: String = "url"): Result<String>
+    suspend fun uploadImage(crops: String = "url", title: String = "", description: String = "", locationData: LocationData = LocationData()): Result<String>
 
     suspend fun verifyImage(url: String, choice: Boolean): Result<String>
 

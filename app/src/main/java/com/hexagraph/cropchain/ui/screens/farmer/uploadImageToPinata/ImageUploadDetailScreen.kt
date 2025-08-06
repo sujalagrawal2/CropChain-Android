@@ -30,10 +30,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -70,6 +72,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.hexagraph.cropchain.R
+import com.hexagraph.cropchain.domain.model.CropImages
 import com.hexagraph.cropchain.domain.model.LocationData
 
 @Composable
@@ -77,7 +80,7 @@ fun ImageUploadDetailScreen(
     viewModel: ImageUploadScreenViewModel = hiltViewModel(),
     locationViewModel: LocationViewModel = hiltViewModel(),
     onBackButtonPressed: () -> Unit,
-    goToUploadStatusScreen: () -> Unit
+    onSuccessfulUpload: () -> Unit
 ) {
     val context = LocalContext.current
     val showBackDialog = remember { mutableStateOf(false) }
@@ -86,7 +89,7 @@ fun ImageUploadDetailScreen(
 
     val title by viewModel.title
     val description by viewModel.description
-    val imageUris by viewModel.imageUris
+    val uiState by viewModel.uiState
 
     // Location states
     val permissionState by locationViewModel.permissionState
@@ -100,13 +103,7 @@ fun ImageUploadDetailScreen(
         contract = ActivityResultContracts.OpenMultipleDocuments()
     ) { uris ->
         if (uris.isNotEmpty()) {
-            if (imageUris.isEmpty()) {
-                viewModel.updateImageUris(uris)
-            } else {
-                uris.forEach { uri ->
-                    viewModel.addImageUri(uri)
-                }
-            }
+            viewModel.addMultipleImageUris(uris)
         }
         Log.d("UploadImageScreen", uris.toString())
     }
@@ -119,9 +116,6 @@ fun ImageUploadDetailScreen(
     }
 
     LaunchedEffect(Unit) {
-        if (imageUris.isEmpty()) {
-            launcher.launch(arrayOf("image/*"))
-        }
         locationViewModel.initializeLocationClient(context)
     }
 
@@ -174,7 +168,7 @@ fun ImageUploadDetailScreen(
     // Voice bottom sheet
     VoiceBottomSheet(
         isVisible = showVoiceBottomSheet.value,
-        imageUri = imageUris.firstOrNull(),
+        imageUri = uiState.cropImages.firstOrNull()?.let { Uri.parse(it.uid) },
         onDismiss = { showVoiceBottomSheet.value = false },
         onResult = { generatedTitle, generatedDescription ->
             viewModel.updateTitle(generatedTitle)
@@ -185,7 +179,11 @@ fun ImageUploadDetailScreen(
     ImageUploadLayout(
         title = title,
         description = description,
-        imageUris = imageUris,
+        cropImages = uiState.cropImages,
+        uploadProgress = uiState.uploadProgress,
+        allImagesUploaded = uiState.allImagesUploaded,
+        isMetaMaskConnected = uiState.isMetaMaskConnected,
+        isBlockchainUploadInProgress = uiState.isBlockchainUploadInProgress,
         currentLocation = currentLocation,
         isLoadingLocation = isLoadingLocation,
         locationError = locationError,
@@ -214,9 +212,10 @@ fun ImageUploadDetailScreen(
         onAddressChanged = { locationViewModel.updateCustomAddress(it) },
         onSaveAddressPressed = { locationViewModel.stopEditingAddress() },
         onVoicePressed = { showVoiceBottomSheet.value = true },
+        onConnectMetaMask = { viewModel.connectMetaMask { /* onNavigateToProfile */ } },
         onUploadPressed = {
-            viewModel.insertCrops(context) {
-                goToUploadStatusScreen()
+            viewModel.uploadToBlockchain(context) {
+                onSuccessfulUpload()
             }
         }
     )
@@ -226,7 +225,11 @@ fun ImageUploadDetailScreen(
 fun ImageUploadLayout(
     title: String,
     description: String,
-    imageUris: List<Uri>,
+    cropImages: List<CropImages>,
+    uploadProgress: Map<Long, Int>,
+    allImagesUploaded: Boolean,
+    isMetaMaskConnected: Boolean,
+    isBlockchainUploadInProgress: Boolean,
     currentLocation: LocationData?,
     isLoadingLocation: Boolean,
     locationError: String,
@@ -237,12 +240,13 @@ fun ImageUploadLayout(
     onTitleChanged: (String) -> Unit,
     onDescriptionChanged: (String) -> Unit,
     onAddImagesPressed: () -> Unit,
-    onRemoveImage: (Uri) -> Unit,
+    onRemoveImage: (Long) -> Unit,
     onLocationPressed: () -> Unit,
     onEditAddressPressed: () -> Unit,
     onAddressChanged: (String) -> Unit,
     onSaveAddressPressed: () -> Unit,
     onVoicePressed: () -> Unit,
+    onConnectMetaMask: () -> Unit,
     onUploadPressed: () -> Unit
 ) {
     Box(
@@ -330,6 +334,81 @@ fun ImageUploadLayout(
 
                 Spacer(modifier = Modifier.height(28.dp))
 
+                // MetaMask Connection Status Card
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .shadow(12.dp, RoundedCornerShape(20.dp)),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f)
+                    ),
+                    shape = RoundedCornerShape(20.dp),
+                    border = androidx.compose.foundation.BorderStroke(
+                        1.dp,
+                        if (isMetaMaskConnected)
+                            MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+                        else
+                            MaterialTheme.colorScheme.error.copy(alpha = 0.3f)
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(
+                                    imageVector = if (isMetaMaskConnected) Icons.Default.CheckCircle else Icons.Default.Warning,
+                                    contentDescription = null,
+                                    tint = if (isMetaMaskConnected)
+                                        MaterialTheme.colorScheme.primary
+                                    else
+                                        MaterialTheme.colorScheme.error,
+                                    modifier = Modifier.size(24.dp)
+                                )
+                                Spacer(modifier = Modifier.width(12.dp))
+                                Column {
+                                    Text(
+                                        text = if (isMetaMaskConnected) "MetaMask Connected" else "MetaMask Not Connected",
+                                        style = MaterialTheme.typography.titleMedium.copy(
+                                            fontWeight = FontWeight.Bold
+                                        ),
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                    Text(
+                                        text = if (isMetaMaskConnected)
+                                            "Ready to upload to blockchain"
+                                        else
+                                            "Connect wallet to upload to blockchain",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                            }
+
+                            if (!isMetaMaskConnected) {
+                                Button(
+                                    onClick = onConnectMetaMask,
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = MaterialTheme.colorScheme.primary
+                                    ),
+                                    shape = RoundedCornerShape(12.dp)
+                                ) {
+                                    Text("Connect", color = Color.White)
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(28.dp))
+
                 // Enhanced Images Preview Section
                 Card(
                     modifier = Modifier
@@ -364,7 +443,7 @@ fun ImageUploadLayout(
                                 )
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Text(
-                                    text = "Images (${imageUris.size})",
+                                    text = "Images (${cropImages.size})",
                                     style = MaterialTheme.typography.titleLarge.copy(
                                         fontWeight = FontWeight.Bold
                                     ),
@@ -396,7 +475,7 @@ fun ImageUploadLayout(
                                     )
                                 }
 
-                                if (imageUris.size > 3) {
+                                if (cropImages.size > 3) {
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Icon(
                                         imageVector = Icons.Default.KeyboardArrowRight,
@@ -410,14 +489,14 @@ fun ImageUploadLayout(
 
                         Spacer(modifier = Modifier.height(20.dp))
 
-                        if (imageUris.isNotEmpty()) {
+                        if (cropImages.isNotEmpty()) {
                             LazyRow(
                                 horizontalArrangement = Arrangement.spacedBy(16.dp)
                             ) {
-                                items(imageUris) { uri ->
-                                    ImageThumbnail(
-                                        uri = uri,
-                                        onRemove = { onRemoveImage(uri) }
+                                items(cropImages) { cropImage ->
+                                    CropImageThumbnail(
+                                        cropImage = cropImage,
+                                        onRemove = { onRemoveImage(cropImage.id) }
                                     )
                                 }
                             }
@@ -769,14 +848,14 @@ fun ImageUploadLayout(
 
                 Spacer(modifier = Modifier.height(36.dp))
 
-                // Enhanced Primary Action Button
+                // Enhanced Primary Action Button with MetaMask Connection Check
                 Button(
                     onClick = onUploadPressed,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(64.dp)
                         .shadow(16.dp, RoundedCornerShape(20.dp)),
-                    enabled = imageUris.isNotEmpty(),
+                    enabled = cropImages.isNotEmpty() && isMetaMaskConnected && !isBlockchainUploadInProgress,
                     shape = RoundedCornerShape(20.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
@@ -787,21 +866,48 @@ fun ImageUploadLayout(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        Text(
-                            text = "Upload Images",
-                            style = MaterialTheme.typography.titleLarge.copy(
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 18.sp
-                            ),
-                            color = if (imageUris.isNotEmpty()) Color.White else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Icon(
-                            imageVector = Icons.Default.KeyboardArrowRight,
-                            contentDescription = null,
-                            tint = if (imageUris.isNotEmpty()) Color.White else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
-                            modifier = Modifier.size(20.dp)
-                        )
+                        if (isBlockchainUploadInProgress) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(20.dp),
+                                strokeWidth = 2.dp,
+                                color = Color.White
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Uploading to Blockchain...",
+                                style = MaterialTheme.typography.titleLarge.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 18.sp
+                                ),
+                                color = Color.White
+                            )
+                        } else {
+                            Text(
+                                text = when {
+                                    !isMetaMaskConnected -> "Connect MetaMask First"
+                                    cropImages.any { it.uploadedToPinata == -1 } -> "Upload Images to Pinata First"
+                                    else -> "Upload to Blockchain"
+                                },
+                                style = MaterialTheme.typography.titleLarge.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 18.sp
+                                ),
+                                color = if (cropImages.isNotEmpty() && isMetaMaskConnected && !isBlockchainUploadInProgress)
+                                    Color.White
+                                else
+                                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Icon(
+                                imageVector = Icons.Default.KeyboardArrowRight,
+                                contentDescription = null,
+                                tint = if (cropImages.isNotEmpty() && isMetaMaskConnected && !isBlockchainUploadInProgress)
+                                    Color.White
+                                else
+                                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
                     }
                 }
 
@@ -863,6 +969,130 @@ fun ImageThumbnail(
     }
 }
 
+@Composable
+fun CropImageThumbnail(
+    cropImage: CropImages,
+    onRemove: () -> Unit
+) {
+    Box {
+        Card(
+            modifier = Modifier
+                .size(120.dp)
+                .shadow(8.dp, RoundedCornerShape(16.dp)),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Box {
+                Image(
+                    painter = rememberAsyncImagePainter(cropImage.uid),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .then(
+                            if (cropImage.uploadedToPinata == -1) {
+                                Modifier.background(Color.Black.copy(alpha = 0.3f))
+                            } else Modifier
+                        )
+                )
+
+                // Show progress indicator while uploading
+                if (cropImage.uploadedToPinata == -1) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            CircularProgressIndicator(
+                                progress = cropImage.uploadProgress / 100f,
+                                modifier = Modifier.size(40.dp),
+                                strokeWidth = 4.dp,
+                                color = MaterialTheme.colorScheme.primary,
+                                trackColor = Color.White.copy(alpha = 0.3f)
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "${cropImage.uploadProgress}%",
+                                color = Color.White,
+                                style = MaterialTheme.typography.bodySmall.copy(
+                                    fontWeight = FontWeight.Bold
+                                )
+                            )
+                        }
+                    }
+                }
+
+                // Show error state
+                if (cropImage.uploadedToPinata == 0) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.Red.copy(alpha = 0.7f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Warning,
+                            contentDescription = "Upload Failed",
+                            tint = Color.White,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                }
+
+                // Show success state
+                if (cropImage.uploadedToPinata == 1) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.Green.copy(alpha = 0.2f)),
+                        contentAlignment = Alignment.BottomEnd
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.CheckCircle,
+                            contentDescription = "Upload Success",
+                            tint = Color.Green,
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .size(20.dp)
+                        )
+                    }
+                }
+            }
+        }
+
+        // Enhanced remove button with gradient and shadow
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(8.dp)
+                .size(32.dp)
+                .shadow(4.dp, CircleShape)
+                .background(
+                    brush = Brush.radialGradient(
+                        colors = listOf(
+                            Color.Red.copy(alpha = 0.9f),
+                            Color.Red.copy(alpha = 0.7f)
+                        )
+                    ),
+                    CircleShape
+                )
+                .clickable { onRemove() },
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "×",
+                color = Color.White,
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                )
+            )
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun ImageUploadLayoutPreview() {
@@ -870,7 +1100,11 @@ fun ImageUploadLayoutPreview() {
         ImageUploadLayout(
             title = "Sample Crop Title",
             description = "This is a sample description for the crop images.",
-            imageUris = emptyList(),
+            cropImages = emptyList(),
+            uploadProgress = emptyMap(),
+            allImagesUploaded = false,
+            isMetaMaskConnected = true,
+            isBlockchainUploadInProgress = false,
             currentLocation = LocationData(
                 latitude = 0.0,
                 longitude = 0.0,
@@ -891,6 +1125,7 @@ fun ImageUploadLayoutPreview() {
             onAddressChanged = {},
             onSaveAddressPressed = {},
             onVoicePressed = {},
+            onConnectMetaMask = {},
             onUploadPressed = {}
         )
     }

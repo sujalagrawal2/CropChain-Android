@@ -10,12 +10,12 @@ import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import com.hexagraph.cropchain.domain.repository.CropRepository
 import com.hexagraph.cropchain.domain.repository.PinataRepository
-import com.hexagraph.cropchain.util.uriToFile
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
 
 @HiltWorker
 class WorkManagerUploadPhotoToPinata @AssistedInject constructor(
@@ -27,7 +27,8 @@ class WorkManagerUploadPhotoToPinata @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         return try {
-            val crops = cropRepositoryImpl.getPinataUploadCrops()
+            // Get pending Pinata uploads using the new repository method
+            val crops = cropRepositoryImpl.getPendingPinataUploads()
             if (crops.isEmpty()) return Result.success()
 
             setForeground(createProgressForeground("Uploading to Pinata", 0, crops.size))
@@ -35,37 +36,49 @@ class WorkManagerUploadPhotoToPinata @AssistedInject constructor(
             var failures = 0
             crops.forEachIndexed { index, crop ->
                 updateNotification(index + 1, crops.size)
+
+                // Reset failed uploads to pending state
                 if (crop.uploadedToPinata == 0) {
-                    crop.uploadedToPinata = -1
-                    crop.uploadProgress = 0
-                    cropRepositoryImpl.updateCrop(crop)
+                    cropRepositoryImpl.updatePinataUploadStatus(crop.id, -1, null)
+                    cropRepositoryImpl.updateUploadProgress(crop.id, 0)
                 }
 
                 var lastUpdateTime = 0L
 
+                // Use the localPath to get the file instead of converting from UID
+                val file = File(crop.localPath)
+                if (!file.exists()) {
+                    Log.e("PinataWorker", "File not found at path: ${crop.localPath}")
+                    cropRepositoryImpl.updatePinataUploadStatus(crop.id, 0, null)
+                    failures++
+                }
+
                 val result = pinataRepositoryImpl.uploadImageToPinata(
-                    uriToFile(applicationContext, crop.uid),
+                    file,
                     onProgress = { progress ->
                         Log.d("PinataUploadProgress", "crop id : ${crop.id} $progress% uploaded")
-                        if (progress > crop.uploadProgress)
-                            crop.uploadProgress = progress
+
+                        // Throttle updates to avoid too frequent database writes
                         val now = System.currentTimeMillis()
                         if (now - lastUpdateTime >= 300) {
                             lastUpdateTime = now
                             CoroutineScope(Dispatchers.IO).launch {
-                                cropRepositoryImpl.updateCrop(crop)
+                                cropRepositoryImpl.updateUploadProgress(crop.id, progress)
                             }
                         }
-                    })
-                result.onSuccess { url ->
-                    crop.uploadedToPinata = 1
-                    crop.url = url
-                    cropRepositoryImpl.updateCrop(crop)
+                    }
+                )
+
+                result.onSuccess { ipfsHash ->
+                    val ipfsUrl = "https://gateway.pinata.cloud/ipfs/$ipfsHash"
+                    cropRepositoryImpl.updatePinataUploadStatus(crop.id, 1, ipfsUrl)
+                    Log.d("PinataWorker", "Successfully uploaded crop ${crop.id}: $ipfsUrl")
                 }
-                result.onFailure {
-                    crop.uploadedToPinata = 0
-                    crop.uploadProgress = 0 // Hello
-                    cropRepositoryImpl.updateCrop(crop)
+
+                result.onFailure { exception ->
+                    cropRepositoryImpl.updatePinataUploadStatus(crop.id, 0, null)
+                    cropRepositoryImpl.updateUploadProgress(crop.id, 0)
+                    Log.e("PinataWorker", "Failed to upload crop ${crop.id}: ${exception.message}")
                     failures++
                 }
             }

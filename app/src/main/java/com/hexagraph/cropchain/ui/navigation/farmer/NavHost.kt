@@ -40,7 +40,7 @@ import com.hexagraph.cropchain.ui.screens.farmer.home.HomeScreen
 import com.hexagraph.cropchain.ui.screens.farmer.profile.ProfileScreen
 import com.hexagraph.cropchain.ui.screens.farmer.uploadImageToPinata.ImageUploadDetailScreen
 import com.hexagraph.cropchain.ui.screens.farmer.uploadImageToPinata.ImageUploadPromptScreen
-import com.hexagraph.cropchain.ui.screens.farmer.uploadImageStatus.UploadImageToBlockchainScreen
+//import com.hexagraph.cropchain.ui.screens.farmer.uploadImageStatus.UploadImageToBlockchainScreen
 import com.hexagraph.cropchain.ui.screens.farmer.uploadedImages.UploadedImagesScreen
 
 
@@ -188,21 +188,14 @@ fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Un
                         navController.navigate(NavRoutes.UploadIImageScreen.route)
                     })
             }
-            composable(NavRoutes.UploadStatusScreen.route) {
-                UploadImageToBlockchainScreen(
-                    onBackButtonPressed = {
-                        navController.navigateUp()
-                    },
-                    goToProfileScreen = { navController.navigate(NavRoutes.ProfileScreen.route) }
-                )
-            }
+
             composable(NavRoutes.UploadIImageScreen.route) {
                 ImageUploadDetailScreen(
                     onBackButtonPressed = {
                         navController.navigateUp()
                     },
-                    goToUploadStatusScreen = {
-                        navController.navigate(NavRoutes.UploadStatusScreen.route) {
+                    onSuccessfulUpload = {
+                        navController.navigate(NavRoutes.HomeScreen.route) {
                             popUpTo(NavRoutes.SelectImageScreen.route) { inclusive = false }
                             launchSingleTop = true
                         }
