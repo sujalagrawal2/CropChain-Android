@@ -30,6 +30,8 @@ class AppPreferencesImpl(private val context: Context) : AppPreferences {
         val METAMASK_MESSAGE = stringPreferencesKey("metamask_message")
         val DEVICE_ID = stringPreferencesKey("device_id")
         val SEND_TOKEN = stringPreferencesKey("send_token")
+        val CROP_TITLE = stringPreferencesKey("crop_title")
+        val CROP_DESCRIPTION = stringPreferencesKey("crop_description")
     }
 
     override suspend fun clearAll() {
@@ -42,6 +44,8 @@ class AppPreferencesImpl(private val context: Context) : AppPreferences {
         metaMaskMessage.set("")
         deviceId.set("")
         token.set("")
+        cropDescription.set("")
+        cropTitle.set("")
     }
 
     override val aadharID: DataStorePreference<String>
@@ -198,6 +202,36 @@ class AppPreferencesImpl(private val context: Context) : AppPreferences {
                 }
             }
         }
+
+    override val cropTitle: DataStorePreference<String>
+        get() = object : DataStorePreference<String> {
+            override fun getFlow(): Flow<String> {
+                return datastore.data.map { prefs ->
+                    prefs[PreferenceKeys.CROP_TITLE] ?: ""
+                }
+            }
+
+            override suspend fun set(value: String) {
+                datastore.edit { prefs ->
+                    prefs[PreferenceKeys.CROP_TITLE] = value
+                }
+            }
+        }
+
+    override val cropDescription: DataStorePreference<String>
+        get() = object : DataStorePreference<String> {
+        override fun getFlow(): Flow<String> {
+            return datastore.data.map { prefs ->
+                prefs[PreferenceKeys.CROP_DESCRIPTION] ?: ""
+            }
+        }
+
+        override suspend fun set(value: String) {
+            datastore.edit { prefs ->
+                prefs[PreferenceKeys.CROP_DESCRIPTION] = value
+            }
+        }
+    }
 }
 
 

@@ -188,6 +188,7 @@ class LocationViewModel @Inject constructor() : ViewModel() {
 
     fun updateCustomAddress(address: String) {
         _customAddress.value = address
+
     }
 
     fun startEditingAddress() {

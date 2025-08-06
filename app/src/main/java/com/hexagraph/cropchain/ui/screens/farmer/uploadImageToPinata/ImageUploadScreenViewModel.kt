@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
+import com.hexagraph.cropchain.data.local.apppreferences.AppPreferences
 import com.hexagraph.cropchain.domain.model.Crop
 import com.hexagraph.cropchain.domain.repository.CropRepository
 import com.hexagraph.cropchain.util.getCurrentTimestamp
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class ImageUploadScreenViewModel @Inject constructor(
     private val cropRepository: CropRepository,
     private val workManager: WorkManagerRepository,
+    private val appPreferences: AppPreferences
 ) : ViewModel() {
 
     private val _title = mutableStateOf("")
@@ -62,10 +64,10 @@ class ImageUploadScreenViewModel @Inject constructor(
                         date = getCurrentTimestamp(),
                         uid = newUri.toString(),
                         fileName = fileName,
-                        title = _title.value.ifBlank { "Unknown Crop" },
-                        description = _description.value.ifBlank { "No Description" }
                     )
                 )
+                appPreferences.cropTitle.set(_title.value.ifBlank { "Unknown Crop" })
+                appPreferences.cropDescription.set(_description.value.ifBlank { "No Description" })
             }
             workManager.count()
             onCompleted()
