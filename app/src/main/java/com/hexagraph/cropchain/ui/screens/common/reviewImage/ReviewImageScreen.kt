@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -43,7 +44,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import com.hexagraph.cropchain.ui.screens.common.reviewImage.ReviewScreenType.*
 
+enum class ReviewScreenType() {
+    FARMER,
+    REVIEW,
+    VERIFY,
+    PREVIEW
+}
 
 @Composable
 fun ReviewImageScreen(
@@ -63,6 +71,7 @@ fun ReviewImageScreen(
         viewModel.clearError()
     }
 
+    val type = ReviewScreenType.entries[type]
 
     LazyColumn(
         modifier = Modifier
@@ -73,7 +82,12 @@ fun ReviewImageScreen(
     ) {
         item {
             Text(
-                text = if (type == 1) "Review Image" else "Verify Image",
+                text = when (type) {
+                    FARMER -> "Farmer"
+                    REVIEW -> "Review Image"
+                    VERIFY -> "Verify Image"
+                    else -> "Preview Image"
+                },
                 style = MaterialTheme.typography.titleLarge.copy(
                     color = Color.White,
                     fontWeight = FontWeight.Bold
@@ -126,36 +140,72 @@ fun ReviewImageScreen(
             Spacer(modifier = Modifier.height(28.dp))
 
             Text(
-                "AI Review",
-                style = MaterialTheme.typography.headlineSmall.copy(
+                "Text",
+                style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White
                 ),
                 modifier = Modifier.fillMaxWidth()
             )
             Text(
-                text = uiState.value.aiSolution,
+                text = "Text goes here. This is a placeholder for the text param, whatever that is.",
                 color = Color.White.copy(alpha = 0.8f),
                 fontSize = 14.sp,
-                modifier = Modifier.padding(top = 8.dp)
+                modifier = Modifier.padding(top = 4.dp)
             )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
+            Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = if (type == 1) "Write Your Review" else "Review",
-                style = MaterialTheme.typography.headlineSmall.copy(
+                "Description",
+                style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White
                 ),
                 modifier = Modifier.fillMaxWidth()
             )
-            if (type != 1)
+            Text(
+                text = "This will provide a detailed description of the image being reviewed. It can include information about the crop, its condition, and any other relevant details.",
+                color = Color.White.copy(alpha = 0.8f),
+                fontSize = 14.sp,
+                modifier = Modifier.padding(top = 4.dp)
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            if (type != FARMER) {
+                Text(
+                    "AI Review",
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.White
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Text(
+                    text = uiState.value.aiSolution,
+                    color = Color.White.copy(alpha = 0.8f),
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
+                Spacer(Modifier.height(12.dp))
+            }
+
+            Text(
+                text = if (type == REVIEW) "Write Your Review" else "Review",
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.White
+                ),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            if (type != REVIEW)
                 Text(
                     text = uiState.value.reviewText,
                     color = Color.White.copy(alpha = 0.8f),
                     fontSize = 14.sp,
-                    modifier = Modifier.padding(top = 8.dp)
+                    modifier = Modifier
+                        .padding(top = 4.dp)
+                        .fillMaxWidth()
                 )
             else {
 
@@ -180,38 +230,50 @@ fun ReviewImageScreen(
 
 
             Spacer(modifier = Modifier.height(12.dp))
-            if (type != 1) {
-                Row {
-                    IconButton(onClick = { viewModel.onLikeClicked() }) {
+            if (type != REVIEW && type != FARMER) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         Icon(
                             imageVector = Icons.Default.ThumbUp,
                             contentDescription = "Like",
                             tint = if (uiState.value.liked == true) Color.Green else Color.White
                         )
+                        Text(
+                            text = "${uiState.value.likeCount}",
+                            color = Color.White,
+//                          modifier = Modifier.padding(end = 16.dp)
+                        )
                     }
-                    IconButton(onClick = { viewModel.onDislikeClicked() }) {
+
+
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         Icon(
                             imageVector = Icons.Default.ThumbDown,
                             contentDescription = "Dislike",
                             tint = if (uiState.value.liked == false) Color.Red else Color.White
                         )
+                        Text(
+                            text = "${uiState.value.dislikeCount}",
+                            color = Color.White
+                        )
                     }
-                }
-                Row {
-                    Text(
-                        text = "${uiState.value.likeCount} Likes",
-                        color = Color.White,
-                        modifier = Modifier.padding(end = 16.dp)
-                    )
-                    Text(
-                        text = "${uiState.value.dislikeCount} Dislikes",
-                        color = Color.White
-                    )
                 }
             }
 
 
-            if (type != 0)
+            if (type == REVIEW) {
                 Button(
                     onClick = {
                         viewModel.submit()
@@ -225,8 +287,46 @@ fun ReviewImageScreen(
                         .height(56.dp)
                         .clip(RoundedCornerShape(16.dp))
                 ) {
-                    Text(if (type == 1) "Submit Review" else "Submit Choice")
+                    Text("Submit Review")
                 }
+            } else if (type == VERIFY) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Button(
+                        onClick = {
+                            viewModel.submit()
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF007E33),
+                            contentColor = Color.White
+                        ),
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(56.dp)
+                            .clip(RoundedCornerShape(16.dp))
+                    ) {
+                        Text("Approve")
+                    }
+                    Button(
+                        onClick = {
+                            viewModel.submit()
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF007E33),
+                            contentColor = Color.White
+                        ),
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(56.dp)
+                            .clip(RoundedCornerShape(16.dp))
+                    ) {
+                        Text("Disapprove")
+                    }
+
+                }
+            }
         }
     }
 }

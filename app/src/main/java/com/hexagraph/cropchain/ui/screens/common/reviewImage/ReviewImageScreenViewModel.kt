@@ -23,7 +23,7 @@ data class ReviewImageScreenUIState(
     val dislikeCount: Int = 0,
     val aiSolution: String = "",
     val type: Int = -1,
-    val url: String=""
+    val url: String = ""
 )
 
 @HiltViewModel
@@ -62,11 +62,17 @@ class ReviewImageScreenViewModel @Inject constructor(
 
 
     fun onLikeClicked() {
-        _uiState.value = _uiState.value.copy(liked = true)
+        if (_uiState.value.liked == true) {
+            _uiState.value = _uiState.value.copy(liked = null)
+        } else
+            _uiState.value = _uiState.value.copy(liked = true)
     }
 
     fun onDislikeClicked() {
-        _uiState.value = _uiState.value.copy(liked = false)
+        if (_uiState.value.liked == false) {
+            _uiState.value = _uiState.value.copy(liked = null)
+        } else
+            _uiState.value = _uiState.value.copy(liked = false)
     }
 
     fun submit() {

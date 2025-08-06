@@ -222,11 +222,11 @@ val surfaceContainerHighestDarkHighContrast = Color(0xFF434842)
 
 
 
-//val OceanGradient = Brush.linearGradient(
-//    colors = listOf(Color(0xFF2C3E50), Color(0xFF67CFE0)),
-//    start = Offset(0f, 0f),
-//    end = Offset(1000f, 1000f) // You can adjust this for direction
-//)
+val oceanGradient = Brush.linearGradient(
+    colors = listOf(Color(0xFF2C3E50), Color(0xFF67CFE0)),
+    start = Offset(0f, 0f),
+    end = Offset(1000f, 1000f) // You can adjust this for direction
+)
 
 val cropChainGradient = Brush.linearGradient(
     colors = listOf(Color(0xFF0A391A),Color(0xFF1D7C3D), Color(0xFF2EB65D)),
