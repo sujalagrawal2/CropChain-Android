@@ -9,7 +9,6 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Eco
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.AlertDialog
@@ -23,7 +22,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -41,13 +43,17 @@ import com.hexagraph.cropchain.ui.screens.farmer.home.HomeScreen
 import com.hexagraph.cropchain.ui.screens.farmer.profile.ProfileScreen
 import com.hexagraph.cropchain.ui.screens.farmer.uploadImageToPinata.ImageUploadDetailScreen
 import com.hexagraph.cropchain.ui.screens.farmer.uploadImageToPinata.ImageUploadPromptScreen
-//import com.hexagraph.cropchain.ui.screens.farmer.uploadImageStatus.UploadImageToBlockchainScreen
 import com.hexagraph.cropchain.ui.screens.farmer.uploadedImages.UploadedImagesScreen
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Unit) {
+fun MainScreen(
+    fcmImageId: String? = null,
+    fcmImageType: String? = null,
+    viewModel: NavHostViewModel = hiltViewModel(),
+    onLogOut: () -> Unit
+) {
     val navController = rememberNavController()
     val currentBackStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry.value?.destination?.route
@@ -67,6 +73,20 @@ fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Un
             }
         )
     }
+    val hasNavigated = rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(fcmImageId, fcmImageType) {
+        if (!hasNavigated.value && fcmImageId != null && fcmImageType != null) {
+            hasNavigated.value = true
+            navController.navigate(
+                NavRoutes.ReviewImageScreen.passArgs(
+                    id = fcmImageId,
+                    type = 0
+                )
+            )
+        }
+    }
+
 
     val showBottomBar =
         (currentRoute == NavRoutes.HomeScreen.route || currentRoute == NavRoutes.ProfileScreen.route || currentRoute == NavRoutes.SelectImageScreen.route)
@@ -230,7 +250,7 @@ fun MainScreen(viewModel: NavHostViewModel = hiltViewModel(), onLogOut: () -> Un
                     navArgument("type") { type = NavType.IntType }
                 )
             ) {
-                val id = it.arguments?.getString("url")!!
+                val id = it.arguments?.getString("id")!!
                 val type = it.arguments?.getInt("type")!!
                 ReviewImageScreen(id = id.toInt(), type = type)
             }
