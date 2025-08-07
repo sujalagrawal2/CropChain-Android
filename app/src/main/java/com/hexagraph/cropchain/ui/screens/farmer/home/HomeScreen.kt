@@ -65,7 +65,7 @@ import java.net.URI
 @Composable
 fun HomeScreen(
     onUploadClick: () -> Unit = {},
-    onUploadedImagesClick: () -> Unit = {},
+    onUploadedImagesClick: (String) -> Unit = {}, // Accept tab string
     onRecentActivityClick: () -> Unit = {},
     viewModel: HomeScreenViewModel = hiltViewModel()
 ) {
@@ -116,7 +116,8 @@ fun HomeScreen(
                     .height(120.dp)
                     .padding(end = 4.dp)
                     .clip(RoundedCornerShape(16.dp))
-                    .background(brush = cropChainGradient),
+                    .background(brush = cropChainGradient)
+                    .clickable { onUploadedImagesClick("Verified") }, // Verified tab
             ) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
@@ -148,7 +149,8 @@ fun HomeScreen(
                     .height(120.dp)
                     .padding(start = 4.dp)
                     .clip(RoundedCornerShape(16.dp))
-                    .background(brush = cropChainGradient),
+                    .background(brush = cropChainGradient)
+                    .clickable { onUploadedImagesClick("Pending") }, // Pending tab
             ) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
@@ -182,7 +184,7 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp))
-                .clickable(onClick = onUploadedImagesClick),
+                .clickable { onUploadedImagesClick("Verified") }, // Default to Verified for list
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -193,7 +195,7 @@ fun HomeScreen(
             }
 
             IconButton(onClick = {
-                onUploadedImagesClick()
+                onUploadedImagesClick("Verified")
                 Log.d("Home Screen", viewModel.getAccount())
             }) {
                 Icon(
@@ -448,4 +450,3 @@ fun isLocalImageExists(imagePath: String): Boolean {
         false
     }
 }
-

@@ -38,12 +38,11 @@ import com.hexagraph.cropchain.ui.component.DisplayImageList
 
 @Composable
 fun UploadedImagesScreen(
+    selectedTab: String,
     onBackButtonPressed: () -> Unit,
     viewModel: UploadedImagesViewModel = hiltViewModel(),
     onImageSelected: (String, Int) -> Unit
 ) {
-    var selectedTab by remember { mutableStateOf("Verified") }
-    val tabs = listOf("Verified", "Pending")
     val uiState = viewModel.uiState
 
     Column(
@@ -60,53 +59,13 @@ fun UploadedImagesScreen(
                 )
             }
             Text(
-                text = stringResource(R.string.uploaded_images),
+                text = if (selectedTab == "Verified") "Verified Images" else "Pending Images",
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.padding(start = 8.dp)
             )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-
-        val tabBackground = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f)
-        val selectedTabColor = MaterialTheme.colorScheme.primary// Soft green, more pastel
-        val unselectedTabColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
-
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 12.dp),
-            colors = CardDefaults.cardColors(containerColor = tabBackground),
-            shape = RoundedCornerShape(20.dp),
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                tabs.forEach { tab ->
-                    val isSelected = tab == selectedTab
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(
-                                if (isSelected) selectedTabColor.copy(alpha = 0.2f) else Color.Transparent
-                            )
-                            .clickable { selectedTab = tab }
-                            .padding(vertical = 10.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = tab,
-                            color = if (isSelected) selectedTabColor else unselectedTabColor,
-                            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold)
-                        )
-                    }
-                }
-            }
-        }
 
         val imageSections =
             if (selectedTab == "Verified") uiState.value.verifiedImages
@@ -120,7 +79,6 @@ fun UploadedImagesScreen(
         DisplayImageList(
             imagesUrl,
             onClickImage = {
-
                 onImageSelected(
                     imageSections[it].id.toString(),
                     0
@@ -128,7 +86,3 @@ fun UploadedImagesScreen(
             })
     }
 }
-
-
-
-

@@ -135,8 +135,8 @@ fun MainScreen(
                 }
             ) {
                 HomeScreen(
-                    onUploadedImagesClick = {
-                        navController.navigate(NavRoutes.UploadedImageScreen.route)
+                    onUploadedImagesClick = { tab ->
+                        navController.navigate("uploadedImages/$tab")
                     },
                     onUploadClick = {
                         navController.navigate(NavRoutes.UploadIImageScreen.route)
@@ -229,8 +229,15 @@ fun MainScreen(
                     })
             }
 
-            composable(NavRoutes.UploadedImageScreen.route) {
+            composable(
+                route = "uploadedImages/{tab}",
+                arguments = listOf(
+                    navArgument("tab") { type = NavType.StringType }
+                )
+            ) {
+                val tab = it.arguments?.getString("tab") ?: "Verified"
                 UploadedImagesScreen(
+                    selectedTab = tab,
                     onBackButtonPressed = {
                         navController.navigateUp()
                     },
@@ -238,7 +245,6 @@ fun MainScreen(
                         navController.navigate(
                             NavRoutes.ReviewImageScreen.passArgs(id = id, type = type)
                         )
-
                     }
                 )
             }
@@ -316,9 +322,3 @@ fun BottomNavigationBar(navController: NavController) {
         )
     }
 }
-
-
-
-
-
-
