@@ -368,4 +368,35 @@ class Web3jRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun getTransactionStatus(
+        txHash: String,
+    ): Result<String> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val receipt = web3j.web3.ethGetTransactionReceipt(txHash).send().transactionReceipt
+
+                if (receipt.isEmpty) {
+                    // Transaction is still pending
+                    Result.success("Pending")
+                } else {
+                    val statusHex = receipt.get().status
+                    Log.d("Web3j", "Transaction status: $statusHex")
+                    when (statusHex) {
+                        "0x1" -> Result.success("Success")
+                        "0x0" -> {
+                            // Failed, include reason if possible (e.g. from logs or known constraints)
+                            Result.success("Failed")
+                        }
+
+                        else -> Result.success("Unknown status: $statusHex")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("Web3j", "Error checking tx status: ${e.message}", e)
+                Result.failure(Exception("Error: ${e.message}"))
+            }
+        }
+    }
+
 }

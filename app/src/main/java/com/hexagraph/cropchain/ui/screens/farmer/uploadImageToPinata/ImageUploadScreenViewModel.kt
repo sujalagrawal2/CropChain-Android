@@ -10,11 +10,13 @@ import androidx.lifecycle.viewModelScope
 import com.hexagraph.cropchain.data.local.apppreferences.AppPreferences
 import com.hexagraph.cropchain.domain.model.Crop
 import com.hexagraph.cropchain.domain.model.CropImages
+import com.hexagraph.cropchain.domain.model.RecentActivity
 import com.hexagraph.cropchain.domain.repository.CropRepository
 import com.hexagraph.cropchain.domain.repository.CropTableRepository
 import com.hexagraph.cropchain.domain.repository.MetaMaskSDKRepository
 import com.hexagraph.cropchain.domain.repository.MetaMaskRepository
 import com.hexagraph.cropchain.domain.repository.PinataRepository
+import com.hexagraph.cropchain.domain.repository.RecentActivityRepository
 import com.hexagraph.cropchain.workManager.WorkManagerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -47,7 +49,8 @@ class ImageUploadScreenViewModel @Inject constructor(
     private val metaMaskSDKRepository: MetaMaskSDKRepository,
     private val metaMaskRepository: MetaMaskRepository,
     private val workManagerRepository: WorkManagerRepository,
-    private val appPreferences: AppPreferences
+    private val appPreferences: AppPreferences,
+    private val recentActivityRepository: RecentActivityRepository
 ) : ViewModel() {
 
     private val _title = mutableStateOf("")
@@ -60,11 +63,15 @@ class ImageUploadScreenViewModel @Inject constructor(
     val uiState: State<ImageUploadUIState> = _uiState
 
     private var currentCropId: Long? = null
-
-    init {
-        createEmptyCrop()
-        checkMetaMaskConnection()
+    fun startViewModel(cropId: Long?) {
+        if (cropId == null) {
+            createEmptyCrop()
+            checkMetaMaskConnection()
+        } else {
+            initializeCrop(cropId)
+        }
     }
+
 
     private fun createEmptyCrop() {
         viewModelScope.launch {
@@ -294,6 +301,16 @@ class ImageUploadScreenViewModel @Inject constructor(
                         // Update crop as uploaded to blockchain
                         cropTableRepository.updateBlockchainStatus(cropId, true, txHash)
                         appPreferences.metaMaskMessage.set("Successfully uploaded to blockchain!")
+                        recentActivityRepository.insertActivity(
+                            RecentActivity(
+                                type = 0,
+                                idOfRecentActivity = cropId.toInt(),
+                                transactionHash = txHash,
+                                isSeen = false,
+                                status = 0,
+                                title = _title.value
+                            )
+                        )
                         onComplete()
                     }.onFailure { exception ->
                         appPreferences.metaMaskMessage.set("Blockchain upload failed: ${exception.message}")
@@ -340,5 +357,19 @@ class ImageUploadScreenViewModel @Inject constructor(
 
         return matchResult?.groupValues?.get(1)
     }
+
+    fun initializeCrop(cropId: Long) {
+        currentCropId = cropId
+        viewModelScope.launch {
+            val crop = cropTableRepository.getCropById(cropId)
+            crop?.let {
+                _title.value = it.title
+                _description.value = it.description
+            }
+            loadCropImages()
+            checkMetaMaskConnection()
+        }
+    }
+
 
 }
