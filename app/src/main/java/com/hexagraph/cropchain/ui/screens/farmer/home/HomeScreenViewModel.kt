@@ -40,7 +40,7 @@ class HomeScreenViewModel @Inject constructor(
 
     private val _uiState = mutableStateOf(HomeScreenUIState())
     val uiState: State<HomeScreenUIState> = _uiState
-
+    private val activePollingJobs = mutableSetOf<String>()
     init {
         viewModelScope.launch {
             appPreferences.username.getFlow().collectLatest {
@@ -56,19 +56,22 @@ class HomeScreenViewModel @Inject constructor(
                 _uiState.value = _uiState.value.copy(recentActivity = activityList)
 
                 for (activity in activityList) {
-                    if ((activity.status == 0 || activity.status == 1 || activity.status == -2) && activity.transactionHash != null) {
+                    val txHash = activity.transactionHash ?: continue
+
+                    if ((activity.status == 0 || activity.status == 1 || activity.status == -2) && !activePollingJobs.contains(txHash)) {
+                        activePollingJobs.add(txHash)
                         startPollingForStatus(activity)
                     }
                 }
-
             }
         }
     }
 
     private fun startPollingForStatus(activity: RecentActivity) {
+        val txHash = activity.transactionHash!!
         viewModelScope.launch {
             while (isActive) {
-                val result = web3jRepository.getTransactionStatus(activity.transactionHash!!)
+                val result = web3jRepository.getTransactionStatus(txHash)
 
                 result.fold(
                     onSuccess = { status ->
@@ -77,8 +80,8 @@ class HomeScreenViewModel @Inject constructor(
                                 recentActivityRepository.updateActivity(
                                     activity.copy(status = 2)
                                 )
+                                activePollingJobs.remove(txHash)
                                 return@launch
-
                             }
 
                             "Pending" -> {
@@ -89,25 +92,30 @@ class HomeScreenViewModel @Inject constructor(
                             }
 
                             else -> {
-                                // Shouldn't happen, but break loop to stop polling
                                 recentActivityRepository.updateActivity(
-                                    activity.copy(status = -1, reason =  "Unknown error")
+                                    activity.copy(status = -1, reason = "Unknown error")
                                 )
+                                activePollingJobs.remove(txHash)
                                 return@launch
-
                             }
                         }
                     },
                     onFailure = { error ->
-                        recentActivityRepository.updateActivity(
-                            activity.copy(status = -1, reason = error.message ?: "Unknown error")
-                        )
-                        return@launch
+                        if (error.message?.contains("429") == true) {
+                            delay(10_000) // back off
+                        } else {
+                            recentActivityRepository.updateActivity(
+                                activity.copy(status = -1, reason = error.message ?: "Unknown error")
+                            )
+                            activePollingJobs.remove(txHash)
+                            return@launch
+                        }
                     }
                 )
             }
         }
     }
+
 
 
 }
