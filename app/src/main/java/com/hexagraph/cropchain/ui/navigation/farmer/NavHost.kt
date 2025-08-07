@@ -135,8 +135,8 @@ fun MainScreen(
                 }
             ) {
                 HomeScreen(
-                    onUploadedImagesClick = { tab ->
-                        navController.navigate("uploadedImages/$tab")
+                    onUploadedImagesClick = {
+                        navController.navigate(NavRoutes.UploadedImageScreen.route)
                     },
                     onUploadClick = {
                         navController.navigate(NavRoutes.UploadIImageScreen.route)

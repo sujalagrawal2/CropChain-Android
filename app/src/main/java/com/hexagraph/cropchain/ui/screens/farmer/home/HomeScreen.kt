@@ -1,10 +1,8 @@
 package com.hexagraph.cropchain.ui.screens.farmer.home
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,48 +15,34 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Fullscreen
+import androidx.compose.material.icons.filled.FiberManualRecord
 import androidx.compose.material.icons.filled.Pets
+import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberAsyncImagePainter
 import com.hexagraph.cropchain.R
 import com.hexagraph.cropchain.ui.theme.cropChainGradient
 import com.hexagraph.cropchain.ui.theme.cropChainOrange
-import com.hexagraph.cropchain.ui.theme.oceanGradient
 import java.io.File
 import java.net.URI
 
@@ -180,37 +164,37 @@ fun HomeScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(16.dp))
-                .clickable { onUploadedImagesClick("Verified") }, // Default to Verified for list
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.Pets, contentDescription = null, tint = Color(0xFFFF6D00))
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(stringResource(R.string.uploaded_images), fontWeight = FontWeight.Bold)
-            }
-
-            IconButton(onClick = {
-                onUploadedImagesClick("Verified")
-                Log.d("Home Screen", viewModel.getAccount())
-            }) {
-                Icon(
-                    Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                    contentDescription = "Go",
-                )
-            }
-        }
+//        Row(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .clip(RoundedCornerShape(16.dp))
+//                .clickable { onUploadedImagesClick("Verified") }, // Default to Verified for list
+//            horizontalArrangement = Arrangement.SpaceBetween,
+//            verticalAlignment = Alignment.CenterVertically
+//        ) {
+//            Row(verticalAlignment = Alignment.CenterVertically) {
+//                Icon(Icons.Default.Pets, contentDescription = null, tint = Color(0xFFFF6D00))
+//                Spacer(modifier = Modifier.width(8.dp))
+//                Text(stringResource(R.string.uploaded_images), fontWeight = FontWeight.Bold)
+//            }
+//
+//            IconButton(onClick = {
+//                onUploadedImagesClick("Verified")
+//                Log.d("Home Screen", viewModel.getAccount())
+//            }) {
+//                Icon(
+//                    Icons.AutoMirrored.Filled.KeyboardArrowRight,
+//                    contentDescription = "Go",
+//                )
+//            }
+//        }
 
 //        CropImageGallery(viewModel.uiState.value)
 
-        Spacer(modifier = Modifier.height(24.dp))
+//        Spacer(modifier = Modifier.height(24.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Default.Pets, contentDescription = null, tint = cropChainOrange)
+            Icon(Icons.Default.FiberManualRecord, contentDescription = null, tint = cropChainOrange)
             Spacer(modifier = Modifier.width(8.dp))
             Text(stringResource(R.string.recent_activity), fontWeight = FontWeight.Bold)
         }

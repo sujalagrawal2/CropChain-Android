@@ -48,7 +48,7 @@ fun ReviewScreen(
         Row(verticalAlignment = Alignment.CenterVertically) {
 
             Text(
-                text = "Review Screen",
+                text = "Requests",
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.padding(start = 8.dp)
             )

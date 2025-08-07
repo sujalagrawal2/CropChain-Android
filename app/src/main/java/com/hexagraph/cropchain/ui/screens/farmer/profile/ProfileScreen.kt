@@ -30,7 +30,10 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.Money
 import androidx.compose.material.icons.filled.Pets
+import androidx.compose.material.icons.filled.Translate
+import androidx.compose.material.icons.filled.Wallet
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -180,7 +183,7 @@ fun ProfileScreen(
                 // Metamask Accounts Section
                 if (isConnected || uiState.disconnectedAccounts.isNotEmpty()) {
                     ProfileItem(
-                        icon = Icons.Default.Pets,
+                        icon = Icons.Default.Wallet,
                         title = stringResource(R.string.update_account),
                         onClick = {
                             viewModel.updateWallet {
@@ -192,7 +195,7 @@ fun ProfileScreen(
 
                 Spacer(modifier = Modifier.height(12.dp))
                 ProfileItem(
-                    icon = Icons.Default.Language,
+                    icon = Icons.Default.Translate,
                     title = stringResource(R.string.change_your_language_preference),
                     onClick = {
                         Log.d("ProfileScreen", "Visibility toggled for language preference bottom sheet")

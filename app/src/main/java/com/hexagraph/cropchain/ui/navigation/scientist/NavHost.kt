@@ -264,8 +264,8 @@ fun BottomNavigationBar(navController: NavController) {
         )
 
         NavigationBarItem(
-            icon = { Icon(Icons.Default.Eco, contentDescription = "Upload") },
-            label = { Text("Review", fontWeight = FontWeight.Bold) },
+            icon = { Icon(Icons.Default.Eco, contentDescription = "Requests") },
+            label = { Text("Requests", fontWeight = FontWeight.Bold) },
             selected = currentRoute == NavRoutes.ReviewScreen.route,
             onClick = {
                 if (currentRoute != NavRoutes.ReviewScreen.route) {

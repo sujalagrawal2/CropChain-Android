@@ -25,6 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Fullscreen
 import androidx.compose.material.icons.filled.Person
@@ -180,9 +181,9 @@ fun HomeScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Default.Pets, contentDescription = null, tint = cropChainOrange)
+            Icon(Icons.Default.Circle, contentDescription = null, tint = cropChainOrange)
             Spacer(modifier = Modifier.width(8.dp))
-            Text(stringResource(R.string.recent_activity), fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.recent_activity), fontWeight = FontWeight.Bold, fontSize = 20.sp)
         }
 
         Spacer(modifier = Modifier.height(8.dp))
