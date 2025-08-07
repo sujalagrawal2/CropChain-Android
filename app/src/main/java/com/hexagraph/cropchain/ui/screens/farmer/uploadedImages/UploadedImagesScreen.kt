@@ -19,6 +19,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -44,45 +45,46 @@ fun UploadedImagesScreen(
     onImageSelected: (String, Int) -> Unit
 ) {
     val uiState = viewModel.uiState
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        // Top Bar
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBackButtonPressed) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBackIosNew,
-                    contentDescription = null,
+    Scaffold {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
+        ) {
+            // Top Bar
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                IconButton(onClick = onBackButtonPressed) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBackIosNew,
+                        contentDescription = null,
+                    )
+                }
+                Text(
+                    text = if (selectedTab == "Verified") "Verified Images" else "Pending Images",
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier.padding(start = 8.dp)
                 )
             }
-            Text(
-                text = if (selectedTab == "Verified") "Verified Images" else "Pending Images",
-                style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier.padding(start = 8.dp)
-            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            val imageSections =
+                if (selectedTab == "Verified") uiState.value.verifiedImages
+                else uiState.value.pendingImages
+
+            val imagesUrl: MutableList<CropItem> = emptyList<CropItem>().toMutableList()
+            for (images in imageSections) {
+                val splitImages = images.url.split("$").filter { it.isNotBlank() }
+                imagesUrl.add(images.copy(url = splitImages[0]))
+            }
+            DisplayImageList(
+                imagesUrl,
+                onClickImage = {
+                    onImageSelected(
+                        imageSections[it].id.toString(),
+                        0
+                    )
+                })
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        val imageSections =
-            if (selectedTab == "Verified") uiState.value.verifiedImages
-            else uiState.value.pendingImages
-
-        val imagesUrl: MutableList<CropItem> = emptyList<CropItem>().toMutableList()
-        for (images in imageSections) {
-            val splitImages = images.url.split("$").filter { it.isNotBlank() }
-            imagesUrl.add(images.copy(url = splitImages[0]))
-        }
-        DisplayImageList(
-            imagesUrl,
-            onClickImage = {
-                onImageSelected(
-                    imageSections[it].id.toString(),
-                    0
-                )
-            })
     }
 }

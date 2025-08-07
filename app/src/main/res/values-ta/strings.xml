@@ -97,6 +97,70 @@
     <string name="edit">திருத்து</string>
 
 
+    <string name="use_this_account">இந்தக் கணக்கைப் பயன்படுத்துங்கள்</string>
+    <string name="in_use">பயன்பாட்டில் உள்ளது</string>
+    <string name="connected_account">இணைக்கப்பட்ட கணக்கு</string>
+    <string name="disconnected_accounts">துண்டிக்கப்பட்ட கணக்குகள்</string>
+    <string name="update_account">கணக்கைப் புதுப்பிக்கவும்</string>
+
+    <string name="back">பின்னால்</string>
+    <string name="share_crop_photos">உங்கள் பயிர் புகைப்படங்களை சமூகத்துடன் பகிர்ந்து கொள்ளுங்கள்</string>
+    <string name="images_count">படங்கள் (%d)</string>
+    <string name="add_images">படங்களைச் சேர்க்கவும்</string>
+    <string name="more_images">மேலும் படங்கள்</string>
+    <string name="tap_to_add_images">படங்களைச் சேர்க்க தட்டவும்</string>
+    <string name="upload_multiple_photos">உங்கள் பயிர்களின் பல புகைப்படங்களைப் பதிவேற்றவும்</string>
+    <string name="location">இடம்</string>
+    <string name="get_location">இடத்தைப் பெறுக</string>
+    <string name="no_location_set">இடம் எதுவும் அமைக்கப்படவில்லை</string>
+    <string name="edit_address">முகவரியைத் திருத்தவும்</string>
+    <string name="title">தலைப்பு</string>
+    <string name="voice_input">குரல் உள்ளீடு</string>
+    <string name="description">விளக்கம்</string>
+    <string name="uploading_to_blockchain">பிளாக்செயினில் பதிவேற்றுகிறது...</string>
+    <string name="connect_metamask_first">முதலில் MetaMask-ஐ இணைக்கவும்</string>
+    <string name="upload_images_to_pinata">முதலில் படங்களை Pinata-வில் பதிவேற்றவும்</string>
+    <string name="upload_to_blockchain">பிளாக்செயினில் பதிவேற்றவும்</string>
+    <string name="settings">அமைப்புகள்</string>
+    <string name="cancel">ரத்துசெய்</string>
+    <string name="location_permission_required">இடத்திற்கான அனுமதி தேவை</string>
+    <string name="location_permission_denied_message">இடத்திற்கான அனுமதி நிரந்தரமாக மறுக்கப்பட்டுள்ளது. இட அம்சங்களைப் பயன்படுத்த, செயலி அமைப்புகளில் அதை இயக்கவும்.</string>
+    <string name="address">முகவரி</string>
+    <string name="refresh">புதுப்பிக்கவும்</string>
+    <string name="allow_location">இடத்தை அனுமதிக்கவும்</string>
+
+    <string name="voice_assistant">குரல் உதவியாளர்</string>
+    <string name="listening">கேட்கிறது...</string>
+    <string name="ready_to_generate">உருவாக்கத் தயார்</string>
+    <string name="processing">செயலாக்கப்படுகிறது...</string>
+    <string name="close">மூடு</string>
+    <string name="describe_crop_images">உங்கள் பயிர் படங்களை குரல் மூலம் விவரிக்கவும்</string>
+    <string name="start_recording">பதிவைத் தொடங்கவும்</string>
+    <string name="tap_to_start_recording">பதிவைத் தொடங்க தட்டவும்</string>
+    <string name="stop_recording">பதிவை நிறுத்தவும்</string>
+    <string name="listening_speak_now">கேட்கிறது... இப்போது பேசுங்கள்</string>
+    <string name="tap_microphone_continue">தொடர மைக்ரோஃபோனைத் தட்டவும்</string>
+    <string name="transcript">படியெடுத்தல்:</string>
+    <string name="stop">நிறுத்து</string>
+    <string name="generate">உருவாக்கு</string>
+    <string name="processing_with_ai">AI உடன் செயலாக்கப்படுகிறது...</string>
+    <string name="processing_transcript">படியெடுத்தல் செயலாக்கப்படுகிறது:</string>
+    <string name="please_wait_generating">தலைப்பு மற்றும் விளக்கத்தை நாங்கள் உருவாக்கும் வரை காத்திருக்கவும்...</string>
+    <string name="ready_to_generate_question">உருவாக்கத் தயாரா?</string>
+    <string name="your_transcript">உங்கள் படியெடுத்தல்:</string>
+    <string name="continue_listening">தொடர்ந்து கேட்கவும்</string>
+
+    <string name="audio_recording_error">ஆடியோ பதிவுப் பிழை</string>
+    <string name="client_side_error">கிளையன்ட் பக்கப் பிழை</string>
+    <string name="insufficient_permissions">போதுமான அனுமதிகள் இல்லை</string>
+    <string name="network_error">நெட்வொர்க் பிழை</string>
+    <string name="network_timeout">நெட்வொர்க் நேரம் முடிந்தது</string>
+    <string name="no_speech_input_detected">பேச்சு உள்ளீடு எதுவும் கண்டறியப்படவில்லை</string>
+    <string name="recognition_service_busy">அடையாளம் காணும் சேவை பிஸியாக உள்ளது</string>
+    <string name="server_error">சர்வர் பிழை</string>
+    <string name="no_speech_input">பேச்சு உள்ளீடு இல்லை</string>
+    <string name="recognition_error">அடையாளம் காணும் பிழை ஏற்பட்டது</string>
+
 
     <!-- Certificate arrays left unchanged -->
     <array name="com_google_android_gms_fonts_certs">

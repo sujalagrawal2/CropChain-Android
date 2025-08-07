@@ -155,6 +155,12 @@
     <string name="server_error">ಸರ್ವರ್ ದೋಷ</string>
     <string name="no_speech_input">ಯಾವುದೇ ಮಾತಿನ ಇನ್‌ಪುಟ್ ಇಲ್ಲ</string>
     <string name="recognition_error">ಗುರುತಿಸುವಿಕೆ ದೋಷ ಸಂಭವಿಸಿದೆ</string>
+    <string name="use_this_account">ಈ ಖಾತೆಯನ್ನು ಬಳಸಿ</string>
+    <string name="in_use">ಬಳಕೆಯಲ್ಲಿದೆ</string>
+    <string name="connected_account">ಸಂಪರ್ಕಿತ ಖಾತೆ</string>
+    <string name="disconnected_accounts">ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡ ಖಾತೆಗಳು</string>
+    <string name="update_account">ಖಾತೆಯನ್ನು ನವೀಕರಿಸಿ</string>
+
 
     <!-- Certificate arrays left unchanged -->
     <array name="com_google_android_gms_fonts_certs">

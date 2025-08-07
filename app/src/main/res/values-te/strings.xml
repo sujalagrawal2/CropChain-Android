@@ -98,6 +98,70 @@
     <string name="edit">సవరించండి</string>
 
 
+    <string name="use_this_account">ఈ ఖాతాను ఉపయోగించండి</string>
+    <string name="in_use">ఉపయోగంలో ఉంది</string>
+    <string name="connected_account">కనెక్ట్ చేయబడిన ఖాతా</string>
+    <string name="disconnected_accounts">డిస్‌కనెక్ట్ చేయబడిన ఖాతాలు</string>
+    <string name="update_account">ఖాతాను నవీకరించండి</string>
+
+    <string name="back">వెనుకకు</string>
+    <string name="share_crop_photos">మీ పంట ఫోటోలను సంఘంతో పంచుకోండి</string>
+    <string name="images_count">చిత్రాలు (%d)</string>
+    <string name="add_images">చిత్రాలను జోడించండి</string>
+    <string name="more_images">మరిన్ని చిత్రాలు</string>
+    <string name="tap_to_add_images">చిత్రాలను జోడించడానికి నొక్కండి</string>
+    <string name="upload_multiple_photos">మీ పంటల యొక్క బహుళ ఫోటోలను అప్‌లోడ్ చేయండి</string>
+    <string name="location">స్థానం</string>
+    <string name="get_location">స్థానాన్ని పొందండి</string>
+    <string name="no_location_set">స్థానం సెట్ చేయబడలేదు</string>
+    <string name="edit_address">చిరునామాను సవరించండి</string>
+    <string name="title">శీర్షిక</string>
+    <string name="voice_input">వాయిస్ ఇన్‌పుట్</string>
+    <string name="description">వివరణ</string>
+    <string name="uploading_to_blockchain">బ్లాక్‌చెయిన్‌కు అప్‌లోడ్ చేస్తోంది...</string>
+    <string name="connect_metamask_first">ముందుగా MetaMaskను కనెక్ట్ చేయండి</string>
+    <string name="upload_images_to_pinata">ముందుగా చిత్రాలను Pinataకు అప్‌లోడ్ చేయండి</string>
+    <string name="upload_to_blockchain">బ్లాక్‌చెయిన్‌కు అప్‌లోడ్ చేయండి</string>
+    <string name="settings">సెట్టింగ్‌లు</string>
+    <string name="cancel">రద్దు చేయి</string>
+    <string name="location_permission_required">స్థాన అనుమతి అవసరం</string>
+    <string name="location_permission_denied_message">స్థాన అనుమతి శాశ్వతంగా నిరాకరించబడింది. దయచేసి స్థాన ఫీచర్‌లను ఉపయోగించడానికి యాప్ సెట్టింగ్‌లలో దాన్ని ప్రారంభించండి.</string>
+    <string name="address">చిరునామా</string>
+    <string name="refresh">రిఫ్రెష్ చేయండి</string>
+    <string name="allow_location">స్థానాన్ని అనుమతించండి</string>
+
+    <string name="voice_assistant">వాయిస్ అసిస్టెంట్</string>
+    <string name="listening">వినబడుతోంది...</string>
+    <string name="ready_to_generate">సృష్టించడానికి సిద్ధంగా ఉంది</string>
+    <string name="processing">ప్రాసెస్ చేస్తోంది...</string>
+    <string name="close">మూసివేయండి</string>
+    <string name="describe_crop_images">వాయిస్ ఉపయోగించి మీ పంట చిత్రాలను వివరించండి</string>
+    <string name="start_recording">రికార్డింగ్ ప్రారంభించండి</string>
+    <string name="tap_to_start_recording">రికార్డింగ్ ప్రారంభించడానికి నొక్కండి</string>
+    <string name="stop_recording">రికార్డింగ్ ఆపండి</string>
+    <string name="listening_speak_now">వినబడుతోంది... ఇప్పుడు మాట్లాడండి</string>
+    <string name="tap_microphone_continue">కొనసాగించడానికి మైక్రోఫోన్‌ను నొక్కండి</string>
+    <string name="transcript">లిప్యంతరీకరణ:</string>
+    <string name="stop">ఆపండి</string>
+    <string name="generate">సృష్టించు</string>
+    <string name="processing_with_ai">AIతో ప్రాసెస్ చేస్తోంది...</string>
+    <string name="processing_transcript">లిప్యంతరీకరణ ప్రాసెస్ చేస్తోంది:</string>
+    <string name="please_wait_generating">మేము శీర్షిక మరియు వివరణను సృష్టిస్తున్నప్పుడు దయచేసి వేచి ఉండండి...</string>
+    <string name="ready_to_generate_question">సృష్టించడానికి సిద్ధంగా ఉన్నారా?</string>
+    <string name="your_transcript">మీ లిప్యంతరీకరణ:</string>
+    <string name="continue_listening">వినడం కొనసాగించండి</string>
+
+    <string name="audio_recording_error">ఆడియో రికార్డింగ్ లోపం</string>
+    <string name="client_side_error">క్లయింట్ వైపు లోపం</string>
+    <string name="insufficient_permissions">తగినంత అనుమతులు లేవు</string>
+    <string name="network_error">నెట్‌వర్క్ లోపం</string>
+    <string name="network_timeout">నెట్‌వర్క్ సమయం ముగిసింది</string>
+    <string name="no_speech_input_detected">ప్రసంగ ఇన్‌పుట్ కనుగొనబడలేదు</string>
+    <string name="recognition_service_busy">గుర్తింపు సేవ బిజీగా ఉంది</string>
+    <string name="server_error">సర్వర్ లోపం</string>
+    <string name="no_speech_input">ప్రసంగ ఇన్‌పుట్ లేదు</string>
+    <string name="recognition_error">గుర్తింపు లోపం సంభవించింది</string>
+
 
     <!-- Certificate arrays left unchanged -->
     <array name="com_google_android_gms_fonts_certs">
